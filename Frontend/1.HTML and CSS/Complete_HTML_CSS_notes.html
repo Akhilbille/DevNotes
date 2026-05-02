@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 & CSS3 — Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    /* Topic colors */
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-yellow);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 0.5rem 0;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-yellow); border-left-color: var(--c-yellow); background: var(--c-yellow-dim); }
+
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: var(--text); }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-yellow), var(--c-orange));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 3rem 3rem 5rem;
+    max-width: 920px;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .section-num {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===== TOPIC CARD ===== */
+  .topic {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .topic p {
+    color: #c4cad8;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .code-header .dots {
+    display: flex; gap: 5px;
+  }
+
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a;
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cmt { color: #546e7a; font-style: italic; }
+  .var { color: #eeffff; }
+  .op { color: #89ddff; }
+  .cls { color: #ffcb6b; }
+  .prop { color: #f07178; }
+  .bool { color: #ff5572; }
+  .type { color: #ffcb6b; }
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-icon::after { content: "💡"; }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-icon::after { content: "⚠️"; }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-icon::after { content: "✅"; }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-icon::after { content: "🚫"; }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== REFERENCE TABLE ===== */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1rem 0;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--bg3);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg2); }
+
+  .ref-table code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== INLINE HIGHLIGHT ===== */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== EXAMPLE LABEL ===== */
+  .ex-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== PILL BADGES ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter {
+    margin-top: 4rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .chapter:first-child { margin-top: 0; }
+
+  /* ===== OUTPUT BOX ===== */
+  .output-box {
+    background: var(--bg);
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--c-green);
+    margin-top: -1px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 2.5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--c-yellow); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Color theming per section */
+  .theme-yellow .section-icon { background: var(--c-yellow-dim); color: var(--c-yellow); }
+  .theme-yellow .section-header h2 { color: var(--c-yellow); }
+
+  .theme-blue .section-icon { background: var(--c-blue-dim); color: var(--c-blue); }
+  .theme-blue .section-header h2 { color: var(--c-blue); }
+
+  .theme-green .section-icon { background: var(--c-green-dim); color: var(--c-green); }
+  .theme-green .section-header h2 { color: var(--c-green); }
+
+  .theme-purple .section-icon { background: var(--c-purple-dim); color: var(--c-purple); }
+  .theme-purple .section-header h2 { color: var(--c-purple); }
+
+  .theme-coral .section-icon { background: var(--c-coral-dim); color: var(--c-coral); }
+  .theme-coral .section-header h2 { color: var(--c-coral); }
+
+  .theme-teal .section-icon { background: var(--c-teal-dim); color: var(--c-teal); }
+  .theme-teal .section-header h2 { color: var(--c-teal); }
+
+  .theme-pink .section-icon { background: var(--c-pink-dim); color: var(--c-pink); }
+  .theme-pink .section-header h2 { color: var(--c-pink); }
+
+  .theme-orange .section-icon { background: var(--c-orange-dim); color: var(--c-orange); }
+  .theme-orange .section-header h2 { color: var(--c-orange); }
+
+  .nav-y { background: var(--c-yellow); }
+  .nav-b { background: var(--c-blue); }
+  .nav-g { background: var(--c-green); }
+  .nav-p { background: var(--c-purple); }
+  .nav-r { background: var(--c-coral); }
+  .nav-t { background: var(--c-teal); }
+  .nav-k { background: var(--c-pink); }
+  .nav-o { background: var(--c-orange); }
+
+  /* Subtle separator */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Multi-example grid */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .example-row { grid-template-columns: 1fr; } }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== SIDEBAR STRUCTURE ===== */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--c-yellow); letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  #main { margin-left: 270px; min-height: 100vh; }
+
+  .progress-text { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; white-space: nowrap; }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-bottom: 4rem; scroll-margin-top: 5rem; }
+
+  .section-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--c-yellow);
+    background: var(--c-yellow-dim);
+    border: 1px solid var(--c-yellow-mid);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--c-yellow); }
+
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection h3::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--c-orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .subsection h4 { font-size: 13px; font-weight: 600; color: var(--c-teal); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  p { color: #c4cad8; margin-bottom: 1rem; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* ===== CONCEPT GRID ===== */
+  .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1rem 0; }
+  .concept-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .concept-card-title { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-yellow); font-weight: 600; margin-bottom: 8px; }
+  .concept-card p { font-size: 13px; margin-bottom: 0; color: var(--muted); }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .feature-list li { color: #c4cad8; padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-yellow); font-size: 11px; top: 6px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13.5px; }
+  .compare-table th { background: var(--bg3); color: var(--muted); font-weight: 600; padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .compare-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--bg3); color: #c4cad8; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .compare-table code { font-family: 'Fira Code', monospace; font-size: 12.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal); }
+
+  /* ===== HERO TAGS ===== */
+  .hero-badge { display: none; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+  .tag-blue   { background: var(--c-blue-dim);   color: var(--c-blue);   border: 1px solid var(--c-blue-mid);   font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-purple { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-green  { background: var(--c-green-dim);  color: var(--c-green);  border: 1px solid var(--c-green-mid);  font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-orange { background: var(--c-orange-dim); color: var(--c-orange); border: 1px solid var(--c-orange-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+
+  /* ===== CALLOUTS ===== */
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-title { font-size: 13px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .callout-body p { margin-bottom: 0; font-size: 13.5px; }
+
+  .callout-info { background: var(--c-blue-dim); border-left: 3px solid var(--c-blue); border-radius: 8px; }
+  .callout-info .callout-title { color: var(--c-blue); }
+  .callout-info .callout-body { color: #9ecfff; }
+
+  .callout-tip { background: var(--c-green-dim); border-left: 3px solid var(--c-green); border-radius: 8px; }
+  .callout-tip .callout-title { color: var(--c-green); }
+  .callout-tip .callout-body { color: #8de8b8; }
+
+  .callout-warn { background: var(--c-yellow-dim); border-left: 3px solid var(--c-yellow); border-radius: 8px; }
+  .callout-warn .callout-title { color: var(--c-yellow); }
+  .callout-warn .callout-body { color: #f0dc8a; }
+
+  .callout-err { background: var(--c-coral-dim); border-left: 3px solid var(--c-coral); border-radius: 8px; }
+  .callout-err .callout-title { color: var(--c-coral); }
+  .callout-err .callout-body { color: #ffaa9e; }
+
+  /* ===== EXERCISE BLOCKS ===== */
+  .exercise {
+    background: linear-gradient(135deg, var(--c-yellow-dim), var(--c-orange-dim));
+    border: 1px solid var(--c-yellow-mid);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+  }
+  .exercise-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .exercise-badge { background: var(--c-yellow); color: #0f1117; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 99px; }
+  .exercise-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .exercise ol { padding-left: 1.25rem; }
+  .exercise li { color: #c4cad8; margin-bottom: 6px; font-size: 14px; }
+  .exercise li strong { color: var(--text); }
+  .exercise-hint { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-yellow-mid); font-size: 13px; color: var(--muted); }
+  .exercise-hint span { color: var(--c-yellow); font-weight: 600; }
+
+  /* ===== TOPIC DIVIDER ===== */
+  .topic-divider { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ===== SCROLL TOP ===== */
+  #scrollTop {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--c-yellow); color: #0f1117;
+    border: none; width: 40px; height: 40px; border-radius: 50%;
+    font-size: 16px; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 200;
+    font-weight: 700;
+  }
+  #scrollTop:hover { background: var(--c-orange); }
+
+  /* ===== SYNTAX: extra tokens ===== */
+  .cm   { color: #546e7a; font-style: italic; }
+  .tp   { color: #ffcb6b; }
+  .jsx  { color: #4dd0e1; }
+  .attr { color: #ffcb6b; }
+  .tag  { color: #f07178; }
+  .sel  { color: #c792ea; }
+  .val  { color: #c3e88d; }
+  .prop-css { color: #82aaff; }
+  .code-filename { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+
+
+<nav id="sidebar">
+  <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-header">
+    <span class="sidebar-logo">HTML5 + CSS3</span>
+    <span class="sidebar-sub">Complete Notes</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Web Fundamentals</div>
+    <a href="#s1" class="nav-item active"><span class="num">01</span>How the Web Works</a>
+    <a href="#s2" class="nav-item"><span class="num">02</span>HTML Basics & Head</a>
+    <a href="#s3" class="nav-item"><span class="num">03</span>Text, Entities & Links</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">HTML Structure</div>
+    <a href="#s4" class="nav-item"><span class="num">04</span>Images, Video & Audio</a>
+    <a href="#s5" class="nav-item"><span class="num">05</span>Lists & Tables</a>
+    <a href="#s6" class="nav-item"><span class="num">06</span>Containers & Semantic</a>
+    <a href="#s7" class="nav-item"><span class="num">07</span>Forms & Validation</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">CSS Core</div>
+    <a href="#s8" class="nav-item"><span class="num">08</span>Selectors & Specificity</a>
+    <a href="#s9" class="nav-item"><span class="num">09</span>Box Model & Sizing</a>
+    <a href="#s10" class="nav-item"><span class="num">10</span>Colors & Gradients</a>
+    <a href="#s11" class="nav-item"><span class="num">11</span>Typography</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">CSS Layout</div>
+    <a href="#s12" class="nav-item"><span class="num">12</span>Positioning & Float</a>
+    <a href="#s13" class="nav-item"><span class="num">13</span>Flexbox</a>
+    <a href="#s14" class="nav-item"><span class="num">14</span>CSS Grid</a>
+    <a href="#s15" class="nav-item"><span class="num">15</span>Media Queries</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced CSS</div>
+    <a href="#s16" class="nav-item"><span class="num">16</span>Images in CSS</a>
+    <a href="#s17" class="nav-item"><span class="num">17</span>Transforms & Transitions</a>
+    <a href="#s18" class="nav-item"><span class="num">18</span>Animations</a>
+    <a href="#s19" class="nav-item"><span class="num">19</span>Variables & Clean CSS</a>
+  </div>
+</nav>
+
+<!-- Main -->
+<div id="main">
+  <div class="top-bar">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+
+  <div class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-badge">📘 Complete Course Notes</div>
+      <h1>HTML5 &amp; <span>CSS3</span><br>The Full Picture</h1>
+      <p>From web fundamentals to advanced animations — every topic covered with real examples, code patterns, and topic-wise exercises. Build beautiful, responsive web pages from scratch.</p>
+      <div class="hero-tags">
+        <span class="tag tag-blue">HTML5</span>
+        <span class="tag tag-purple">CSS3</span>
+        <span class="tag tag-green">Flexbox</span>
+        <span class="tag tag-orange">CSS Grid</span>
+        <span class="tag tag-blue">Animations</span>
+        <span class="tag tag-purple">Media Queries</span>
+        <span class="tag tag-green">BEM</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ -->
+    <!-- SECTION 1: How the Web Works -->
+    <!-- ═══════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>How the Web Works</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Big Picture</h3>
+        <p>When you type a URL into a browser, a chain of events unfolds. Understanding this process helps you become a better developer — you'll know where things can go wrong and how to optimise your pages.</p>
+
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-card-title">🌐 Client</div>
+            <p>Your browser (Chrome, Firefox, Safari). It sends HTTP requests and renders the response as a web page.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">🖥️ Server</div>
+            <p>A computer on the internet that stores your website files and responds to browser requests.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">📡 HTTP</div>
+            <p>HyperText Transfer Protocol — the language clients and servers use to talk. Every request gets a response code (200, 404, 500…).</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">🔑 DNS</div>
+            <p>Domain Name System — translates human-readable domain names like <code>google.com</code> into IP addresses like <code>142.250.80.46</code>.</p>
+          </div>
+        </div>
+
+        <h3>HTTP Request / Response</h3>
+        <p>Every resource on the web (HTML page, image, CSS file) is fetched via an <strong>HTTP request</strong>. The server returns a <strong>response</strong> with a status code and the requested content.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">🌐 HTTP Request (what your browser sends)</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cls">GET</span> /index.html <span class="tp">HTTP/1.1</span>
+<span class="prop-css">Host:</span> <span class="str">www.example.com</span>
+<span class="prop-css">Accept:</span> <span class="str">text/html</span>
+<span class="prop-css">Accept-Language:</span> <span class="str">en-US</span>
+<span class="prop-css">User-Agent:</span> <span class="str">Mozilla/5.0 (Chrome/120)</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">🖥️ HTTP Response (what the server returns)</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="tp">HTTP/1.1</span> <span class="num">200</span> <span class="cls">OK</span>
+<span class="prop-css">Content-Type:</span> <span class="str">text/html; charset=utf-8</span>
+<span class="prop-css">Content-Length:</span> <span class="num">4523</span>
+
+<span class="cm">&lt;!-- The HTML content follows... --&gt;</span>
+<span class="jsx">&lt;!DOCTYPE html&gt;</span>
+<span class="jsx">&lt;html&gt;</span>...<span class="jsx">&lt;/html&gt;</span></pre>
+        </div>
+
+        <table class="compare-table">
+          <thead>
+            <tr><th>Status Code</th><th>Meaning</th><th>Example</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>200 OK</code></td><td>Request succeeded</td><td>Page loaded successfully</td></tr>
+            <tr><td><code>301 Moved</code></td><td>Permanent redirect</td><td>URL has changed forever</td></tr>
+            <tr><td><code>404 Not Found</code></td><td>Resource missing</td><td>Wrong URL or deleted page</td></tr>
+            <tr><td><code>500 Server Error</code></td><td>Server-side failure</td><td>Bug in backend code</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-note">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Dev Tools Tip</strong>
+            Open Chrome DevTools → Network tab → reload the page. You'll see every single HTTP request your browser makes — HTML, CSS, images, fonts and more.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 01</span>
+          <span class="exercise-title">Explore the Network Tab</span>
+        </div>
+        <ol>
+          <li>Open <strong>Chrome DevTools</strong> (F12) and go to the <strong>Network</strong> tab</li>
+          <li>Navigate to <code>https://www.google.com</code> and observe all requests</li>
+          <li>Find the main HTML document request — what is its status code?</li>
+          <li>Find a CSS file request — what <code>Content-Type</code> is returned?</li>
+          <li>Click on any request and examine the <strong>Headers</strong> tab</li>
+          <li>Bonus: Find which request takes the longest to load using the <strong>Waterfall</strong> column</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Understand that every webpage is made of many separate HTTP requests, not just one.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: HTML Basics & Head -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>HTML Basics &amp; The Head Section</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is HTML?</h3>
+        <p>HTML (HyperText Markup Language) is the <strong>skeleton of every web page</strong>. It defines the structure and meaning of content using <em>elements</em> — tags that wrap content to give it purpose.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 index.html — Boilerplate Structure</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- DOCTYPE tells browsers this is HTML5 --&gt;</span>
+<span class="jsx">&lt;!DOCTYPE html&gt;</span>
+<span class="jsx">&lt;html</span> <span class="attr">lang=</span><span class="str">"en"</span><span class="jsx">&gt;</span>
+
+<span class="jsx">&lt;head&gt;</span>
+  <span class="cm">&lt;!-- Character encoding — always include this --&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Makes the page responsive on mobile --&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">name=</span><span class="str">"viewport"</span> <span class="attr">content=</span><span class="str">"width=device-width, initial-scale=1.0"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Page title — shown in browser tab and search results --&gt;</span>
+  <span class="jsx">&lt;title&gt;</span>My First Web Page<span class="jsx">&lt;/title&gt;</span>
+
+  <span class="cm">&lt;!-- Link to external CSS stylesheet --&gt;</span>
+  <span class="jsx">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"css/styles.css"</span><span class="jsx">&gt;</span>
+<span class="jsx">&lt;/head&gt;</span>
+
+<span class="jsx">&lt;body&gt;</span>
+  <span class="cm">&lt;!-- All visible content goes here --&gt;</span>
+  <span class="jsx">&lt;h1&gt;</span>Hello, World!<span class="jsx">&lt;/h1&gt;</span>
+  <span class="jsx">&lt;p&gt;</span>Welcome to my web page.<span class="jsx">&lt;/p&gt;</span>
+<span class="jsx">&lt;/body&gt;</span>
+
+<span class="jsx">&lt;/html&gt;</span></pre>
+        </div>
+
+        <h3>The &lt;head&gt; Section in Detail</h3>
+        <p>The <code>&lt;head&gt;</code> contains <strong>metadata</strong> — information about your page that is not displayed on screen but is used by browsers, search engines, and social platforms.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Common head elements</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="jsx">&lt;head&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">name=</span><span class="str">"viewport"</span> <span class="attr">content=</span><span class="str">"width=device-width, initial-scale=1.0"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- SEO description shown in Google search results --&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">name=</span><span class="str">"description"</span> <span class="attr">content=</span><span class="str">"A beginner guide to HTML and CSS"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Open Graph for social sharing previews (Facebook, LinkedIn) --&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">property=</span><span class="str">"og:title"</span> <span class="attr">content=</span><span class="str">"Learn HTML & CSS"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;meta</span> <span class="attr">property=</span><span class="str">"og:image"</span> <span class="attr">content=</span><span class="str">"images/thumbnail.jpg"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Browser tab icon (favicon) --&gt;</span>
+  <span class="jsx">&lt;link</span> <span class="attr">rel=</span><span class="str">"icon"</span> <span class="attr">href=</span><span class="str">"favicon.ico"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Google Font import --&gt;</span>
+  <span class="jsx">&lt;link</span> <span class="attr">rel=</span><span class="str">"preconnect"</span> <span class="attr">href=</span><span class="str">"https://fonts.googleapis.com"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;link</span> <span class="attr">href=</span><span class="str">"https://fonts.googleapis.com/css2?family=Roboto&display=swap"</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span><span class="jsx">&gt;</span>
+
+  <span class="jsx">&lt;title&gt;</span>My Site<span class="jsx">&lt;/title&gt;</span>
+<span class="jsx">&lt;/head&gt;</span></pre>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Always set charset and viewport</strong>
+            Without <code>charset="UTF-8"</code>, special characters (é, ñ, ü) may render incorrectly. Without the <code>viewport</code> meta tag, your page will appear zoomed out on mobile devices.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 02</span>
+          <span class="exercise-title">Build Your First HTML Page</span>
+        </div>
+        <ol>
+          <li>Create a file called <code>index.html</code> with the full HTML5 boilerplate</li>
+          <li>Set the title to <strong>"My Portfolio"</strong></li>
+          <li>Add a <code>&lt;meta name="description"&gt;</code> with a short description of yourself</li>
+          <li>Add a heading, a paragraph, and a link to your favourite website inside <code>&lt;body&gt;</code></li>
+          <li>Validate your HTML at <strong>validator.w3.org</strong> — fix any errors</li>
+          <li>Bonus: Add an Open Graph <code>og:title</code> and <code>og:description</code> meta tag</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Memorise the HTML5 boilerplate — you'll type it (or expand a snippet) for every project.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: Text, Entities & Links -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>Text, Entities &amp; Links</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Text Elements</h3>
+        <p>HTML gives meaning to text through semantic tags. Use the right tag — not just for appearance, but for accessibility and SEO.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Text elements</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- Headings h1–h6: h1 is most important (use only one per page) --&gt;</span>
+<span class="jsx">&lt;h1&gt;</span>Main Page Title<span class="jsx">&lt;/h1&gt;</span>
+<span class="jsx">&lt;h2&gt;</span>Section Heading<span class="jsx">&lt;/h2&gt;</span>
+<span class="jsx">&lt;h3&gt;</span>Subsection Heading<span class="jsx">&lt;/h3&gt;</span>
+
+<span class="cm">&lt;!-- Paragraphs --&gt;</span>
+<span class="jsx">&lt;p&gt;</span>This is a paragraph of text.<span class="jsx">&lt;/p&gt;</span>
+
+<span class="cm">&lt;!-- Emphasis: italic (semantic) vs purely visual --&gt;</span>
+<span class="jsx">&lt;em&gt;</span>This has emphasis (screen readers stress it)<span class="jsx">&lt;/em&gt;</span>
+<span class="jsx">&lt;i&gt;</span>This is just italic (visual only)<span class="jsx">&lt;/i&gt;</span>
+
+<span class="cm">&lt;!-- Strong: bold (semantic) vs purely visual --&gt;</span>
+<span class="jsx">&lt;strong&gt;</span>Important text (screen readers announce it)<span class="jsx">&lt;/strong&gt;</span>
+<span class="jsx">&lt;b&gt;</span>Bold text (visual only)<span class="jsx">&lt;/b&gt;</span>
+
+<span class="cm">&lt;!-- Other text elements --&gt;</span>
+<span class="jsx">&lt;mark&gt;</span>Highlighted text<span class="jsx">&lt;/mark&gt;</span>
+<span class="jsx">&lt;del&gt;</span>Deleted/strikethrough text<span class="jsx">&lt;/del&gt;</span>
+<span class="jsx">&lt;ins&gt;</span>Inserted text<span class="jsx">&lt;/ins&gt;</span>
+<span class="jsx">&lt;sub&gt;</span>Subscript<span class="jsx">&lt;/sub&gt;</span>  <span class="jsx">&lt;sup&gt;</span>Superscript<span class="jsx">&lt;/sup&gt;</span>
+<span class="jsx">&lt;code&gt;</span>Inline code snippet<span class="jsx">&lt;/code&gt;</span>
+<span class="jsx">&lt;pre&gt;</span>Preformatted / whitespace preserved text<span class="jsx">&lt;/pre&gt;</span>
+<span class="jsx">&lt;blockquote&gt;</span>A long quotation from another source<span class="jsx">&lt;/blockquote&gt;</span></pre>
+        </div>
+
+        <h3>HTML Entities</h3>
+        <p>Some characters (like <code>&lt;</code> and <code>&amp;</code>) have special meaning in HTML. To display them literally, use <strong>HTML entities</strong>.</p>
+
+        <table class="compare-table">
+          <thead>
+            <tr><th>Character</th><th>Entity Name</th><th>Entity Number</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>&lt; (less than)</td><td><code>&amp;lt;</code></td><td><code>&amp;#60;</code></td></tr>
+            <tr><td>&gt; (greater than)</td><td><code>&amp;gt;</code></td><td><code>&amp;#62;</code></td></tr>
+            <tr><td>&amp; (ampersand)</td><td><code>&amp;amp;</code></td><td><code>&amp;#38;</code></td></tr>
+            <tr><td>&quot; (double quote)</td><td><code>&amp;quot;</code></td><td><code>&amp;#34;</code></td></tr>
+            <tr><td>© (copyright)</td><td><code>&amp;copy;</code></td><td><code>&amp;#169;</code></td></tr>
+            <tr><td>&nbsp; (non-breaking space)</td><td><code>&amp;nbsp;</code></td><td><code>&amp;#160;</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Hyperlinks</h3>
+        <p>Links are the foundation of the web. The <code>&lt;a&gt;</code> (anchor) element creates hyperlinks using the <code>href</code> attribute.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Hyperlink examples</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- External link: target="_blank" opens in new tab --&gt;</span>
+<span class="jsx">&lt;a</span> <span class="attr">href=</span><span class="str">"https://www.google.com"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="jsx">&gt;</span>Go to Google<span class="jsx">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Relative link: links to another page in same project --&gt;</span>
+<span class="jsx">&lt;a</span> <span class="attr">href=</span><span class="str">"about.html"</span><span class="jsx">&gt;</span>About Me<span class="jsx">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Jump to same-page section (anchor link) --&gt;</span>
+<span class="jsx">&lt;a</span> <span class="attr">href=</span><span class="str">"#contact"</span><span class="jsx">&gt;</span>Jump to Contact<span class="jsx">&lt;/a&gt;</span>
+<span class="jsx">&lt;section</span> <span class="attr">id=</span><span class="str">"contact"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/section&gt;</span>
+
+<span class="cm">&lt;!-- Email link --&gt;</span>
+<span class="jsx">&lt;a</span> <span class="attr">href=</span><span class="str">"mailto:hello@example.com"</span><span class="jsx">&gt;</span>Email Me<span class="jsx">&lt;/a&gt;</span>
+
+<span class="cm">&lt;!-- Download link --&gt;</span>
+<span class="jsx">&lt;a</span> <span class="attr">href=</span><span class="str">"resume.pdf"</span> <span class="attr">download</span><span class="jsx">&gt;</span>Download Resume<span class="jsx">&lt;/a&gt;</span></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Accessibility Best Practice</strong>
+            Always write descriptive link text. "Click here" is bad — screen reader users hear a list of all links on the page. "Download my resume (PDF)" is good.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 03</span>
+          <span class="exercise-title">Text & Links Page</span>
+        </div>
+        <ol>
+          <li>Create a page with headings <code>h1</code> through <code>h3</code>, using a real topic (e.g., your favourite hobby)</li>
+          <li>Use <code>&lt;em&gt;</code>, <code>&lt;strong&gt;</code>, and <code>&lt;mark&gt;</code> appropriately within the paragraphs</li>
+          <li>Add a <code>&lt;blockquote&gt;</code> with a famous quote and include the <code>cite</code> attribute</li>
+          <li>Create a navigation bar with 3 anchor links that jump to sections within the same page</li>
+          <li>Add at least one external link that opens in a new tab, and one <code>mailto:</code> link</li>
+          <li>Bonus: Display the copyright symbol (©) and an em-dash (—) using HTML entities</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Understand semantic text elements and how to write accessible, meaningful links.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: Images, Video & Audio -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>Images, Video &amp; Audio</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The &lt;img&gt; Element</h3>
+        <p>Images are embedded using the self-closing <code>&lt;img&gt;</code> tag. The <code>src</code> and <code>alt</code> attributes are <strong>required</strong>.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Image examples</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- Basic image (alt is mandatory for accessibility) --&gt;</span>
+<span class="jsx">&lt;img</span> <span class="attr">src=</span><span class="str">"images/cat.jpg"</span> <span class="attr">alt=</span><span class="str">"A grey tabby cat sitting on a windowsill"</span><span class="jsx">&gt;</span>
+
+<span class="cm">&lt;!-- Set size (use CSS ideally, but these work too) --&gt;</span>
+<span class="jsx">&lt;img</span> <span class="attr">src=</span><span class="str">"logo.png"</span> <span class="attr">alt=</span><span class="str">"Company logo"</span> <span class="attr">width=</span><span class="str">"200"</span> <span class="attr">height=</span><span class="str">"80"</span><span class="jsx">&gt;</span>
+
+<span class="cm">&lt;!-- Responsive image: serve different sizes based on screen --&gt;</span>
+<span class="jsx">&lt;img</span>
+  <span class="attr">src=</span><span class="str">"meal-w937.jpg"</span>
+  <span class="attr">srcset=</span><span class="str">"meal-w200.jpg 200w,
+          meal-w937.jpg 937w,
+          meal-w1400.jpg 1400w"</span>
+  <span class="attr">sizes=</span><span class="str">"(max-width: 500px) 200px, (max-width: 1000px) 937px, 1400px"</span>
+  <span class="attr">alt=</span><span class="str">"A delicious pasta dish"</span>
+<span class="jsx">&gt;</span>
+
+<span class="cm">&lt;!-- Art direction: different image crops for different screens --&gt;</span>
+<span class="jsx">&lt;picture&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">media=</span><span class="str">"(max-width: 600px)"</span> <span class="attr">srcset=</span><span class="str">"meal-cropped.jpg"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;img</span> <span class="attr">src=</span><span class="str">"meal-full.jpg"</span> <span class="attr">alt=</span><span class="str">"A delicious pasta dish"</span><span class="jsx">&gt;</span>
+<span class="jsx">&lt;/picture&gt;</span></pre>
+        </div>
+
+        <h3>Video &amp; Audio</h3>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Video and Audio elements</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- Video with controls, multiple formats for browser compatibility --&gt;</span>
+<span class="jsx">&lt;video</span> <span class="attr">controls</span> <span class="attr">width=</span><span class="str">"640"</span> <span class="attr">poster=</span><span class="str">"thumbnail.jpg"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">src=</span><span class="str">"video.mp4"</span> <span class="attr">type=</span><span class="str">"video/mp4"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">src=</span><span class="str">"video.webm"</span> <span class="attr">type=</span><span class="str">"video/webm"</span><span class="jsx">&gt;</span>
+  Your browser does not support the video element.
+<span class="jsx">&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- Video that autoplays muted (needed for autoplay to work) --&gt;</span>
+<span class="jsx">&lt;video</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">src=</span><span class="str">"background.mp4"</span> <span class="attr">type=</span><span class="str">"video/mp4"</span><span class="jsx">&gt;</span>
+<span class="jsx">&lt;/video&gt;</span>
+
+<span class="cm">&lt;!-- Audio element --&gt;</span>
+<span class="jsx">&lt;audio</span> <span class="attr">controls</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">src=</span><span class="str">"song.mp3"</span> <span class="attr">type=</span><span class="str">"audio/mpeg"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;source</span> <span class="attr">src=</span><span class="str">"song.ogg"</span> <span class="attr">type=</span><span class="str">"audio/ogg"</span><span class="jsx">&gt;</span>
+<span class="jsx">&lt;/audio&gt;</span></pre>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Image Format Guide</strong>
+            Use <strong>JPEG</strong> for photos, <strong>PNG</strong> for images with transparency, <strong>SVG</strong> for icons and logos (infinitely scalable), and <strong>WebP</strong> for best compression with quality.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 04</span>
+          <span class="exercise-title">Media-Rich Page</span>
+        </div>
+        <ol>
+          <li>Create a page about a destination (city, country, landmark)</li>
+          <li>Add a <strong>hero image</strong> with a descriptive <code>alt</code> attribute</li>
+          <li>Use <code>&lt;picture&gt;</code> to serve a cropped mobile version and full desktop version of the image</li>
+          <li>Embed a YouTube video using an <code>&lt;iframe&gt;</code> (tip: use YouTube's "embed" link)</li>
+          <li>Add a <code>&lt;figure&gt;</code> and <code>&lt;figcaption&gt;</code> to wrap an image with a caption</li>
+          <li>Bonus: Add a <code>&lt;video&gt;</code> element with the <code>controls</code>, <code>poster</code>, and <code>loop</code> attributes</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Embed media correctly with accessibility, responsive sizing, and proper fallbacks.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: Lists & Tables -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2>Lists &amp; Tables</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>HTML Lists</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Unordered, Ordered & Description Lists</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">&lt;!-- Unordered list: bullets, for items with no ranking --&gt;</span>
+<span class="jsx">&lt;ul&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>HTML<span class="jsx">&lt;/li&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>CSS<span class="jsx">&lt;/li&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>JavaScript<span class="jsx">&lt;/li&gt;</span>
+<span class="jsx">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Ordered list: numbered, for steps or rankings --&gt;</span>
+<span class="jsx">&lt;ol&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>Boil water<span class="jsx">&lt;/li&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>Add pasta<span class="jsx">&lt;/li&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>Cook for 10 minutes<span class="jsx">&lt;/li&gt;</span>
+<span class="jsx">&lt;/ol&gt;</span>
+
+<span class="cm">&lt;!-- Nested list --&gt;</span>
+<span class="jsx">&lt;ul&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>Frontend
+    <span class="jsx">&lt;ul&gt;</span>
+      <span class="jsx">&lt;li&gt;</span>HTML<span class="jsx">&lt;/li&gt;</span>
+      <span class="jsx">&lt;li&gt;</span>CSS<span class="jsx">&lt;/li&gt;</span>
+    <span class="jsx">&lt;/ul&gt;</span>
+  <span class="jsx">&lt;/li&gt;</span>
+  <span class="jsx">&lt;li&gt;</span>Backend<span class="jsx">&lt;/li&gt;</span>
+<span class="jsx">&lt;/ul&gt;</span>
+
+<span class="cm">&lt;!-- Description list: term/definition pairs --&gt;</span>
+<span class="jsx">&lt;dl&gt;</span>
+  <span class="jsx">&lt;dt&gt;</span>HTML<span class="jsx">&lt;/dt&gt;</span>
+  <span class="jsx">&lt;dd&gt;</span>HyperText Markup Language — the structure of the web<span class="jsx">&lt;/dd&gt;</span>
+  <span class="jsx">&lt;dt&gt;</span>CSS<span class="jsx">&lt;/dt&gt;</span>
+  <span class="jsx">&lt;dd&gt;</span>Cascading Style Sheets — the presentation layer<span class="jsx">&lt;/dd&gt;</span>
+<span class="jsx">&lt;/dl&gt;</span></pre>
+        </div>
+
+        <h3>HTML Tables</h3>
+        <p>Use tables for <strong>tabular data</strong> — data that has rows and columns with a meaningful relationship. Never use tables for layout.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Full table structure</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="jsx">&lt;table&gt;</span>
+  <span class="cm">&lt;!-- Optional caption --&gt;</span>
+  <span class="jsx">&lt;caption&gt;</span>Monthly Expenses<span class="jsx">&lt;/caption&gt;</span>
+
+  <span class="cm">&lt;!-- Header section --&gt;</span>
+  <span class="jsx">&lt;thead&gt;</span>
+    <span class="jsx">&lt;tr&gt;</span>
+      <span class="jsx">&lt;th</span> <span class="attr">scope=</span><span class="str">"col"</span><span class="jsx">&gt;</span>Category<span class="jsx">&lt;/th&gt;</span>
+      <span class="jsx">&lt;th</span> <span class="attr">scope=</span><span class="str">"col"</span><span class="jsx">&gt;</span>Amount<span class="jsx">&lt;/th&gt;</span>
+      <span class="jsx">&lt;th</span> <span class="attr">scope=</span><span class="str">"col"</span><span class="jsx">&gt;</span>Notes<span class="jsx">&lt;/th&gt;</span>
+    <span class="jsx">&lt;/tr&gt;</span>
+  <span class="jsx">&lt;/thead&gt;</span>
+
+  <span class="cm">&lt;!-- Body section --&gt;</span>
+  <span class="jsx">&lt;tbody&gt;</span>
+    <span class="jsx">&lt;tr&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>Rent<span class="jsx">&lt;/td&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>$1200<span class="jsx">&lt;/td&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>Due 1st of month<span class="jsx">&lt;/td&gt;</span>
+    <span class="jsx">&lt;/tr&gt;</span>
+    <span class="jsx">&lt;tr&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>Food<span class="jsx">&lt;/td&gt;</span>
+      <span class="jsx">&lt;td</span> <span class="attr">colspan=</span><span class="str">"2"</span><span class="jsx">&gt;</span>$400 (estimated, varies)<span class="jsx">&lt;/td&gt;</span>
+    <span class="jsx">&lt;/tr&gt;</span>
+  <span class="jsx">&lt;/tbody&gt;</span>
+
+  <span class="cm">&lt;!-- Footer section --&gt;</span>
+  <span class="jsx">&lt;tfoot&gt;</span>
+    <span class="jsx">&lt;tr&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>Total<span class="jsx">&lt;/td&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>$1600<span class="jsx">&lt;/td&gt;</span>
+      <span class="jsx">&lt;td&gt;</span>&amp;nbsp;<span class="jsx">&lt;/td&gt;</span>
+    <span class="jsx">&lt;/tr&gt;</span>
+  <span class="jsx">&lt;/tfoot&gt;</span>
+<span class="jsx">&lt;/table&gt;</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 05</span>
+          <span class="exercise-title">Lists & Tables Page</span>
+        </div>
+        <ol>
+          <li>Build a recipe page using an <strong>ordered list</strong> for the steps and an <strong>unordered list</strong> for the ingredients</li>
+          <li>Create a <code>&lt;table&gt;</code> showing a course schedule with columns: Day, Time, Subject, Room</li>
+          <li>Use <code>colspan</code> to merge two cells in the schedule (e.g., "Weekend — No Classes" spanning all columns)</li>
+          <li>Use a <code>&lt;dl&gt;</code> to define 5 web development terms</li>
+          <li>Bonus: Style the table with CSS — alternate row background colours using <code>:nth-child(even)</code></li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Know when to use each list type and how to build accessible, well-structured tables.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: Containers & Semantic HTML -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2>Containers &amp; Semantic HTML</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Generic Containers vs Semantic Elements</h3>
+        <p><code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> are generic containers with no meaning. <strong>Semantic elements</strong> describe what the content is — making your HTML readable to humans, search engines, and screen readers.</p>
+
+        <div class="compare-grid">
+          <div class="compare-card" style="background:var(--c-coral-dim);border-color:var(--c-coral);">
+            <h4 style="color:var(--c-coral);">❌ Non-Semantic (div soup)</h4>
+            <pre style="background:#0d111a;padding:0.75rem;border-radius:6px;font-size:12px;"><span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"header"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/div&gt;</span>
+<span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"nav"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/div&gt;</span>
+<span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"main"</span><span class="jsx">&gt;</span>
+  <span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"article"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/div&gt;</span>
+  <span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"sidebar"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/div&gt;</span>
+<span class="jsx">&lt;/div&gt;</span>
+<span class="jsx">&lt;div</span> <span class="attr">id=</span><span class="str">"footer"</span><span class="jsx">&gt;</span>...<span class="jsx">&lt;/div&gt;</span></pre>
+          </div>
+          <div class="compare-card" style="background:var(--c-green-dim);border-color:var(--c-green);">
+            <h4 style="color:var(--c-green);">✅ Semantic HTML5</h4>
+            <pre style="background:#0d111a;padding:0.75rem;border-radius:6px;font-size:12px;"><span class="jsx">&lt;header&gt;</span>...<span class="jsx">&lt;/header&gt;</span>
+<span class="jsx">&lt;nav&gt;</span>...<span class="jsx">&lt;/nav&gt;</span>
+<span class="jsx">&lt;main&gt;</span>
+  <span class="jsx">&lt;article&gt;</span>...<span class="jsx">&lt;/article&gt;</span>
+  <span class="jsx">&lt;aside&gt;</span>...<span class="jsx">&lt;/aside&gt;</span>
+<span class="jsx">&lt;/main&gt;</span>
+<span class="jsx">&lt;footer&gt;</span>...<span class="jsx">&lt;/footer&gt;</span></pre>
+          </div>
+        </div>
+
+        <h3>Semantic Elements Reference</h3>
+        <table class="compare-table">
+          <thead>
+            <tr><th>Element</th><th>Use For</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>&lt;header&gt;</code></td><td>Site or section header — logo, site title, main nav</td></tr>
+            <tr><td><code>&lt;nav&gt;</code></td><td>Navigation links — main menu, breadcrumb, footer links</td></tr>
+            <tr><td><code>&lt;main&gt;</code></td><td>Primary content of the page — use only once per page</td></tr>
+            <tr><td><code>&lt;article&gt;</code></td><td>Self-contained content: blog post, news article, comment</td></tr>
+            <tr><td><code>&lt;section&gt;</code></td><td>Thematic grouping with a heading inside</td></tr>
+            <tr><td><code>&lt;aside&gt;</code></td><td>Supplementary content: sidebar, pull quotes, ads</td></tr>
+            <tr><td><code>&lt;footer&gt;</code></td><td>Site or section footer — copyright, links, contact info</td></tr>
+            <tr><td><code>&lt;figure&gt;</code></td><td>Self-contained media (image, diagram) with <code>&lt;figcaption&gt;</code></td></tr>
+            <tr><td><code>&lt;time&gt;</code></td><td>Machine-readable date/time: <code>&lt;time datetime="2024-01-15"&gt;</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Full semantic page structure</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="jsx">&lt;body&gt;</span>
+  <span class="jsx">&lt;header&gt;</span>
+    <span class="jsx">&lt;img</span> <span class="attr">src=</span><span class="str">"logo.svg"</span> <span class="attr">alt=</span><span class="str">"My Site Logo"</span><span class="jsx">&gt;</span>
+    <span class="jsx">&lt;nav&gt;</span>
+      <span class="jsx">&lt;ul&gt;</span>
+        <span class="jsx">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"/"</span><span class="jsx">&gt;</span>Home<span class="jsx">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="jsx">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"/about"</span><span class="jsx">&gt;</span>About<span class="jsx">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="jsx">&lt;/ul&gt;</span>
+    <span class="jsx">&lt;/nav&gt;</span>
+  <span class="jsx">&lt;/header&gt;</span>
+
+  <span class="jsx">&lt;main&gt;</span>
+    <span class="jsx">&lt;article&gt;</span>
+      <span class="jsx">&lt;h1&gt;</span>How to Learn HTML<span class="jsx">&lt;/h1&gt;</span>
+      <span class="jsx">&lt;time</span> <span class="attr">datetime=</span><span class="str">"2024-01-15"</span><span class="jsx">&gt;</span>January 15, 2024<span class="jsx">&lt;/time&gt;</span>
+      <span class="jsx">&lt;p&gt;</span>HTML is the backbone...<span class="jsx">&lt;/p&gt;</span>
+
+      <span class="jsx">&lt;figure&gt;</span>
+        <span class="jsx">&lt;img</span> <span class="attr">src=</span><span class="str">"diagram.png"</span> <span class="attr">alt=</span><span class="str">"HTML structure diagram"</span><span class="jsx">&gt;</span>
+        <span class="jsx">&lt;figcaption&gt;</span>Fig 1: HTML Document Structure<span class="jsx">&lt;/figcaption&gt;</span>
+      <span class="jsx">&lt;/figure&gt;</span>
+    <span class="jsx">&lt;/article&gt;</span>
+
+    <span class="jsx">&lt;aside&gt;</span>
+      <span class="jsx">&lt;h2&gt;</span>Related Articles<span class="jsx">&lt;/h2&gt;</span>
+      <span class="jsx">&lt;ul&gt;</span>...<span class="jsx">&lt;/ul&gt;</span>
+    <span class="jsx">&lt;/aside&gt;</span>
+  <span class="jsx">&lt;/main&gt;</span>
+
+  <span class="jsx">&lt;footer&gt;</span>
+    <span class="jsx">&lt;p&gt;</span>&amp;copy; 2024 My Site<span class="jsx">&lt;/p&gt;</span>
+  <span class="jsx">&lt;/footer&gt;</span>
+<span class="jsx">&lt;/body&gt;</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 06</span>
+          <span class="exercise-title">Structure a Blog Page</span>
+        </div>
+        <ol>
+          <li>Create a full blog-style page using <strong>only semantic HTML</strong> — no <code>div</code> where a semantic element applies</li>
+          <li>Include a <code>&lt;header&gt;</code> with a logo and <code>&lt;nav&gt;</code> with 4 links</li>
+          <li>Add a <code>&lt;main&gt;</code> containing an <code>&lt;article&gt;</code> with a heading, date (<code>&lt;time&gt;</code>), and 3 paragraphs</li>
+          <li>Add an <code>&lt;aside&gt;</code> with "Related Posts" links</li>
+          <li>Include a <code>&lt;footer&gt;</code> with your name and copyright year</li>
+          <li>Bonus: Run your page through a screen reader (or the Accessibility tab in DevTools) and check landmark regions</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Semantic HTML is a free SEO and accessibility boost — use it every time.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 7: Forms & Validation -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2>Forms &amp; Validation</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Form Basics</h3>
+        <p>Forms allow users to submit data. Every <code>&lt;input&gt;</code> should have a matching <code>&lt;label&gt;</code> — this is critical for accessibility.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Complete form example</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="jsx">&lt;form</span> <span class="attr">action=</span><span class="str">"/submit"</span> <span class="attr">method=</span><span class="str">"post"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Text input with label (always link via for/id) --&gt;</span>
+  <span class="jsx">&lt;label</span> <span class="attr">for=</span><span class="str">"name"</span><span class="jsx">&gt;</span>Full Name<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;input</span> <span class="attr">type=</span><span class="str">"text"</span> <span class="attr">id=</span><span class="str">"name"</span> <span class="attr">name=</span><span class="str">"name"</span> <span class="attr">placeholder=</span><span class="str">"John Doe"</span> <span class="attr">required</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Email with built-in format validation --&gt;</span>
+  <span class="jsx">&lt;label</span> <span class="attr">for=</span><span class="str">"email"</span><span class="jsx">&gt;</span>Email<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;input</span> <span class="attr">type=</span><span class="str">"email"</span> <span class="attr">id=</span><span class="str">"email"</span> <span class="attr">name=</span><span class="str">"email"</span> <span class="attr">required</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Password with min length validation --&gt;</span>
+  <span class="jsx">&lt;label</span> <span class="attr">for=</span><span class="str">"password"</span><span class="jsx">&gt;</span>Password<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;input</span> <span class="attr">type=</span><span class="str">"password"</span> <span class="attr">id=</span><span class="str">"password"</span> <span class="attr">name=</span><span class="str">"password"</span> <span class="attr">minlength=</span><span class="str">"8"</span><span class="jsx">&gt;</span>
+
+  <span class="cm">&lt;!-- Dropdown / select --&gt;</span>
+  <span class="jsx">&lt;label</span> <span class="attr">for=</span><span class="str">"course"</span><span class="jsx">&gt;</span>Course<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;select</span> <span class="attr">id=</span><span class="str">"course"</span> <span class="attr">name=</span><span class="str">"course"</span><span class="jsx">&gt;</span>
+    <span class="jsx">&lt;option</span> <span class="attr">value=</span><span class="str">""</span><span class="jsx">&gt;</span>Select a course…<span class="jsx">&lt;/option&gt;</span>
+    <span class="jsx">&lt;option</span> <span class="attr">value=</span><span class="str">"html"</span><span class="jsx">&gt;</span>HTML5 &amp; CSS3<span class="jsx">&lt;/option&gt;</span>
+    <span class="jsx">&lt;option</span> <span class="attr">value=</span><span class="str">"js"</span><span class="jsx">&gt;</span>JavaScript<span class="jsx">&lt;/option&gt;</span>
+  <span class="jsx">&lt;/select&gt;</span>
+
+  <span class="cm">&lt;!-- Checkboxes --&gt;</span>
+  <span class="jsx">&lt;label&gt;&lt;input</span> <span class="attr">type=</span><span class="str">"checkbox"</span> <span class="attr">name=</span><span class="str">"terms"</span> <span class="attr">required</span><span class="jsx">&gt;</span> I agree to the terms<span class="jsx">&lt;/label&gt;</span>
+
+  <span class="cm">&lt;!-- Radio buttons (same name = same group) --&gt;</span>
+  <span class="jsx">&lt;label&gt;&lt;input</span> <span class="attr">type=</span><span class="str">"radio"</span> <span class="attr">name=</span><span class="str">"level"</span> <span class="attr">value=</span><span class="str">"beginner"</span><span class="jsx">&gt;</span> Beginner<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;label&gt;&lt;input</span> <span class="attr">type=</span><span class="str">"radio"</span> <span class="attr">name=</span><span class="str">"level"</span> <span class="attr">value=</span><span class="str">"advanced"</span><span class="jsx">&gt;</span> Advanced<span class="jsx">&lt;/label&gt;</span>
+
+  <span class="cm">&lt;!-- Textarea for multi-line text --&gt;</span>
+  <span class="jsx">&lt;label</span> <span class="attr">for=</span><span class="str">"message"</span><span class="jsx">&gt;</span>Message<span class="jsx">&lt;/label&gt;</span>
+  <span class="jsx">&lt;textarea</span> <span class="attr">id=</span><span class="str">"message"</span> <span class="attr">name=</span><span class="str">"message"</span> <span class="attr">rows=</span><span class="str">"5"</span><span class="jsx">&gt;&lt;/textarea&gt;</span>
+
+  <span class="jsx">&lt;button</span> <span class="attr">type=</span><span class="str">"submit"</span><span class="jsx">&gt;</span>Send Message<span class="jsx">&lt;/button&gt;</span>
+<span class="jsx">&lt;/form&gt;</span></pre>
+        </div>
+
+        <h4>Common Input Types</h4>
+        <table class="compare-table">
+          <thead>
+            <tr><th>Type</th><th>What it does</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>text</code></td><td>Single-line text input</td></tr>
+            <tr><td><code>email</code></td><td>Validates email format, shows email keyboard on mobile</td></tr>
+            <tr><td><code>password</code></td><td>Hides characters while typing</td></tr>
+            <tr><td><code>number</code></td><td>Numeric input with up/down arrows</td></tr>
+            <tr><td><code>date</code></td><td>Native date picker</td></tr>
+            <tr><td><code>range</code></td><td>Slider control</td></tr>
+            <tr><td><code>file</code></td><td>File upload button</td></tr>
+            <tr><td><code>color</code></td><td>Native colour picker</td></tr>
+            <tr><td><code>search</code></td><td>Search field with clear button</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 07</span>
+          <span class="exercise-title">Build a Registration Form</span>
+        </div>
+        <ol>
+          <li>Create a <strong>user registration form</strong> with: name, email, password, date of birth, and a profile photo upload</li>
+          <li>Add HTML5 validation: all fields required, email must be valid, password must be at least 8 characters</li>
+          <li>Use <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> to group "Personal Info" and "Account Details" sections</li>
+          <li>Add a dropdown for country selection with at least 5 options</li>
+          <li>Add a <code>&lt;datalist&gt;</code> for a "City" field with 5 autocomplete suggestions</li>
+          <li>Bonus: Use the <code>pattern</code> attribute to enforce a specific phone number format</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Build forms that are accessible, validated, and user-friendly without any JavaScript.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 8: Selectors & Specificity -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2>CSS Selectors &amp; Specificity</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Ways to Apply CSS</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Three ways to apply CSS</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* 1. External — best practice: separate file */</span>
+<span class="jsx">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"styles.css"</span><span class="jsx">&gt;</span>
+
+<span class="cm">/* 2. Embedded — inside &lt;style&gt; in the &lt;head&gt; */</span>
+<span class="jsx">&lt;style&gt;</span>
+  <span class="sel">body</span> { <span class="prop-css">background:</span> <span class="val">#fff</span>; }
+<span class="jsx">&lt;/style&gt;</span>
+
+<span class="cm">/* 3. Inline — directly on element (avoid for maintainability) */</span>
+<span class="jsx">&lt;p</span> <span class="attr">style=</span><span class="str">"color: red; font-size: 16px;"</span><span class="jsx">&gt;</span>Hello<span class="jsx">&lt;/p&gt;</span></pre>
+        </div>
+
+        <h3>CSS Selector Types</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 styles.css — All selector types</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* Basic selectors */</span>
+<span class="sel">*</span> { <span class="prop-css">box-sizing:</span> <span class="val">border-box</span>; }          <span class="cm">/* Universal */</span>
+<span class="sel">h1</span> { <span class="prop-css">color:</span> <span class="val">navy</span>; }                    <span class="cm">/* Type / element */</span>
+<span class="sel">.btn</span> { <span class="prop-css">padding:</span> <span class="val">8px 16px</span>; }            <span class="cm">/* Class */</span>
+<span class="sel">#logo</span> { <span class="prop-css">width:</span> <span class="val">120px</span>; }               <span class="cm">/* ID */</span>
+
+<span class="cm">/* Relational selectors */</span>
+<span class="sel">article p</span> { <span class="prop-css">line-height:</span> <span class="val">1.8</span>; }        <span class="cm">/* Descendant */</span>
+<span class="sel">section > p</span> { <span class="prop-css">margin:</span> <span class="val">0</span>; }             <span class="cm">/* Direct child */</span>
+<span class="sel">h2 + p</span> { <span class="prop-css">font-size:</span> <span class="val">1.1em</span>; }           <span class="cm">/* Adjacent sibling */</span>
+<span class="sel">h2 ~ p</span> { <span class="prop-css">color:</span> <span class="val">#555</span>; }              <span class="cm">/* General sibling */</span>
+
+<span class="cm">/* Attribute selectors */</span>
+<span class="sel">a[href]</span> { <span class="prop-css">color:</span> <span class="val">blue</span>; }              <span class="cm">/* Has attribute */</span>
+<span class="sel">a[href^="https"]</span> { <span class="prop-css">font-weight:</span> <span class="val">bold</span>; } <span class="cm">/* Starts with */</span>
+<span class="sel">a[href$=".pdf"]</span> { <span class="prop-css">color:</span> <span class="val">red</span>; }        <span class="cm">/* Ends with */</span>
+<span class="sel">input[type="email"]</span> { <span class="prop-css">border:</span> <span class="val">2px solid blue</span>; }
+
+<span class="cm">/* Pseudo-class selectors */</span>
+<span class="sel">a:hover</span> { <span class="prop-css">color:</span> <span class="val">orange</span>; }
+<span class="sel">a:visited</span> { <span class="prop-css">color:</span> <span class="val">purple</span>; }
+<span class="sel">input:focus</span> { <span class="prop-css">outline:</span> <span class="val">2px solid blue</span>; }
+<span class="sel">li:first-child</span> { <span class="prop-css">font-weight:</span> <span class="val">bold</span>; }
+<span class="sel">li:last-child</span> { <span class="prop-css">border-bottom:</span> <span class="val">none</span>; }
+<span class="sel">li:nth-child(odd)</span> { <span class="prop-css">background:</span> <span class="val">#f5f5f5</span>; }
+<span class="sel">p:not(.intro)</span> { <span class="prop-css">color:</span> <span class="val">#666</span>; }
+
+<span class="cm">/* Pseudo-element selectors */</span>
+<span class="sel">p::first-line</span> { <span class="prop-css">font-weight:</span> <span class="val">bold</span>; }
+<span class="sel">p::first-letter</span> { <span class="prop-css">font-size:</span> <span class="val">2em</span>; <span class="prop-css">float:</span> <span class="val">left</span>; }
+<span class="sel">.tooltip::before</span> { <span class="prop-css">content:</span> <span class="str">"ℹ️ "</span>; }
+<span class="sel">.clearfix::after</span> { <span class="prop-css">content:</span> <span class="str">""</span>; <span class="prop-css">display:</span> <span class="val">block</span>; <span class="prop-css">clear:</span> <span class="val">both</span>; }</pre>
+        </div>
+
+        <h3>Specificity — Which Rule Wins?</h3>
+        <p>When two selectors target the same element, <strong>specificity</strong> determines which style wins. Think of it as a 3-part score: <strong>(IDs, Classes, Elements)</strong>.</p>
+
+        <table class="compare-table">
+          <thead>
+            <tr><th>Selector</th><th>IDs</th><th>Classes</th><th>Elements</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>p</code></td><td>0</td><td>0</td><td>1</td><td>0-0-1</td></tr>
+            <tr><td><code>.intro</code></td><td>0</td><td>1</td><td>0</td><td>0-1-0</td></tr>
+            <tr><td><code>p.intro</code></td><td>0</td><td>1</td><td>1</td><td>0-1-1</td></tr>
+            <tr><td><code>#hero p</code></td><td>1</td><td>0</td><td>1</td><td>1-0-1</td></tr>
+            <tr><td><code>style=""</code> (inline)</td><td>—</td><td>—</td><td>—</td><td>Always wins*</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-danger">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Avoid !important</strong>
+            Using <code>!important</code> overrides all specificity. It leads to messy, hard-to-debug CSS. Fix the selector specificity instead.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 08</span>
+          <span class="exercise-title">Selector Practice</span>
+        </div>
+        <ol>
+          <li>Create an HTML page with a <code>&lt;nav&gt;</code>, two <code>&lt;section&gt;</code>s, and a <code>&lt;footer&gt;</code></li>
+          <li>Style every link in the nav using a <strong>descendant selector</strong> — different from links elsewhere</li>
+          <li>Use <code>:nth-child(even)</code> to alternate background colour on a list</li>
+          <li>Use <code>::before</code> to prepend an emoji icon to every <code>&lt;h2&gt;</code></li>
+          <li>Use an <strong>attribute selector</strong> to style all external links (<code>href</code> starting with <code>https</code>) with a different colour</li>
+          <li>Bonus: Create a specificity conflict intentionally and resolve it by adjusting selectors (without <code>!important</code>)</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Master the selector toolbox — specific, targeted selectors are cleaner than inline styles.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 9: Box Model & Sizing -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2>The Box Model &amp; Sizing</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Every Element is a Box</h3>
+        <p>In CSS, every element is a rectangular box made of four layers: <strong>content → padding → border → margin</strong>. Understanding this model is essential for layout.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Box model properties</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.box</span> {
+  <span class="cm">/* Content */</span>
+  <span class="prop-css">width:</span> <span class="val">300px</span>;
+  <span class="prop-css">height:</span> <span class="val">200px</span>;
+
+  <span class="cm">/* Padding: space inside the border (pushes content in) */</span>
+  <span class="prop-css">padding:</span> <span class="val">20px</span>;                   <span class="cm">/* All sides */</span>
+  <span class="prop-css">padding:</span> <span class="val">10px 20px</span>;              <span class="cm">/* Top/bottom Left/right */</span>
+  <span class="prop-css">padding:</span> <span class="val">10px 20px 15px 5px</span>;    <span class="cm">/* Top Right Bottom Left */</span>
+
+  <span class="cm">/* Border */</span>
+  <span class="prop-css">border:</span> <span class="val">2px solid #333</span>;
+  <span class="prop-css">border-radius:</span> <span class="val">8px</span>;             <span class="cm">/* Rounded corners */</span>
+
+  <span class="cm">/* Margin: space outside the border (pushes other elements away) */</span>
+  <span class="prop-css">margin:</span> <span class="val">20px auto</span>;              <span class="cm">/* auto centres block elements horizontally */</span>
+}
+
+<span class="cm">/* CRITICAL: use border-box so padding/border don't add to width */</span>
+<span class="sel">*</span> {
+  <span class="prop-css">box-sizing:</span> <span class="val">border-box</span>;         <span class="cm">/* Always include this in your reset */</span>
+}
+
+<span class="cm">/* Without border-box: total width = 300 + 40 (padding) + 4 (border) = 344px */</span>
+<span class="cm">/* With border-box:    total width = 300px (padding included in width) */</span>
+
+<span class="cm">/* Overflow control */</span>
+<span class="sel">.container</span> {
+  <span class="prop-css">width:</span> <span class="val">400px</span>;
+  <span class="prop-css">overflow:</span> <span class="val">hidden</span>;    <span class="cm">/* clip overflow */</span>
+  <span class="prop-css">overflow:</span> <span class="val">scroll</span>;    <span class="cm">/* always show scrollbar */</span>
+  <span class="prop-css">overflow:</span> <span class="val">auto</span>;      <span class="cm">/* scrollbar only when needed (best practice) */</span>
+}</pre>
+        </div>
+
+        <h3>Display Property</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Display values</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* block: takes full width, starts on new line (div, p, h1–h6) */</span>
+<span class="sel">div</span> { <span class="prop-css">display:</span> <span class="val">block</span>; }
+
+<span class="cm">/* inline: flows with text, width/height ignored (span, a, strong) */</span>
+<span class="sel">span</span> { <span class="prop-css">display:</span> <span class="val">inline</span>; }
+
+<span class="cm">/* inline-block: flows with text but accepts width/height */</span>
+<span class="sel">.badge</span> { <span class="prop-css">display:</span> <span class="val">inline-block</span>; <span class="prop-css">width:</span> <span class="val">80px</span>; <span class="prop-css">height:</span> <span class="val">80px</span>; }
+
+<span class="cm">/* none: hides the element completely (removed from layout) */</span>
+<span class="sel">.hidden</span> { <span class="prop-css">display:</span> <span class="val">none</span>; }
+
+<span class="cm">/* visibility:hidden hides visually but keeps the space */</span>
+<span class="sel">.invisible</span> { <span class="prop-css">visibility:</span> <span class="val">hidden</span>; }</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 09</span>
+          <span class="exercise-title">Box Model Inspector</span>
+        </div>
+        <ol>
+          <li>Create a card component with an image, title, description, and button</li>
+          <li>Set a fixed <code>width</code> and <code>min-height</code> on the card</li>
+          <li>Add <code>padding</code>, a <code>border</code>, and a <code>border-radius</code></li>
+          <li>Open DevTools → select the card → inspect the box model diagram in the "Computed" panel</li>
+          <li>Remove <code>box-sizing: border-box</code> and observe how the card grows — then add it back</li>
+          <li>Bonus: Use <code>margin: auto</code> to centre the card horizontally on the page</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Visualise the box model in DevTools until it becomes second nature.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 10: Colors & Gradients -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <span class="section-num">10</span>
+        <h2>Colors &amp; Gradients</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Color Formats</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 All CSS color formats</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.colors</span> {
+  <span class="cm">/* Named colors */</span>
+  <span class="prop-css">color:</span> <span class="val">red</span>;
+  <span class="prop-css">color:</span> <span class="val">tomato</span>;
+
+  <span class="cm">/* Hex — #RRGGBB */</span>
+  <span class="prop-css">color:</span> <span class="val">#ff5733</span>;
+  <span class="prop-css">color:</span> <span class="val">#f53</span>;       <span class="cm">/* shorthand: #RGB */</span>
+
+  <span class="cm">/* RGB */</span>
+  <span class="prop-css">color:</span> <span class="fn">rgb</span>(<span class="num">255</span>, <span class="num">87</span>, <span class="num">51</span>);
+
+  <span class="cm">/* RGBA — with alpha transparency (0=transparent, 1=solid) */</span>
+  <span class="prop-css">color:</span> <span class="fn">rgba</span>(<span class="num">255</span>, <span class="num">87</span>, <span class="num">51</span>, <span class="num">0.5</span>);
+
+  <span class="cm">/* HSL — Hue (0-360°), Saturation, Lightness */</span>
+  <span class="prop-css">color:</span> <span class="fn">hsl</span>(<span class="num">9</span>, <span class="num">100%</span>, <span class="num">60%</span>);
+
+  <span class="cm">/* HSLA — HSL with alpha */</span>
+  <span class="prop-css">color:</span> <span class="fn">hsla</span>(<span class="num">9</span>, <span class="num">100%</span>, <span class="num">60%</span>, <span class="num">0.8</span>);
+}
+
+<span class="cm">/* Background color */</span>
+<span class="sel">.hero</span> {
+  <span class="prop-css">background-color:</span> <span class="val">#1a1a2e</span>;
+  <span class="prop-css">color:</span> <span class="val">#eee</span>;
+}</pre>
+        </div>
+
+        <h3>Gradients</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS gradients</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.banner</span> {
+  <span class="cm">/* Linear gradient — left to right */</span>
+  <span class="prop-css">background:</span> <span class="fn">linear-gradient</span>(<span class="val">to right</span>, <span class="val">#667eea</span>, <span class="val">#764ba2</span>);
+
+  <span class="cm">/* Diagonal */</span>
+  <span class="prop-css">background:</span> <span class="fn">linear-gradient</span>(<span class="val">135deg</span>, <span class="val">#f5c842</span>, <span class="val">#ff7c6e</span>);
+
+  <span class="cm">/* Multi-stop */</span>
+  <span class="prop-css">background:</span> <span class="fn">linear-gradient</span>(<span class="val">to bottom</span>, <span class="val">#0f0c29</span>, <span class="val">#302b63</span>, <span class="val">#24243e</span>);
+}
+
+<span class="sel">.circle</span> {
+  <span class="cm">/* Radial gradient — circle from centre */</span>
+  <span class="prop-css">background:</span> <span class="fn">radial-gradient</span>(<span class="val">circle</span>, <span class="val">#f5c842</span>, <span class="val">#ff7c6e</span>);
+}
+
+<span class="sel">.conic</span> {
+  <span class="cm">/* Conic gradient — pie chart effect */</span>
+  <span class="prop-css">background:</span> <span class="fn">conic-gradient</span>(<span class="val">red 0deg</span>, <span class="val">yellow 120deg</span>, <span class="val">blue 240deg</span>, <span class="val">red 360deg</span>);
+  <span class="prop-css">border-radius:</span> <span class="val">50%</span>;
+}</pre>
+        </div>
+
+        <h3>Borders &amp; Shadows</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Borders and box shadows</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.card</span> {
+  <span class="cm">/* Border: width style color */</span>
+  <span class="prop-css">border:</span> <span class="val">1px solid #e0e0e0</span>;
+  <span class="prop-css">border-top:</span> <span class="val">4px solid #667eea</span>;   <span class="cm">/* Only top */</span>
+  <span class="prop-css">border-radius:</span> <span class="val">12px</span>;
+
+  <span class="cm">/* Box shadow: x y blur spread color */</span>
+  <span class="prop-css">box-shadow:</span> <span class="val">0 4px 6px rgba(0,0,0,0.1)</span>;
+
+  <span class="cm">/* Multiple shadows */</span>
+  <span class="prop-css">box-shadow:</span> <span class="val">0 1px 3px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)</span>;
+
+  <span class="cm">/* Inset shadow (inside the element) */</span>
+  <span class="prop-css">box-shadow:</span> <span class="val">inset 0 2px 4px rgba(0,0,0,0.2)</span>;
+}
+
+<span class="sel">.title</span> {
+  <span class="cm">/* Text shadow: x y blur color */</span>
+  <span class="prop-css">text-shadow:</span> <span class="val">2px 2px 4px rgba(0,0,0,0.3)</span>;
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 10</span>
+          <span class="exercise-title">Color & Gradient Showcase</span>
+        </div>
+        <ol>
+          <li>Create a page with 4 card components, each using a different colour format: named, hex, rgb, hsl</li>
+          <li>Add a hero section with a <strong>linear gradient</strong> background going diagonally</li>
+          <li>Create a "pie chart" using a <strong>conic gradient</strong> showing 3 segments</li>
+          <li>Give your cards layered <code>box-shadow</code> — a small sharp shadow and a large soft shadow</li>
+          <li>Add a coloured <code>border-top</code> accent to each card using a different colour for each</li>
+          <li>Bonus: Use <code>text-shadow</code> to create a glowing text effect on a dark background</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Get comfortable with HSL — it's the most intuitive format for creating and tweaking colour schemes.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 11: Typography -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <span class="section-num">11</span>
+        <h2>Typography</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Fonts & Font Stacks</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Typography properties</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* System font stack — fast, no external requests */</span>
+<span class="sel">body</span> {
+  <span class="prop-css">font-family:</span> <span class="val">-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif</span>;
+}
+
+<span class="cm">/* Google Font */</span>
+<span class="jsx">&lt;link</span> <span class="attr">href=</span><span class="str">"https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span><span class="jsx">&gt;</span>
+<span class="sel">body</span> { <span class="prop-css">font-family:</span> <span class="str">'Inter'</span>, <span class="val">sans-serif</span>; }
+
+<span class="cm">/* Font sizing */</span>
+<span class="sel">body</span>   { <span class="prop-css">font-size:</span> <span class="val">16px</span>; }         <span class="cm">/* Base (set in px on body) */</span>
+<span class="sel">h1</span>     { <span class="prop-css">font-size:</span> <span class="val">2.5rem</span>; }      <span class="cm">/* Relative to root (1rem=16px → 40px) */</span>
+<span class="sel">p</span>      { <span class="prop-css">font-size:</span> <span class="val">1rem</span>; }        <span class="cm">/* 16px */</span>
+<span class="sel">.small</span> { <span class="prop-css">font-size:</span> <span class="val">0.875rem</span>; }   <span class="cm">/* 14px */</span>
+
+<span class="cm">/* Font weight */</span>
+<span class="sel">.light</span>  { <span class="prop-css">font-weight:</span> <span class="val">300</span>; }
+<span class="sel">.normal</span> { <span class="prop-css">font-weight:</span> <span class="val">400</span>; }
+<span class="sel">.semi</span>   { <span class="prop-css">font-weight:</span> <span class="val">600</span>; }
+<span class="sel">.bold</span>   { <span class="prop-css">font-weight:</span> <span class="val">700</span>; }
+
+<span class="cm">/* Spacing */</span>
+<span class="sel">p</span> {
+  <span class="prop-css">line-height:</span> <span class="val">1.7</span>;               <span class="cm">/* 1.5–1.8 is ideal for body text */</span>
+  <span class="prop-css">letter-spacing:</span> <span class="val">0.02em</span>;         <span class="cm">/* Subtle tracking */</span>
+  <span class="prop-css">word-spacing:</span> <span class="val">2px</span>;
+}
+
+<span class="cm">/* Text formatting */</span>
+<span class="sel">.upper</span> { <span class="prop-css">text-transform:</span> <span class="val">uppercase</span>; }
+<span class="sel">.cap</span>   { <span class="prop-css">text-transform:</span> <span class="val">capitalize</span>; }
+<span class="sel">.center</span>{ <span class="prop-css">text-align:</span> <span class="val">center</span>; }
+<span class="sel">.right</span> { <span class="prop-css">text-align:</span> <span class="val">right</span>; }
+<span class="sel">.nowrap</span>{ <span class="prop-css">white-space:</span> <span class="val">nowrap</span>; }    <span class="cm">/* Prevents line wrapping */</span>
+
+<span class="cm">/* Truncate overflow text with ellipsis */</span>
+<span class="sel">.truncate</span> {
+  <span class="prop-css">white-space:</span> <span class="val">nowrap</span>;
+  <span class="prop-css">overflow:</span> <span class="val">hidden</span>;
+  <span class="prop-css">text-overflow:</span> <span class="val">ellipsis</span>;
+}</pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>rem vs em vs px</strong>
+            Use <code>rem</code> for font sizes (scales with user's browser settings), <code>em</code> for spacing relative to the component's font size, and <code>px</code> for borders and small fixed details.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 11</span>
+          <span class="exercise-title">Typography System</span>
+        </div>
+        <ol>
+          <li>Import a Google Font (e.g., Inter or Lato) and set it as the body font</li>
+          <li>Define a <strong>type scale</strong> using <code>rem</code> units: h1 at 2.5rem, h2 at 2rem, h3 at 1.5rem, p at 1rem, small at 0.875rem</li>
+          <li>Set <code>line-height: 1.7</code> on the body for readable paragraphs</li>
+          <li>Create a heading with <code>letter-spacing</code> and <code>text-transform: uppercase</code> for a label style</li>
+          <li>Create a <code>.truncate</code> class and apply it to a long heading inside a 200px wide box</li>
+          <li>Bonus: Use <code>@font-face</code> to load a local custom font file</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Build a consistent type system — it's one of the highest-impact things you can do for a professional-looking site.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 12: Positioning & Float -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <span class="section-num">12</span>
+        <h2>Positioning &amp; Float</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The position Property</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS positioning</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* static — default, follows normal document flow */</span>
+<span class="sel">.default</span> { <span class="prop-css">position:</span> <span class="val">static</span>; }
+
+<span class="cm">/* relative — offset from its NORMAL position, keeps its space */</span>
+<span class="sel">.nudge</span> {
+  <span class="prop-css">position:</span> <span class="val">relative</span>;
+  <span class="prop-css">top:</span> <span class="val">10px</span>;
+  <span class="prop-css">left:</span> <span class="val">20px</span>;
+}
+
+<span class="cm">/* absolute — removed from flow, positioned relative to nearest
+   non-static ancestor (use position:relative on parent) */</span>
+<span class="sel">.parent</span> { <span class="prop-css">position:</span> <span class="val">relative</span>; }
+<span class="sel">.badge</span> {
+  <span class="prop-css">position:</span> <span class="val">absolute</span>;
+  <span class="prop-css">top:</span> <span class="val">-8px</span>;
+  <span class="prop-css">right:</span> <span class="val">-8px</span>;
+}
+
+<span class="cm">/* fixed — stays in place while scrolling (sticky nav, floating button) */</span>
+<span class="sel">.navbar</span> {
+  <span class="prop-css">position:</span> <span class="val">fixed</span>;
+  <span class="prop-css">top:</span> <span class="val">0</span>;
+  <span class="prop-css">left:</span> <span class="val">0</span>;
+  <span class="prop-css">width:</span> <span class="val">100%</span>;
+  <span class="prop-css">z-index:</span> <span class="val">1000</span>;          <span class="cm">/* controls stacking order */</span>
+}
+
+<span class="cm">/* sticky — acts like relative until scroll threshold, then fixed */</span>
+<span class="sel">.sticky-header</span> {
+  <span class="prop-css">position:</span> <span class="val">sticky</span>;
+  <span class="prop-css">top:</span> <span class="val">0</span>;
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 12</span>
+          <span class="exercise-title">Positioning Challenge</span>
+        </div>
+        <ol>
+          <li>Build a product card with an <strong>absolute-positioned badge</strong> ("NEW" or "SALE") in the top-right corner</li>
+          <li>Create a <strong>fixed navigation bar</strong> that stays at the top on scroll</li>
+          <li>Add a floating "Back to top" button in the bottom-right corner using <code>position: fixed</code></li>
+          <li>Create a <strong>sticky sidebar</strong> that stays visible as you scroll through a long article</li>
+          <li>Create a tooltip that appears on hover using <code>position: absolute</code> relative to the parent</li>
+          <li>Bonus: Use <code>z-index</code> to intentionally create a stacking context conflict, then resolve it</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Understand positioning contexts — the biggest confusion point for beginners.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 13: Flexbox -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <span class="section-num">13</span>
+        <h2>Flexbox</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Flexbox Fundamentals</h3>
+        <p>Flexbox is a <strong>one-dimensional layout system</strong> — it lays items out either in a row or a column. It's perfect for navigation bars, card rows, and centering content.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Flexbox container properties</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.container</span> {
+  <span class="prop-css">display:</span> <span class="val">flex</span>;
+
+  <span class="cm">/* Direction */</span>
+  <span class="prop-css">flex-direction:</span> <span class="val">row</span>;            <span class="cm">/* default: left to right */</span>
+  <span class="prop-css">flex-direction:</span> <span class="val">column</span>;         <span class="cm">/* top to bottom */</span>
+  <span class="prop-css">flex-direction:</span> <span class="val">row-reverse</span>;    <span class="cm">/* right to left */</span>
+
+  <span class="cm">/* Wrapping */</span>
+  <span class="prop-css">flex-wrap:</span> <span class="val">wrap</span>;               <span class="cm">/* items wrap to next line if needed */</span>
+  <span class="prop-css">flex-wrap:</span> <span class="val">nowrap</span>;             <span class="cm">/* default: no wrapping */</span>
+
+  <span class="cm">/* Main axis (horizontal by default) */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">flex-start</span>;   <span class="cm">/* pack to start */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">flex-end</span>;     <span class="cm">/* pack to end */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">center</span>;       <span class="cm">/* centre all items */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">space-between</span>;<span class="cm">/* first/last at edges */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">space-around</span>; <span class="cm">/* equal space around each */</span>
+  <span class="prop-css">justify-content:</span> <span class="val">space-evenly</span>; <span class="cm">/* truly equal gaps */</span>
+
+  <span class="cm">/* Cross axis (vertical by default) */</span>
+  <span class="prop-css">align-items:</span> <span class="val">stretch</span>;          <span class="cm">/* default: fill cross axis */</span>
+  <span class="prop-css">align-items:</span> <span class="val">center</span>;           <span class="cm">/* centre on cross axis */</span>
+  <span class="prop-css">align-items:</span> <span class="val">flex-start</span>;       <span class="cm">/* align to cross-axis start */</span>
+  <span class="prop-css">align-items:</span> <span class="val">baseline</span>;         <span class="cm">/* align text baselines */</span>
+
+  <span class="cm">/* Gap between items (modern — use instead of margins) */</span>
+  <span class="prop-css">gap:</span> <span class="val">16px</span>;
+  <span class="prop-css">gap:</span> <span class="val">16px 24px</span>;               <span class="cm">/* row-gap column-gap */</span>
+}
+
+<span class="cm">/* Centering trick — horizontal AND vertical */</span>
+<span class="sel">.centered</span> {
+  <span class="prop-css">display:</span> <span class="val">flex</span>;
+  <span class="prop-css">justify-content:</span> <span class="val">center</span>;
+  <span class="prop-css">align-items:</span> <span class="val">center</span>;
+  <span class="prop-css">min-height:</span> <span class="val">100vh</span>;
+}</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Flexbox item properties</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.item</span> {
+  <span class="cm">/* flex-grow: how much extra space an item takes */</span>
+  <span class="prop-css">flex-grow:</span> <span class="val">1</span>;       <span class="cm">/* item grows to fill available space */</span>
+  <span class="prop-css">flex-grow:</span> <span class="val">2</span>;       <span class="cm">/* this item gets 2x the space of grow:1 items */</span>
+
+  <span class="cm">/* flex-shrink: how much item shrinks below its base size */</span>
+  <span class="prop-css">flex-shrink:</span> <span class="val">0</span>;     <span class="cm">/* never shrink (good for fixed sidebar widths) */</span>
+
+  <span class="cm">/* flex-basis: the starting size before grow/shrink */</span>
+  <span class="prop-css">flex-basis:</span> <span class="val">200px</span>;
+
+  <span class="cm">/* Shorthand: grow shrink basis */</span>
+  <span class="prop-css">flex:</span> <span class="val">1 1 200px</span>;
+  <span class="prop-css">flex:</span> <span class="val">1</span>;            <span class="cm">/* equivalent to flex: 1 1 0 */</span>
+
+  <span class="cm">/* Override cross-axis alignment for one item */</span>
+  <span class="prop-css">align-self:</span> <span class="val">flex-end</span>;
+
+  <span class="cm">/* Change visual order (not DOM order) */</span>
+  <span class="prop-css">order:</span> <span class="val">-1</span>;          <span class="cm">/* appears first visually */</span>
+  <span class="prop-css">order:</span> <span class="val">2</span>;           <span class="cm">/* appears later */</span>
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 13</span>
+          <span class="exercise-title">Flexbox Layouts</span>
+        </div>
+        <ol>
+          <li>Build a <strong>navigation bar</strong> with a logo on the left and nav links on the right using Flexbox</li>
+          <li>Create a <strong>card grid</strong> where cards wrap and each card has equal width using <code>flex: 1 1 250px</code></li>
+          <li>Build a <strong>Holy Grail layout</strong>: header, footer, and a 3-column middle (sidebar | main | sidebar) using Flexbox</li>
+          <li>Centre a single element both horizontally and vertically in the viewport</li>
+          <li>Use <code>order</code> to reorder 5 items without changing the HTML</li>
+          <li>Bonus: Build a responsive pricing table where cards stack on mobile and sit side-by-side on desktop</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Flexbox is your everyday layout tool — master it and 80% of layouts become trivial.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 14: CSS Grid -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <span class="section-num">14</span>
+        <h2>CSS Grid</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Grid Fundamentals</h3>
+        <p>CSS Grid is a <strong>two-dimensional layout system</strong> — it handles both rows and columns simultaneously. It's perfect for full page layouts, image galleries, and dashboard designs.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS Grid container</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.grid</span> {
+  <span class="prop-css">display:</span> <span class="val">grid</span>;
+
+  <span class="cm">/* Define columns */</span>
+  <span class="prop-css">grid-template-columns:</span> <span class="val">200px 200px 200px</span>;    <span class="cm">/* 3 fixed columns */</span>
+  <span class="prop-css">grid-template-columns:</span> <span class="val">1fr 1fr 1fr</span>;           <span class="cm">/* 3 equal columns */</span>
+  <span class="prop-css">grid-template-columns:</span> <span class="fn">repeat</span>(<span class="num">3</span>, <span class="val">1fr</span>);         <span class="cm">/* same as above */</span>
+  <span class="prop-css">grid-template-columns:</span> <span class="val">250px 1fr</span>;             <span class="cm">/* sidebar + main */</span>
+
+  <span class="cm">/* Auto-responsive columns (no media queries!) */</span>
+  <span class="prop-css">grid-template-columns:</span> <span class="fn">repeat</span>(<span class="val">auto-fit</span>, <span class="fn">minmax</span>(<span class="val">200px</span>, <span class="val">1fr</span>));
+
+  <span class="cm">/* Define rows */</span>
+  <span class="prop-css">grid-template-rows:</span> <span class="val">80px 1fr 60px</span>;
+
+  <span class="cm">/* Gaps */</span>
+  <span class="prop-css">gap:</span> <span class="val">20px</span>;
+  <span class="prop-css">column-gap:</span> <span class="val">24px</span>;
+  <span class="prop-css">row-gap:</span> <span class="val">16px</span>;
+}
+
+<span class="cm">/* Named template areas — gives you a visual map */</span>
+<span class="sel">.page</span> {
+  <span class="prop-css">display:</span> <span class="val">grid</span>;
+  <span class="prop-css">grid-template-columns:</span> <span class="val">250px 1fr</span>;
+  <span class="prop-css">grid-template-rows:</span> <span class="val">auto 1fr auto</span>;
+  <span class="prop-css">grid-template-areas:</span>
+    <span class="str">"header  header"</span>
+    <span class="str">"sidebar main"</span>
+    <span class="str">"footer  footer"</span>;
+  <span class="prop-css">min-height:</span> <span class="val">100vh</span>;
+}
+<span class="sel">.header</span>  { <span class="prop-css">grid-area:</span> <span class="val">header</span>; }
+<span class="sel">.sidebar</span> { <span class="prop-css">grid-area:</span> <span class="val">sidebar</span>; }
+<span class="sel">.main</span>    { <span class="prop-css">grid-area:</span> <span class="val">main</span>; }
+<span class="sel">.footer</span>  { <span class="prop-css">grid-area:</span> <span class="val">footer</span>; }</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Grid item spanning</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* Span items across multiple columns or rows */</span>
+<span class="sel">.featured</span> {
+  <span class="prop-css">grid-column:</span> <span class="val">1 / 3</span>;    <span class="cm">/* span from line 1 to line 3 (2 columns) */</span>
+  <span class="prop-css">grid-column:</span> <span class="val">1 / -1</span>;   <span class="cm">/* span the full row (-1 = last line) */</span>
+  <span class="prop-css">grid-column:</span> <span class="fn">span</span> <span class="num">2</span>;   <span class="cm">/* span 2 columns from current position */</span>
+  <span class="prop-css">grid-row:</span> <span class="fn">span</span> <span class="num">2</span>;      <span class="cm">/* span 2 rows */</span>
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 14</span>
+          <span class="exercise-title">CSS Grid Layouts</span>
+        </div>
+        <ol>
+          <li>Build a <strong>magazine-style layout</strong> with a large featured article and 4 smaller ones using grid areas</li>
+          <li>Create a <strong>responsive photo gallery</strong> using <code>repeat(auto-fit, minmax(200px, 1fr))</code> — no media queries needed</li>
+          <li>Build the full <strong>page template</strong> (header, sidebar, main, footer) using named grid areas</li>
+          <li>Make one card in the gallery span 2 columns and 2 rows using <code>grid-column: span 2</code></li>
+          <li>Combine Grid for the outer layout and Flexbox inside each card for inner alignment</li>
+          <li>Bonus: Build a <strong>12-column grid system</strong> similar to Bootstrap's using CSS Grid</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Use Grid for page-level structure and Flexbox for component-level layouts — they complement each other.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 15: Media Queries -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <span class="section-num">15</span>
+        <h2>Media Queries &amp; Responsive Design</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Mobile-First Approach</h3>
+        <p>Always start with the mobile layout, then use media queries to add complexity for larger screens. This is called <strong>mobile-first design</strong> — and it leads to faster, cleaner CSS.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Media queries — mobile first</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* Mobile styles first (no media query needed) */</span>
+<span class="sel">.grid</span> {
+  <span class="prop-css">display:</span> <span class="val">grid</span>;
+  <span class="prop-css">grid-template-columns:</span> <span class="val">1fr</span>;   <span class="cm">/* 1 column on mobile */</span>
+  <span class="prop-css">gap:</span> <span class="val">16px</span>;
+}
+
+<span class="cm">/* Tablet (min-width = "at least this wide") */</span>
+<span class="sel">@media</span> (<span class="prop-css">min-width:</span> <span class="val">768px</span>) {
+  <span class="sel">.grid</span> {
+    <span class="prop-css">grid-template-columns:</span> <span class="fn">repeat</span>(<span class="num">2</span>, <span class="val">1fr</span>);
+  }
+}
+
+<span class="cm">/* Desktop */</span>
+<span class="sel">@media</span> (<span class="prop-css">min-width:</span> <span class="val">1024px</span>) {
+  <span class="sel">.grid</span> {
+    <span class="prop-css">grid-template-columns:</span> <span class="fn">repeat</span>(<span class="num">3</span>, <span class="val">1fr</span>);
+  }
+}
+
+<span class="cm">/* Large desktop */</span>
+<span class="sel">@media</span> (<span class="prop-css">min-width:</span> <span class="val">1280px</span>) {
+  <span class="sel">.container</span> {
+    <span class="prop-css">max-width:</span> <span class="val">1200px</span>;
+    <span class="prop-css">margin:</span> <span class="val">0 auto</span>;
+  }
+}
+
+<span class="cm">/* Hiding elements at breakpoints */</span>
+<span class="sel">@media</span> (<span class="prop-css">max-width:</span> <span class="val">767px</span>) {
+  <span class="sel">.desktop-only</span> { <span class="prop-css">display:</span> <span class="val">none</span>; }
+}
+
+<span class="cm">/* Dark mode media query */</span>
+<span class="sel">@media</span> (<span class="prop-css">prefers-color-scheme:</span> <span class="val">dark</span>) {
+  <span class="sel">body</span> {
+    <span class="prop-css">background:</span> <span class="val">#1a1a2e</span>;
+    <span class="prop-css">color:</span> <span class="val">#eee</span>;
+  }
+}
+
+<span class="cm">/* Reduced motion for accessibility */</span>
+<span class="sel">@media</span> (<span class="prop-css">prefers-reduced-motion:</span> <span class="val">reduce</span>) {
+  <span class="sel">*</span> { <span class="prop-css">animation:</span> <span class="val">none</span> !important; <span class="prop-css">transition:</span> <span class="val">none</span> !important; }
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 15</span>
+          <span class="exercise-title">Responsive Layout</span>
+        </div>
+        <ol>
+          <li>Build a landing page with a hero, 3-column features section, and footer</li>
+          <li>Start <strong>mobile-first</strong>: single column, large text, stacked elements</li>
+          <li>Add a tablet breakpoint (768px) for a 2-column feature grid</li>
+          <li>Add a desktop breakpoint (1024px) for the 3-column grid and a side-by-side hero</li>
+          <li>Hide the hamburger icon on desktop and the desktop nav on mobile</li>
+          <li>Bonus: Add a <code>prefers-color-scheme: dark</code> media query with a dark mode theme</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Think mobile-first. Test every layout at 320px, 768px, and 1200px viewport widths.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 16: Images in CSS -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <span class="section-num">16</span>
+        <h2>Images in CSS</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Background Images</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS background image properties</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.hero</span> {
+  <span class="prop-css">background-image:</span> <span class="fn">url</span>(<span class="str">'images/bg.jpg'</span>);
+  <span class="prop-css">background-size:</span> <span class="val">cover</span>;      <span class="cm">/* fills element, crops if needed */</span>
+  <span class="prop-css">background-size:</span> <span class="val">contain</span>;    <span class="cm">/* fits entire image, may show gaps */</span>
+  <span class="prop-css">background-position:</span> <span class="val">center</span>; <span class="cm">/* centre the image */</span>
+  <span class="prop-css">background-repeat:</span> <span class="val">no-repeat</span>;
+  <span class="prop-css">background-attachment:</span> <span class="val">fixed</span>; <span class="cm">/* parallax effect */</span>
+
+  <span class="cm">/* Shorthand */</span>
+  <span class="prop-css">background:</span> <span class="fn">url</span>(<span class="str">'bg.jpg'</span>) <span class="val">center/cover no-repeat</span>;
+
+  <span class="cm">/* Overlay gradient on top of image */</span>
+  <span class="prop-css">background:</span>
+    <span class="fn">linear-gradient</span>(<span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.5</span>), <span class="fn">rgba</span>(<span class="num">0</span>,<span class="num">0</span>,<span class="num">0</span>,<span class="num">0.5</span>)),
+    <span class="fn">url</span>(<span class="str">'hero.jpg'</span>) <span class="val">center/cover no-repeat</span>;
+}
+
+<span class="cm">/* Clipping an image to a shape */</span>
+<span class="sel">.avatar</span> {
+  <span class="prop-css">width:</span> <span class="val">80px</span>;
+  <span class="prop-css">height:</span> <span class="val">80px</span>;
+  <span class="prop-css">border-radius:</span> <span class="val">50%</span>;          <span class="cm">/* circle */</span>
+  <span class="prop-css">object-fit:</span> <span class="val">cover</span>;           <span class="cm">/* fill the circle without distorting */</span>
+}
+
+<span class="cm">/* CSS filters */</span>
+<span class="sel">.img-filter</span> {
+  <span class="prop-css">filter:</span> <span class="fn">grayscale</span>(<span class="val">100%</span>);
+  <span class="prop-css">filter:</span> <span class="fn">blur</span>(<span class="val">4px</span>);
+  <span class="prop-css">filter:</span> <span class="fn">brightness</span>(<span class="val">1.2</span>) <span class="fn">contrast</span>(<span class="val">1.1</span>);
+  <span class="prop-css">filter:</span> <span class="fn">sepia</span>(<span class="val">0.8</span>);
+}
+
+<span class="cm">/* Clip-path for custom shapes */</span>
+<span class="sel">.clipped</span> {
+  <span class="prop-css">clip-path:</span> <span class="fn">polygon</span>(<span class="val">0 0, 100% 0, 100% 80%, 0 100%</span>);
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 16</span>
+          <span class="exercise-title">CSS Image Effects</span>
+        </div>
+        <ol>
+          <li>Create a full-viewport hero section with a <strong>background image</strong> and a darkening gradient overlay</li>
+          <li>Build a team members grid with <strong>circular avatar images</strong> using <code>border-radius: 50%</code> and <code>object-fit: cover</code></li>
+          <li>Add a <strong>hover effect</strong> on images: grayscale by default, full colour on hover using CSS transitions</li>
+          <li>Use <code>clip-path: polygon()</code> to create a diagonal-cut section divider</li>
+          <li>Implement a <strong>parallax scrolling</strong> hero using <code>background-attachment: fixed</code></li>
+          <li>Bonus: Use <code>backdrop-filter: blur()</code> to create a frosted glass card effect</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> CSS image manipulation is a powerful design tool — no image editor required.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 17: Transforms & Transitions -->
+    <div class="section" id="s17">
+      <div class="section-header">
+        <span class="section-num">17</span>
+        <h2>Transforms &amp; Transitions</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>CSS Transforms</h3>
+        <p>Transforms move, rotate, scale, or skew elements <strong>without affecting the document flow</strong>. Other elements do not move when you transform one.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 transform functions</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.box</span> {
+  <span class="cm">/* Translate (move) */</span>
+  <span class="prop-css">transform:</span> <span class="fn">translateX</span>(<span class="val">50px</span>);
+  <span class="prop-css">transform:</span> <span class="fn">translateY</span>(<span class="val">-20px</span>);
+  <span class="prop-css">transform:</span> <span class="fn">translate</span>(<span class="val">50px, -20px</span>);
+
+  <span class="cm">/* Rotate */</span>
+  <span class="prop-css">transform:</span> <span class="fn">rotate</span>(<span class="val">45deg</span>);
+  <span class="prop-css">transform:</span> <span class="fn">rotate</span>(<span class="val">-90deg</span>);
+
+  <span class="cm">/* Scale */</span>
+  <span class="prop-css">transform:</span> <span class="fn">scale</span>(<span class="val">1.5</span>);           <span class="cm">/* 150% of original size */</span>
+  <span class="prop-css">transform:</span> <span class="fn">scaleX</span>(<span class="val">2</span>);            <span class="cm">/* stretch horizontally */</span>
+
+  <span class="cm">/* Skew */</span>
+  <span class="prop-css">transform:</span> <span class="fn">skewX</span>(<span class="val">20deg</span>);
+
+  <span class="cm">/* Chain multiple transforms */</span>
+  <span class="prop-css">transform:</span> <span class="fn">translateY</span>(<span class="val">-10px</span>) <span class="fn">scale</span>(<span class="val">1.05</span>) <span class="fn">rotate</span>(<span class="val">2deg</span>);
+
+  <span class="cm">/* Transform origin — default is center center */</span>
+  <span class="prop-css">transform-origin:</span> <span class="val">top left</span>;
+}
+
+<span class="cm">/* 3D transforms */</span>
+<span class="sel">.card-3d</span> {
+  <span class="prop-css">transform:</span> <span class="fn">perspective</span>(<span class="val">800px</span>) <span class="fn">rotateY</span>(<span class="val">30deg</span>);
+  <span class="prop-css">transform-style:</span> <span class="val">preserve-3d</span>;
+}</pre>
+        </div>
+
+        <h3>CSS Transitions</h3>
+        <p>Transitions animate a property from one value to another when it changes (e.g., on hover). They're perfect for interactive UI feedback.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Transitions</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="sel">.btn</span> {
+  <span class="prop-css">background:</span> <span class="val">#4da6ff</span>;
+  <span class="prop-css">color:</span> <span class="val">white</span>;
+  <span class="prop-css">padding:</span> <span class="val">12px 24px</span>;
+
+  <span class="cm">/* Transition: property duration timing-function delay */</span>
+  <span class="prop-css">transition:</span> <span class="val">background 0.3s ease</span>;
+  <span class="prop-css">transition:</span> <span class="val">all 0.3s ease</span>;         <span class="cm">/* transition everything (less efficient) */</span>
+
+  <span class="cm">/* Multiple transitions */</span>
+  <span class="prop-css">transition:</span> <span class="val">background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease</span>;
+}
+
+<span class="sel">.btn:hover</span> {
+  <span class="prop-css">background:</span> <span class="val">#1a80e0</span>;
+  <span class="prop-css">transform:</span> <span class="fn">translateY</span>(<span class="val">-2px</span>);
+  <span class="prop-css">box-shadow:</span> <span class="val">0 8px 20px rgba(77,166,255,0.4)</span>;
+}
+
+<span class="cm">/* Timing functions */</span>
+<span class="sel">.ease</span>       { <span class="prop-css">transition-timing-function:</span> <span class="val">ease</span>; }          <span class="cm">/* default */</span>
+<span class="sel">.ease-in</span>    { <span class="prop-css">transition-timing-function:</span> <span class="val">ease-in</span>; }
+<span class="sel">.ease-out</span>   { <span class="prop-css">transition-timing-function:</span> <span class="val">ease-out</span>; }
+<span class="sel">.linear</span>     { <span class="prop-css">transition-timing-function:</span> <span class="val">linear</span>; }
+<span class="sel">.bounce</span>     { <span class="prop-css">transition-timing-function:</span> <span class="fn">cubic-bezier</span>(<span class="val">0.34, 1.56, 0.64, 1</span>); }</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 17</span>
+          <span class="exercise-title">Interactive UI Elements</span>
+        </div>
+        <ol>
+          <li>Create a button that <strong>lifts up</strong> on hover: <code>translateY(-3px)</code> + larger <code>box-shadow</code> + transition</li>
+          <li>Build a card that <strong>scales up slightly</strong> on hover using <code>transform: scale(1.03)</code></li>
+          <li>Create a toggle switch using CSS only (checkbox + label + transforms)</li>
+          <li>Build a <strong>flip card</strong> that shows the back on hover using 3D transforms and <code>transform-style: preserve-3d</code></li>
+          <li>Create a navigation link underline effect using <code>::after</code> pseudo-element + <code>scaleX()</code> transition</li>
+          <li>Bonus: Use <code>cubic-bezier()</code> to create a bouncy button press animation</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Micro-interactions built with transitions are the difference between a flat page and a polished product.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 18: Animations -->
+    <div class="section" id="s18">
+      <div class="section-header">
+        <span class="section-num">18</span>
+        <h2>CSS Animations</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>@keyframes Animations</h3>
+        <p>Unlike transitions (which react to state changes), animations <strong>run automatically</strong> and can have multiple steps. You define them with <code>@keyframes</code> and apply with the <code>animation</code> property.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS animations</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* 1. Define the animation with @keyframes */</span>
+<span class="sel">@keyframes</span> <span class="cls">fadeInUp</span> {
+  <span class="kw">from</span> {
+    <span class="prop-css">opacity:</span> <span class="val">0</span>;
+    <span class="prop-css">transform:</span> <span class="fn">translateY</span>(<span class="val">30px</span>);
+  }
+  <span class="kw">to</span> {
+    <span class="prop-css">opacity:</span> <span class="val">1</span>;
+    <span class="prop-css">transform:</span> <span class="fn">translateY</span>(<span class="val">0</span>);
+  }
+}
+
+<span class="cm">/* Multi-step animation */</span>
+<span class="sel">@keyframes</span> <span class="cls">pulse</span> {
+  <span class="kw">0%</span>   { <span class="prop-css">transform:</span> <span class="fn">scale</span>(<span class="val">1</span>); }
+  <span class="kw">50%</span>  { <span class="prop-css">transform:</span> <span class="fn">scale</span>(<span class="val">1.1</span>); }
+  <span class="kw">100%</span> { <span class="prop-css">transform:</span> <span class="fn">scale</span>(<span class="val">1</span>); }
+}
+
+<span class="sel">@keyframes</span> <span class="cls">spin</span> {
+  <span class="kw">to</span> { <span class="prop-css">transform:</span> <span class="fn">rotate</span>(<span class="val">360deg</span>); }
+}
+
+<span class="cm">/* 2. Apply the animation */</span>
+<span class="sel">.hero-title</span> {
+  <span class="cm">/* name  duration  timing  delay  iterations  direction  fill-mode */</span>
+  <span class="prop-css">animation:</span> <span class="val">fadeInUp 0.8s ease-out 0.2s 1 normal both</span>;
+
+  <span class="cm">/* Shorthand common usage */</span>
+  <span class="prop-css">animation:</span> <span class="val">fadeInUp 0.8s ease-out both</span>;
+}
+
+<span class="sel">.loading-spinner</span> {
+  <span class="prop-css">animation:</span> <span class="val">spin 1s linear infinite</span>;
+}
+
+<span class="sel">.cta-button</span> {
+  <span class="prop-css">animation:</span> <span class="val">pulse 2s ease-in-out infinite</span>;
+}
+
+<span class="cm">/* Stagger children using animation-delay */</span>
+<span class="sel">.card:nth-child(1)</span> { <span class="prop-css">animation-delay:</span> <span class="val">0s</span>; }
+<span class="sel">.card:nth-child(2)</span> { <span class="prop-css">animation-delay:</span> <span class="val">0.1s</span>; }
+<span class="sel">.card:nth-child(3)</span> { <span class="prop-css">animation-delay:</span> <span class="val">0.2s</span>; }
+
+<span class="cm">/* Pause on hover */</span>
+<span class="sel">.animated:hover</span> { <span class="prop-css">animation-play-state:</span> <span class="val">paused</span>; }</pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-icon"></div>
+          <div class="callout-body">
+            <strong>Performance Tip</strong>
+            Only animate <code>transform</code> and <code>opacity</code> — they run on the GPU and never cause layout recalculation. Animating <code>width</code>, <code>height</code>, or <code>margin</code> is expensive.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 18</span>
+          <span class="exercise-title">Animation Showcase</span>
+        </div>
+        <ol>
+          <li>Create a <strong>loading spinner</strong> using a <code>spin</code> animation on a circular border element</li>
+          <li>Build a page hero where the heading and button <strong>fade in and slide up</strong> on load with a stagger delay</li>
+          <li>Create a <strong>pulsing notification badge</strong> (ripple effect) using <code>scale</code> and <code>opacity</code> animations</li>
+          <li>Build a <strong>typewriter effect</strong> using the <code>steps()</code> timing function with <code>width</code> and <code>overflow: hidden</code></li>
+          <li>Add a <code>@media (prefers-reduced-motion: reduce)</code> rule to disable all animations</li>
+          <li>Bonus: Build an animated skeleton loading card (shimmer effect) using a gradient animation</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Animations should feel purposeful — they should guide attention or communicate state, not just look fancy.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 19: Variables & Clean CSS -->
+    <div class="section" id="s19">
+      <div class="section-header">
+        <span class="section-num">19</span>
+        <h2>CSS Variables &amp; Clean CSS</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>CSS Custom Properties (Variables)</h3>
+        <p>CSS variables (officially called custom properties) let you store values in one place and reuse them everywhere. They're dynamic — they update in real-time and cascade like any other CSS.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 CSS variables and theming</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* Define variables on :root (global scope) */</span>
+<span class="sel">:root</span> {
+  <span class="cm">/* Colors */</span>
+  <span class="prop-css">--color-primary:</span> <span class="val">#4da6ff</span>;
+  <span class="prop-css">--color-secondary:</span> <span class="val">#fb923c</span>;
+  <span class="prop-css">--color-bg:</span> <span class="val">#0f1117</span>;
+  <span class="prop-css">--color-text:</span> <span class="val">#e8eaf0</span>;
+
+  <span class="cm">/* Spacing scale */</span>
+  <span class="prop-css">--space-xs:</span> <span class="val">4px</span>;
+  <span class="prop-css">--space-sm:</span> <span class="val">8px</span>;
+  <span class="prop-css">--space-md:</span> <span class="val">16px</span>;
+  <span class="prop-css">--space-lg:</span> <span class="val">32px</span>;
+  <span class="prop-css">--space-xl:</span> <span class="val">64px</span>;
+
+  <span class="cm">/* Typography */</span>
+  <span class="prop-css">--font-body:</span> <span class="str">'Inter'</span>, <span class="val">sans-serif</span>;
+  <span class="prop-css">--font-code:</span> <span class="str">'Fira Code'</span>, <span class="val">monospace</span>;
+
+  <span class="cm">/* Misc */</span>
+  <span class="prop-css">--border-radius:</span> <span class="val">8px</span>;
+  <span class="prop-css">--shadow:</span> <span class="val">0 4px 6px rgba(0,0,0,0.1)</span>;
+  <span class="prop-css">--transition:</span> <span class="val">all 0.2s ease</span>;
+}
+
+<span class="cm">/* Use variables with var() */</span>
+<span class="sel">.btn</span> {
+  <span class="prop-css">background:</span> <span class="fn">var</span>(<span class="val">--color-primary</span>);
+  <span class="prop-css">padding:</span> <span class="fn">var</span>(<span class="val">--space-sm</span>) <span class="fn">var</span>(<span class="val">--space-md</span>);
+  <span class="prop-css">border-radius:</span> <span class="fn">var</span>(<span class="val">--border-radius</span>);
+  <span class="prop-css">transition:</span> <span class="fn">var</span>(<span class="val">--transition</span>);
+  <span class="prop-css">box-shadow:</span> <span class="fn">var</span>(<span class="val">--shadow</span>);
+}
+
+<span class="cm">/* Dark mode with variables — just reassign them */</span>
+<span class="sel">@media</span> (<span class="prop-css">prefers-color-scheme:</span> <span class="val">dark</span>) {
+  <span class="sel">:root</span> {
+    <span class="prop-css">--color-bg:</span>   <span class="val">#0f1117</span>;
+    <span class="prop-css">--color-text:</span> <span class="val">#e8eaf0</span>;
+  }
+}</pre>
+        </div>
+
+        <h3>BEM Naming Convention</h3>
+        <p>BEM (Block, Element, Modifier) is a naming convention that makes CSS scalable and readable. It prevents specificity conflicts and makes component relationships obvious.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 BEM naming — Block__Element--Modifier</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">/* Block: a standalone component */</span>
+<span class="sel">.card</span> { <span class="prop-css">background:</span> <span class="val">white</span>; <span class="prop-css">border-radius:</span> <span class="val">8px</span>; <span class="prop-css">padding:</span> <span class="val">20px</span>; }
+
+<span class="cm">/* Element: a part of the block (double underscore) */</span>
+<span class="sel">.card__image</span>  { <span class="prop-css">width:</span> <span class="val">100%</span>; <span class="prop-css">border-radius:</span> <span class="val">8px 8px 0 0</span>; }
+<span class="sel">.card__title</span>  { <span class="prop-css">font-size:</span> <span class="val">1.2rem</span>; <span class="prop-css">font-weight:</span> <span class="val">600</span>; }
+<span class="sel">.card__body</span>   { <span class="prop-css">color:</span> <span class="val">#666</span>; }
+<span class="sel">.card__footer</span> { <span class="prop-css">border-top:</span> <span class="val">1px solid #eee</span>; <span class="prop-css">margin-top:</span> <span class="val">16px</span>; }
+
+<span class="cm">/* Modifier: a variant of the block or element (double dash) */</span>
+<span class="sel">.card--featured</span>   { <span class="prop-css">border:</span> <span class="val">2px solid #4da6ff</span>; }
+<span class="sel">.card--dark</span>       { <span class="prop-css">background:</span> <span class="val">#1a1a2e</span>; <span class="prop-css">color:</span> <span class="val">#eee</span>; }
+<span class="sel">.card__title--large</span> { <span class="prop-css">font-size:</span> <span class="val">1.8rem</span>; }
+
+<span class="cm">/* HTML usage */</span>
+<span class="cm">&lt;!--
+&lt;div class="card card--featured"&gt;
+  &lt;img class="card__image" src="..."&gt;
+  &lt;h2 class="card__title"&gt;Title&lt;/h2&gt;
+  &lt;p class="card__body"&gt;...&lt;/p&gt;
+&lt;/div&gt;
+--&gt;</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 19 — Final Project</span>
+          <span class="exercise-title">Build a Polished, Responsive Landing Page</span>
+        </div>
+        <ol>
+          <li>Define a <strong>complete design system</strong> using CSS variables: colours, spacing scale, font stacks, border radius, shadows, transitions</li>
+          <li>Use <strong>BEM naming</strong> for all components (navbar, hero, features, testimonials, footer)</li>
+          <li>Build a <strong>fully responsive layout</strong> using Grid and Flexbox — mobile-first with 2 breakpoints</li>
+          <li>Add <strong>CSS animations</strong>: hero fade-in, card hover lifts, a loading state indicator</li>
+          <li>Implement a <strong>dark/light mode toggle</strong> by toggling a <code>.dark</code> class on <code>:root</code> and reassigning CSS variables</li>
+          <li>Bonus: Add a hamburger menu that toggles open/closed on mobile using only CSS (<code>:checked</code> trick)</li>
+        </ol>
+        <div class="exercise-hint"><span>🎯 Goal:</span> Your final project should demonstrate semantic HTML, responsive CSS, BEM organisation, variables, and animations all working together.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="padding: 48px 0 24px; border-top: 1px solid var(--border); margin-top: 40px;">
+      <p style="color: var(--muted); font-size: 13px; text-align: center;">
+        HTML5 + CSS3 Complete Notes · Built for learning · All examples use pure <strong style="color: var(--c-yellow)">HTML &amp; CSS</strong>
+      </p>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #main -->
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Progress bar
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = Math.round((scrolled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+    document.getElementById('scrollTop').style.display = scrolled > 400 ? 'flex' : 'none';
+  }
+
+  // Active nav
+  function updateNav() {
+    const sections = document.querySelectorAll('.section');
+    const navItems = document.querySelectorAll('.nav-item');
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 120) current = section.id;
+    });
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+  }
+
+  window.addEventListener('scroll', () => { updateProgress(); updateNav(); });
+
+  // Smooth scroll for nav
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

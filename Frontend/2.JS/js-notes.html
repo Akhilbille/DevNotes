@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    /* Topic colors */
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+    .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-yellow);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 0.5rem 0;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-yellow); border-left-color: var(--c-yellow); background: var(--c-yellow-dim); }
+
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: var(--text); }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-yellow), var(--c-orange));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 3rem 3rem 5rem;
+    max-width: 920px;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .section-num {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===== TOPIC CARD ===== */
+  .topic {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .topic p {
+    color: #c4cad8;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .code-header .dots {
+    display: flex; gap: 5px;
+  }
+
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a;
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #c792ea; }         /* keywords: let, const, function */
+  .fn { color: #82aaff; }         /* function names */
+  .str { color: #c3e88d; }        /* strings */
+  .num { color: #f78c6c; }        /* numbers */
+  .cmt { color: #546e7a; font-style: italic; } /* comments */
+  .var { color: #eeffff; }        /* variables */
+  .op { color: #89ddff; }         /* operators */
+  .cls { color: #ffcb6b; }        /* class names */
+  .prop { color: #f07178; }       /* properties */
+  .bool { color: #ff5572; }       /* booleans */
+  .type { color: #ffcb6b; }       /* types */
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-icon::after { content: "💡"; }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-icon::after { content: "⚠️"; }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-icon::after { content: "✅"; }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-icon::after { content: "🚫"; }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== REFERENCE TABLE ===== */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1rem 0;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--bg3);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg2); }
+
+  .ref-table code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== INLINE HIGHLIGHT ===== */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== EXAMPLE LABEL ===== */
+  .ex-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== PILL BADGES ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter {
+    margin-top: 4rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .chapter:first-child { margin-top: 0; }
+
+  /* ===== OUTPUT BOX ===== */
+  .output-box {
+    background: var(--bg);
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--c-green);
+    margin-top: -1px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--c-yellow); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Color theming per section */
+  .theme-yellow .section-icon { background: var(--c-yellow-dim); color: var(--c-yellow); }
+  .theme-yellow .section-header h2 { color: var(--c-yellow); }
+
+  .theme-blue .section-icon { background: var(--c-blue-dim); color: var(--c-blue); }
+  .theme-blue .section-header h2 { color: var(--c-blue); }
+
+  .theme-green .section-icon { background: var(--c-green-dim); color: var(--c-green); }
+  .theme-green .section-header h2 { color: var(--c-green); }
+
+  .theme-purple .section-icon { background: var(--c-purple-dim); color: var(--c-purple); }
+  .theme-purple .section-header h2 { color: var(--c-purple); }
+
+  .theme-coral .section-icon { background: var(--c-coral-dim); color: var(--c-coral); }
+  .theme-coral .section-header h2 { color: var(--c-coral); }
+
+  .theme-teal .section-icon { background: var(--c-teal-dim); color: var(--c-teal); }
+  .theme-teal .section-header h2 { color: var(--c-teal); }
+
+  .theme-pink .section-icon { background: var(--c-pink-dim); color: var(--c-pink); }
+  .theme-pink .section-header h2 { color: var(--c-pink); }
+
+  .theme-orange .section-icon { background: var(--c-orange-dim); color: var(--c-orange); }
+  .theme-orange .section-header h2 { color: var(--c-orange); }
+
+  .nav-y { background: var(--c-yellow); }
+  .nav-b { background: var(--c-blue); }
+  .nav-g { background: var(--c-green); }
+  .nav-p { background: var(--c-purple); }
+  .nav-r { background: var(--c-coral); }
+  .nav-t { background: var(--c-teal); }
+  .nav-k { background: var(--c-pink); }
+  .nav-o { background: var(--c-orange); }
+
+  /* Subtle separator */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Multi-example grid */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .example-row { grid-template-columns: 1fr; } }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar scrollbar-thin">
+  <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-logo">
+    <h1>JS Complete Notes</h1>
+    <p>Basics + OOP · 7 Modules · 120+ Examples</p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">JavaScript Basics</div>
+    <a class="nav-item" href="#getting-started"><span class="nav-dot nav-y"></span>Getting Started</a>
+    <a class="nav-item" href="#basics"><span class="nav-dot nav-b"></span>Variables & Types</a>
+    <a class="nav-item" href="#operators"><span class="nav-dot nav-g"></span>Operators</a>
+    <a class="nav-item" href="#control-flow"><span class="nav-dot nav-p"></span>Control Flow</a>
+    <a class="nav-item" href="#objects-basics"><span class="nav-dot nav-r"></span>Objects</a>
+    <a class="nav-item" href="#arrays"><span class="nav-dot nav-t"></span>Arrays</a>
+    <a class="nav-item" href="#functions"><span class="nav-dot nav-k"></span>Functions</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Object-Oriented JS</div>
+    <a class="nav-item" href="#oop-intro"><span class="nav-dot nav-o"></span>OOP Concepts</a>
+    <a class="nav-item" href="#oop-objects"><span class="nav-dot nav-y"></span>Objects Deep Dive</a>
+    <a class="nav-item" href="#prototypes"><span class="nav-dot nav-b"></span>Prototypes</a>
+    <a class="nav-item" href="#proto-inheritance"><span class="nav-dot nav-g"></span>Prototypical Inheritance</a>
+    <a class="nav-item" href="#es6-classes"><span class="nav-dot nav-p"></span>ES6 Classes</a>
+    <a class="nav-item" href="#es6-tooling"><span class="nav-dot nav-r"></span>ES6 Tooling</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Complete Study Notes</div>
+    <h1>JavaScript<br><span>Fundamentals + OOP</span></h1>
+    <p>Comprehensive notes covering every topic from Variables to ES6 Classes, with color-coded examples and detailed explanations.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="val">13</span><span class="lbl">Chapters</span></div>
+      <div class="hero-stat"><span class="val">120+</span><span class="lbl">Code Examples</span></div>
+      <div class="hero-stat"><span class="val">2</span><span class="lbl">Full Courses</span></div>
+      <div class="hero-stat"><span class="val">ES6+</span><span class="lbl">Modern Syntax</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+<!-- ============================================================
+     CHAPTER 1: GETTING STARTED
+     ============================================================ -->
+<div class="chapter theme-yellow" id="getting-started">
+  <div class="section-header">
+    <div class="section-icon">🚀</div>
+    <div>
+      <h2>Getting Started</h2>
+      <div class="section-num">Chapter 1 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      What is JavaScript?
+      <span class="tag pill" style="background:var(--c-yellow-dim);color:var(--c-yellow);">Intro</span>
+    </div>
+    <p>JavaScript is a lightweight, interpreted, object-oriented programming language primarily used to add interactivity to web pages. It runs in the browser and also server-side via Node.js. JS is <strong>dynamically typed</strong> — you don't declare types; they are determined at runtime.</p>
+
+    <div class="callout callout-note">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Key Facts</strong>
+        JavaScript was created in 10 days by Brendan Eich in 1995. Despite sharing a name, it has nothing to do with Java. It is now standardized as ECMAScript (ES). Modern JS = ES6+ features.
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      JS in the Browser vs Node.js
+      <span class="tag pill" style="background:var(--c-yellow-dim);color:var(--c-yellow);">Environment</span>
+    </div>
+    <p>JavaScript can run in two environments. The browser provides DOM APIs for interacting with HTML. Node.js provides file system, network, and server APIs.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card" style="background:var(--c-blue-dim);border-color:var(--c-blue-mid);">
+        <h4 style="color:var(--c-blue);">Browser JS</h4>
+        <div class="code-block">
+          <pre><span class="cmt">// Access the DOM</span>
+<span class="kw">const</span> <span class="var">btn</span> <span class="op">=</span> document.<span class="fn">getElementById</span>(<span class="str">'myBtn'</span>);
+<span class="var">btn</span>.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, () <span class="op">=></span> {
+  document.<span class="prop">body</span>.<span class="prop">style</span>.<span class="prop">background</span> <span class="op">=</span> <span class="str">'blue'</span>;
+});</pre>
+        </div>
+      </div>
+      <div class="compare-card" style="background:var(--c-green-dim);border-color:var(--c-green-mid);">
+        <h4 style="color:var(--c-green);">Node.js</h4>
+        <div class="code-block">
+          <pre><span class="cmt">// Access the file system</span>
+<span class="kw">const</span> <span class="var">fs</span> <span class="op">=</span> <span class="fn">require</span>(<span class="str">'fs'</span>);
+<span class="var">fs</span>.<span class="fn">readFile</span>(<span class="str">'hello.txt'</span>, <span class="str">'utf8'</span>,
+  (<span class="var">err</span>, <span class="var">data</span>) <span class="op">=></span> console.<span class="fn">log</span>(<span class="var">data</span>)
+);</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Separation of Concerns</div>
+    <p>Keep HTML (structure), CSS (style), and JavaScript (behavior) in separate files. Never mix JavaScript inline in HTML — it makes code harder to maintain and reuse.</p>
+    <div class="callout callout-tip">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Best Practice</strong>
+        Always place <code>&lt;script&gt;</code> tags at the bottom of <code>&lt;body&gt;</code> so the HTML loads before JS executes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 2: VARIABLES & TYPES
+     ============================================================ -->
+<div class="chapter theme-blue" id="basics">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <div>
+      <h2>Variables & Types</h2>
+      <div class="section-num">Chapter 2 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      var, let, const
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Core</span>
+    </div>
+    <p>JavaScript has three ways to declare variables. Prefer <code>const</code> by default; use <code>let</code> when the value needs to change; avoid <code>var</code> (function-scoped, hoisted in confusing ways).</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">JavaScript</span>
+        <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+      </div>
+      <pre><span class="cmt">// var — function-scoped, avoid in modern JS</span>
+<span class="kw">var</span> <span class="var">score</span> <span class="op">=</span> <span class="num">10</span>;
+<span class="var">score</span> <span class="op">=</span> <span class="num">20</span>;      <span class="cmt">// can reassign</span>
+<span class="kw">var</span> <span class="var">score</span> <span class="op">=</span> <span class="num">30</span>;  <span class="cmt">// can even re-declare!</span>
+
+<span class="cmt">// let — block-scoped, reassignable</span>
+<span class="kw">let</span> <span class="var">count</span> <span class="op">=</span> <span class="num">0</span>;
+<span class="var">count</span> <span class="op">=</span> <span class="num">1</span>;        <span class="cmt">// OK</span>
+<span class="cmt">// let count = 5; ← ERROR: already declared</span>
+
+<span class="cmt">// const — block-scoped, NOT reassignable</span>
+<span class="kw">const</span> <span class="var">PI</span> <span class="op">=</span> <span class="num">3.14159</span>;
+<span class="cmt">// PI = 3; ← TypeError: Assignment to constant</span>
+
+<span class="cmt">// BUT: const objects/arrays can be mutated!</span>
+<span class="kw">const</span> <span class="var">person</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="str">'Alice'</span> };
+<span class="var">person</span>.<span class="prop">name</span> <span class="op">=</span> <span class="str">'Bob'</span>;  <span class="cmt">// ✅ OK — mutating the object</span>
+<span class="cmt">// person = {}; ← ❌ ERROR — reassigning the variable</span></pre>
+    </div>
+
+    <table class="ref-table" style="margin-top:1rem;">
+      <thead>
+        <tr><th>Keyword</th><th>Scope</th><th>Reassignable</th><th>Hoisted</th><th>Use When</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>var</code></td><td>Function</td><td style="color:var(--c-green);">Yes</td><td style="color:var(--c-coral);">Yes (undefined)</td><td>Legacy code only</td></tr>
+        <tr><td><code>let</code></td><td>Block</td><td style="color:var(--c-green);">Yes</td><td style="color:var(--c-green);">No (TDZ)</td><td>Mutable values</td></tr>
+        <tr><td><code>const</code></td><td>Block</td><td style="color:var(--c-coral);">No</td><td style="color:var(--c-green);">No (TDZ)</td><td>Default — most of the time</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      Primitive Types
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Types</span>
+    </div>
+    <p>JavaScript has <strong>7 primitive types</strong>. Primitives are immutable — they cannot be altered after creation. They are stored by <strong>value</strong> (copied when assigned).</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — All Primitive Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// 1. String</span>
+<span class="kw">let</span> <span class="var">name</span>    <span class="op">=</span> <span class="str">'Alice'</span>;          <span class="cmt">// single quotes</span>
+<span class="kw">let</span> <span class="var">greet</span>   <span class="op">=</span> <span class="str">"Hello"</span>;          <span class="cmt">// double quotes</span>
+<span class="kw">let</span> <span class="var">msg</span>     <span class="op">=</span> <span class="str">`Hi ${name}!`</span>;   <span class="cmt">// template literal</span>
+
+<span class="cmt">// 2. Number (integers AND floats — same type)</span>
+<span class="kw">let</span> <span class="var">age</span>     <span class="op">=</span> <span class="num">25</span>;
+<span class="kw">let</span> <span class="var">price</span>   <span class="op">=</span> <span class="num">9.99</span>;
+<span class="kw">let</span> <span class="var">inf</span>     <span class="op">=</span> <span class="type">Infinity</span>;
+<span class="kw">let</span> <span class="var">nan</span>     <span class="op">=</span> <span class="type">NaN</span>;             <span class="cmt">// "Not a Number"</span>
+
+<span class="cmt">// 3. Boolean</span>
+<span class="kw">let</span> <span class="var">isOnline</span> <span class="op">=</span> <span class="bool">true</span>;
+<span class="kw">let</span> <span class="var">hasError</span> <span class="op">=</span> <span class="bool">false</span>;
+
+<span class="cmt">// 4. undefined — declared but not assigned</span>
+<span class="kw">let</span> <span class="var">x</span>;
+console.<span class="fn">log</span>(<span class="var">x</span>);               <span class="cmt">// undefined</span>
+
+<span class="cmt">// 5. null — intentional absence of a value</span>
+<span class="kw">let</span> <span class="var">user</span> <span class="op">=</span> <span class="bool">null</span>;
+
+<span class="cmt">// 6. Symbol — unique identifier (ES6)</span>
+<span class="kw">const</span> <span class="var">id</span> <span class="op">=</span> <span class="type">Symbol</span>(<span class="str">'id'</span>);
+
+<span class="cmt">// 7. BigInt — very large integers (ES2020)</span>
+<span class="kw">const</span> <span class="var">big</span> <span class="op">=</span> <span class="num">9007199254740991n</span>;</pre>
+    </div>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>typeof Gotcha</strong>
+        <code>typeof null</code> returns <code>"object"</code> — this is a long-standing JavaScript bug. Always use <code>=== null</code> to check for null.
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Dynamic Typing</div>
+    <p>JavaScript automatically determines and can change a variable's type at runtime. This is powerful but can lead to bugs — always be aware of what type a variable holds.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">let</span> <span class="var">x</span> <span class="op">=</span> <span class="num">42</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">x</span>);    <span class="cmt">// "number"</span>
+
+<span class="var">x</span> <span class="op">=</span> <span class="str">"hello"</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">x</span>);    <span class="cmt">// "string"</span>
+
+<span class="var">x</span> <span class="op">=</span> <span class="bool">true</span>;
+console.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var">x</span>);    <span class="cmt">// "boolean"</span>
+
+<span class="cmt">// Implicit type coercion — JavaScript converts types automatically</span>
+console.<span class="fn">log</span>(<span class="str">"5"</span> <span class="op">+</span> <span class="num">3</span>);      <span class="cmt">// "53" — number becomes string</span>
+console.<span class="fn">log</span>(<span class="str">"5"</span> <span class="op">-</span> <span class="num">3</span>);      <span class="cmt">// 2   — string becomes number</span>
+console.<span class="fn">log</span>(<span class="bool">true</span> <span class="op">+</span> <span class="num">1</span>);    <span class="cmt">// 2   — true becomes 1</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      Objects
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Reference Type</span>
+    </div>
+    <p>Objects group related data and functions together. They are stored by <strong>reference</strong> — assigning an object to a variable stores its memory address, not a copy.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Object literal syntax</span>
+<span class="kw">const</span> <span class="var">person</span> <span class="op">=</span> {
+  <span class="prop">name</span>: <span class="str">'Alice'</span>,
+  <span class="prop">age</span>: <span class="num">30</span>,
+  <span class="prop">isAdmin</span>: <span class="bool">false</span>,
+  <span class="prop">address</span>: {                   <span class="cmt">// nested object</span>
+    <span class="prop">city</span>: <span class="str">'Paris'</span>,
+    <span class="prop">country</span>: <span class="str">'France'</span>
+  },
+  <span class="fn">greet</span>() {                    <span class="cmt">// method</span>
+    <span class="kw">return</span> <span class="str">`Hi, I'm ${<span class="kw">this</span>.<span class="prop">name</span>}`</span>;
+  }
+};
+
+<span class="cmt">// Dot notation</span>
+console.<span class="fn">log</span>(<span class="var">person</span>.<span class="prop">name</span>);          <span class="cmt">// 'Alice'</span>
+console.<span class="fn">log</span>(<span class="var">person</span>.<span class="prop">address</span>.<span class="prop">city</span>);  <span class="cmt">// 'Paris'</span>
+
+<span class="cmt">// Bracket notation (dynamic keys)</span>
+<span class="kw">let</span> <span class="var">key</span> <span class="op">=</span> <span class="str">'age'</span>;
+console.<span class="fn">log</span>(<span class="var">person</span>[<span class="var">key</span>]);            <span class="cmt">// 30</span>
+
+<span class="cmt">// Reference behavior</span>
+<span class="kw">const</span> <span class="var">p2</span> <span class="op">=</span> <span class="var">person</span>;  <span class="cmt">// p2 points to the SAME object</span>
+<span class="var">p2</span>.<span class="prop">name</span> <span class="op">=</span> <span class="str">'Bob'</span>;
+console.<span class="fn">log</span>(<span class="var">person</span>.<span class="prop">name</span>);  <span class="cmt">// 'Bob' — person changed too!</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Arrays</div>
+    <p>Arrays are ordered collections that can hold any type of value. They are objects under the hood — stored by reference.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Array literal</span>
+<span class="kw">const</span> <span class="var">fruits</span> <span class="op">=</span> [<span class="str">'apple'</span>, <span class="str">'banana'</span>, <span class="str">'cherry'</span>];
+
+<span class="cmt">// Accessing elements (0-indexed)</span>
+console.<span class="fn">log</span>(<span class="var">fruits</span>[<span class="num">0</span>]);     <span class="cmt">// 'apple'</span>
+console.<span class="fn">log</span>(<span class="var">fruits</span>.<span class="prop">length</span>); <span class="cmt">// 3</span>
+
+<span class="cmt">// Arrays can hold mixed types</span>
+<span class="kw">const</span> <span class="var">mixed</span> <span class="op">=</span> [<span class="num">1</span>, <span class="str">'hello'</span>, <span class="bool">true</span>, <span class="bool">null</span>, { <span class="prop">x</span>: <span class="num">5</span> }];</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 3: OPERATORS
+     ============================================================ -->
+<div class="chapter theme-green" id="operators">
+  <div class="section-header">
+    <div class="section-icon">⚙️</div>
+    <div>
+      <h2>Operators</h2>
+      <div class="section-num">Chapter 3 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Arithmetic Operators</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">let</span> <span class="var">a</span> <span class="op">=</span> <span class="num">10</span>, <span class="var">b</span> <span class="op">=</span> <span class="num">3</span>;
+
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">+</span> <span class="var">b</span>);   <span class="cmt">// 13  — addition</span>
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">-</span> <span class="var">b</span>);   <span class="cmt">// 7   — subtraction</span>
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">*</span> <span class="var">b</span>);   <span class="cmt">// 30  — multiplication</span>
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">/</span> <span class="var">b</span>);   <span class="cmt">// 3.33 — division</span>
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">%</span> <span class="var">b</span>);   <span class="cmt">// 1   — modulo (remainder)</span>
+console.<span class="fn">log</span>(<span class="var">a</span> <span class="op">**</span> <span class="var">b</span>);  <span class="cmt">// 1000 — exponentiation</span>
+
+<span class="cmt">// Increment / Decrement</span>
+<span class="kw">let</span> <span class="var">x</span> <span class="op">=</span> <span class="num">5</span>;
+console.<span class="fn">log</span>(<span class="var">x</span><span class="op">++</span>);  <span class="cmt">// 5 — post-increment (returns THEN adds)</span>
+console.<span class="fn">log</span>(<span class="var">x</span>);    <span class="cmt">// 6</span>
+console.<span class="fn">log</span>(<span class="op">++</span><span class="var">x</span>);  <span class="cmt">// 7 — pre-increment (adds THEN returns)</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Assignment Operators</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">let</span> <span class="var">n</span> <span class="op">=</span> <span class="num">10</span>;
+
+<span class="var">n</span> <span class="op">+=</span> <span class="num">5</span>;   <span class="cmt">// n = n + 5  → 15</span>
+<span class="var">n</span> <span class="op">-=</span> <span class="num">3</span>;   <span class="cmt">// n = n - 3  → 12</span>
+<span class="var">n</span> <span class="op">*=</span> <span class="num">2</span>;   <span class="cmt">// n = n * 2  → 24</span>
+<span class="var">n</span> <span class="op">/=</span> <span class="num">4</span>;   <span class="cmt">// n = n / 4  → 6</span>
+<span class="var">n</span> <span class="op">%=</span> <span class="num">4</span>;   <span class="cmt">// n = n % 4  → 2</span>
+<span class="var">n</span> <span class="op">**=</span> <span class="num">3</span>;  <span class="cmt">// n = n ** 3 → 8</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      Equality Operators
+      <span class="tag pill" style="background:var(--c-green-dim);color:var(--c-green);">Important!</span>
+    </div>
+    <p>JavaScript has two equality operators. Always prefer <code>===</code> (strict equality) which checks both value AND type.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card" style="background:var(--c-coral-dim);border-color:var(--c-coral-mid);">
+        <h4 style="color:var(--c-coral);">== (Loose / Abstract)</h4>
+        <div class="code-block">
+          <pre><span class="cmt">// Converts types before comparing</span>
+<span class="num">1</span> <span class="op">==</span> <span class="str">'1'</span>      <span class="cmt">// true  ← dangerous</span>
+<span class="num">0</span> <span class="op">==</span> <span class="bool">false</span>    <span class="cmt">// true</span>
+<span class="bool">null</span> <span class="op">==</span> <span class="bool">undefined</span> <span class="cmt">// true</span>
+<span class="str">''</span> <span class="op">==</span> <span class="bool">false</span>   <span class="cmt">// true</span></pre>
+        </div>
+      </div>
+      <div class="compare-card" style="background:var(--c-green-dim);border-color:var(--c-green-mid);">
+        <h4 style="color:var(--c-green);">=== (Strict) ✅ Use This</h4>
+        <div class="code-block">
+          <pre><span class="cmt">// No type conversion</span>
+<span class="num">1</span> <span class="op">===</span> <span class="str">'1'</span>     <span class="cmt">// false — different types</span>
+<span class="num">1</span> <span class="op">===</span> <span class="num">1</span>      <span class="cmt">// true</span>
+<span class="bool">null</span> <span class="op">===</span> <span class="bool">undefined</span> <span class="cmt">// false</span>
+<span class="bool">false</span> <span class="op">===</span> <span class="bool">false</span> <span class="cmt">// true</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Ternary Operator</div>
+    <p>A compact way to write if-else as an expression: <code>condition ? valueIfTrue : valueIfFalse</code></p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">age</span> <span class="op">=</span> <span class="num">20</span>;
+
+<span class="cmt">// Traditional if-else</span>
+<span class="kw">let</span> <span class="var">status</span>;
+<span class="kw">if</span> (<span class="var">age</span> <span class="op">>=</span> <span class="num">18</span>) <span class="var">status</span> <span class="op">=</span> <span class="str">'adult'</span>;
+<span class="kw">else</span> <span class="var">status</span> <span class="op">=</span> <span class="str">'minor'</span>;
+
+<span class="cmt">// Same with ternary — clean and concise</span>
+<span class="kw">const</span> <span class="var">status2</span> <span class="op">=</span> <span class="var">age</span> <span class="op">>=</span> <span class="num">18</span> <span class="op">?</span> <span class="str">'adult'</span> <span class="op">:</span> <span class="str">'minor'</span>;
+
+<span class="cmt">// Nested ternary (use sparingly — gets confusing)</span>
+<span class="kw">const</span> <span class="var">grade</span> <span class="op">=</span> <span class="num">75</span>;
+<span class="kw">const</span> <span class="var">letter</span> <span class="op">=</span> <span class="var">grade</span> <span class="op">>=</span> <span class="num">90</span> <span class="op">?</span> <span class="str">'A'</span>
+             <span class="op">:</span> <span class="var">grade</span> <span class="op">>=</span> <span class="num">80</span> <span class="op">?</span> <span class="str">'B'</span>
+             <span class="op">:</span> <span class="var">grade</span> <span class="op">>=</span> <span class="num">70</span> <span class="op">?</span> <span class="str">'C'</span> <span class="op">:</span> <span class="str">'F'</span>;
+<span class="cmt">// 'C'</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Logical Operators</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// && (AND) — true if BOTH sides are truthy</span>
+console.<span class="fn">log</span>(<span class="bool">true</span> <span class="op">&&</span> <span class="bool">true</span>);    <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="bool">true</span> <span class="op">&&</span> <span class="bool">false</span>);   <span class="cmt">// false</span>
+
+<span class="cmt">// || (OR) — true if EITHER side is truthy</span>
+console.<span class="fn">log</span>(<span class="bool">false</span> <span class="op">||</span> <span class="bool">true</span>);   <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="bool">false</span> <span class="op">||</span> <span class="bool">false</span>);  <span class="cmt">// false</span>
+
+<span class="cmt">// ! (NOT) — flips the boolean</span>
+console.<span class="fn">log</span>(<span class="op">!</span><span class="bool">true</span>);           <span class="cmt">// false</span>
+console.<span class="fn">log</span>(<span class="op">!</span><span class="bool">false</span>);          <span class="cmt">// true</span>
+
+<span class="cmt">// With non-booleans — SHORT CIRCUIT EVALUATION</span>
+<span class="cmt">// && returns first falsy OR last value</span>
+console.<span class="fn">log</span>(<span class="num">1</span> <span class="op">&&</span> <span class="num">2</span> <span class="op">&&</span> <span class="num">3</span>);     <span class="cmt">// 3</span>
+console.<span class="fn">log</span>(<span class="num">1</span> <span class="op">&&</span> <span class="bool">null</span> <span class="op">&&</span> <span class="num">3</span>);  <span class="cmt">// null</span>
+
+<span class="cmt">// || returns first truthy OR last value</span>
+console.<span class="fn">log</span>(<span class="bool">null</span> <span class="op">||</span> <span class="str">'default'</span>);  <span class="cmt">// 'default'</span>
+console.<span class="fn">log</span>(<span class="str">'Bob'</span> <span class="op">||</span> <span class="str">'default'</span>);  <span class="cmt">// 'Bob'</span>
+
+<span class="cmt">// Nullish coalescing ?? — only falls back on null/undefined</span>
+console.<span class="fn">log</span>(<span class="num">0</span> <span class="op">??</span> <span class="str">'default'</span>);  <span class="cmt">// 0  (0 is not null/undefined)</span>
+console.<span class="fn">log</span>(<span class="bool">null</span> <span class="op">??</span> <span class="str">'default'</span>); <span class="cmt">// 'default'</span></pre>
+    </div>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Practical Use of Short-Circuit</strong>
+        <code>const displayName = user.name || 'Guest';</code> — provides a fallback when name is falsy. Use <code>??</code> when 0 or empty string are valid values.
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Operator Precedence</div>
+    <p>Operators have a priority order (like PEMDAS in math). Parentheses always win.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Without parentheses — follows precedence rules</span>
+console.<span class="fn">log</span>(<span class="num">2</span> <span class="op">+</span> <span class="num">3</span> <span class="op">*</span> <span class="num">4</span>);     <span class="cmt">// 14 (* before +)</span>
+console.<span class="fn">log</span>(<span class="num">10</span> <span class="op">-</span> <span class="num">2</span> <span class="op">**</span> <span class="num">3</span>);   <span class="cmt">// 2  (** before -)</span>
+
+<span class="cmt">// With parentheses — explicit order</span>
+console.<span class="fn">log</span>((<span class="num">2</span> <span class="op">+</span> <span class="num">3</span>) <span class="op">*</span> <span class="num">4</span>);   <span class="cmt">// 20</span>
+
+<span class="cmt">// Precedence: ** > * / % > + - > comparisons > === > && > || > ?:</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 4: CONTROL FLOW
+     ============================================================ -->
+<div class="chapter theme-purple" id="control-flow">
+  <div class="section-header">
+    <div class="section-icon">🔀</div>
+    <div>
+      <h2>Control Flow</h2>
+      <div class="section-num">Chapter 4 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">if / else if / else</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">hour</span> <span class="op">=</span> <span class="num">14</span>;
+
+<span class="kw">if</span> (<span class="var">hour</span> <span class="op"><</span> <span class="num">12</span>) {
+  console.<span class="fn">log</span>(<span class="str">'Good morning!'</span>);
+} <span class="kw">else if</span> (<span class="var">hour</span> <span class="op"><</span> <span class="num">18</span>) {
+  console.<span class="fn">log</span>(<span class="str">'Good afternoon!'</span>);  <span class="cmt">// ← this runs</span>
+} <span class="kw">else</span> {
+  console.<span class="fn">log</span>(<span class="str">'Good evening!'</span>);
+}
+
+<span class="cmt">// Truthy / Falsy — in JS, these are all falsy:</span>
+<span class="cmt">// false, 0, '', null, undefined, NaN</span>
+<span class="cmt">// Everything else is truthy!</span>
+<span class="kw">const</span> <span class="var">name</span> <span class="op">=</span> <span class="str">''</span>;
+<span class="kw">if</span> (<span class="var">name</span>) {
+  console.<span class="fn">log</span>(<span class="str">'Has a name'</span>);
+} <span class="kw">else</span> {
+  console.<span class="fn">log</span>(<span class="str">'No name'</span>);   <span class="cmt">// ← empty string is falsy</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Switch Statement</div>
+    <p>Use <code>switch</code> when comparing one value against multiple exact options. Always include <code>break</code> to prevent fall-through.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">day</span> <span class="op">=</span> <span class="str">'Monday'</span>;
+
+<span class="kw">switch</span> (<span class="var">day</span>) {
+  <span class="kw">case</span> <span class="str">'Monday'</span>:
+  <span class="kw">case</span> <span class="str">'Tuesday'</span>:
+  <span class="kw">case</span> <span class="str">'Wednesday'</span>:
+  <span class="kw">case</span> <span class="str">'Thursday'</span>:
+  <span class="kw">case</span> <span class="str">'Friday'</span>:
+    console.<span class="fn">log</span>(<span class="str">'Weekday'</span>);   <span class="cmt">// fall-through for grouping</span>
+    <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">'Saturday'</span>:
+  <span class="kw">case</span> <span class="str">'Sunday'</span>:
+    console.<span class="fn">log</span>(<span class="str">'Weekend!'</span>);
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    console.<span class="fn">log</span>(<span class="str">'Unknown day'</span>);
+}</pre>
+    </div>
+    <div class="callout callout-danger">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Forgetting break</strong>
+        Without <code>break</code>, execution falls through to the next case. This is almost always a bug — always include <code>break</code> (or <code>return</code> inside a function).
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Loops</div>
+    <p>JavaScript has 5 main loop constructs. Choose based on what you're iterating over.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">for loop — classic counting loop</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// for (init; condition; update)</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">i</span> <span class="op"><</span> <span class="num">5</span>; <span class="var">i</span><span class="op">++</span>) {
+  console.<span class="fn">log</span>(<span class="var">i</span>);   <span class="cmt">// 0, 1, 2, 3, 4</span>
+}
+
+<span class="cmt">// Reverse loop</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">4</span>; <span class="var">i</span> <span class="op">>=</span> <span class="num">0</span>; <span class="var">i</span><span class="op">--</span>) {
+  console.<span class="fn">log</span>(<span class="var">i</span>);   <span class="cmt">// 4, 3, 2, 1, 0</span>
+}</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">while & do...while</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// while — checks condition BEFORE each iteration</span>
+<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">0</span>;
+<span class="kw">while</span> (<span class="var">i</span> <span class="op"><</span> <span class="num">3</span>) {
+  console.<span class="fn">log</span>(<span class="var">i</span><span class="op">++</span>);  <span class="cmt">// 0, 1, 2</span>
+}
+
+<span class="cmt">// do...while — executes AT LEAST ONCE</span>
+<span class="kw">let</span> <span class="var">j</span> <span class="op">=</span> <span class="num">10</span>;
+<span class="kw">do</span> {
+  console.<span class="fn">log</span>(<span class="str">'runs once'</span>);  <span class="cmt">// even though j > 3</span>
+} <span class="kw">while</span> (<span class="var">j</span> <span class="op"><</span> <span class="num">3</span>);</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">for...in and for...of</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// for...in — iterates over KEYS of an object</span>
+<span class="kw">const</span> <span class="var">person</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="str">'Alice'</span>, <span class="prop">age</span>: <span class="num">30</span> };
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">key</span> <span class="kw">in</span> <span class="var">person</span>) {
+  console.<span class="fn">log</span>(<span class="var">key</span>, <span class="var">person</span>[<span class="var">key</span>]);
+  <span class="cmt">// 'name' 'Alice'</span>
+  <span class="cmt">// 'age' 30</span>
+}
+
+<span class="cmt">// for...of — iterates over VALUES of an iterable</span>
+<span class="kw">const</span> <span class="var">colors</span> <span class="op">=</span> [<span class="str">'red'</span>, <span class="str">'green'</span>, <span class="str">'blue'</span>];
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">color</span> <span class="kw">of</span> <span class="var">colors</span>) {
+  console.<span class="fn">log</span>(<span class="var">color</span>);  <span class="cmt">// 'red', 'green', 'blue'</span>
+}
+
+<span class="cmt">// for...of with strings too!</span>
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">char</span> <span class="kw">of</span> <span class="str">'hello'</span>) {
+  console.<span class="fn">log</span>(<span class="var">char</span>);  <span class="cmt">// 'h', 'e', 'l', 'l', 'o'</span>
+}</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">break & continue</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// break — exits the loop entirely</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">i</span> <span class="op"><</span> <span class="num">10</span>; <span class="var">i</span><span class="op">++</span>) {
+  <span class="kw">if</span> (<span class="var">i</span> <span class="op">===</span> <span class="num">5</span>) <span class="kw">break</span>;
+  console.<span class="fn">log</span>(<span class="var">i</span>);  <span class="cmt">// 0, 1, 2, 3, 4</span>
+}
+
+<span class="cmt">// continue — skips current iteration</span>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">i</span> <span class="op"><</span> <span class="num">5</span>; <span class="var">i</span><span class="op">++</span>) {
+  <span class="kw">if</span> (<span class="var">i</span> <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>) <span class="kw">continue</span>;
+  console.<span class="fn">log</span>(<span class="var">i</span>);  <span class="cmt">// 1, 3 — skips even numbers</span>
+}</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="topic">
+    <div class="topic-title" style="color:var(--c-purple);">
+      Practice Exercises
+      <span class="tag pill" style="background:var(--c-purple-dim);color:var(--c-purple);">Exercises</span>
+    </div>
+
+    <div class="example-row">
+      <div>
+        <span class="ex-label" style="background:var(--c-purple-dim);color:var(--c-purple);">FizzBuzz</span>
+        <div class="code-block">
+          <pre><span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>; <span class="var">i</span> <span class="op"><=</span> <span class="num">15</span>; <span class="var">i</span><span class="op">++</span>) {
+  <span class="kw">if</span> (<span class="var">i</span> <span class="op">%</span> <span class="num">15</span> <span class="op">===</span> <span class="num">0</span>)
+    console.<span class="fn">log</span>(<span class="str">'FizzBuzz'</span>);
+  <span class="kw">else if</span> (<span class="var">i</span> <span class="op">%</span> <span class="num">3</span> <span class="op">===</span> <span class="num">0</span>)
+    console.<span class="fn">log</span>(<span class="str">'Fizz'</span>);
+  <span class="kw">else if</span> (<span class="var">i</span> <span class="op">%</span> <span class="num">5</span> <span class="op">===</span> <span class="num">0</span>)
+    console.<span class="fn">log</span>(<span class="str">'Buzz'</span>);
+  <span class="kw">else</span>
+    console.<span class="fn">log</span>(<span class="var">i</span>);
+}</pre>
+        </div>
+      </div>
+      <div>
+        <span class="ex-label" style="background:var(--c-purple-dim);color:var(--c-purple);">Max of Two Numbers</span>
+        <div class="code-block">
+          <pre><span class="kw">function</span> <span class="fn">maxOfTwo</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">if</span> (<span class="var">a</span> <span class="op">===</span> <span class="var">b</span>) <span class="kw">return</span> <span class="str">'equal'</span>;
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">></span> <span class="var">b</span> <span class="op">?</span> <span class="var">a</span> <span class="op">:</span> <span class="var">b</span>;
+}
+
+console.<span class="fn">log</span>(<span class="fn">maxOfTwo</span>(<span class="num">10</span>, <span class="num">20</span>)); <span class="cmt">// 20</span>
+console.<span class="fn">log</span>(<span class="fn">maxOfTwo</span>(<span class="num">5</span>, <span class="num">5</span>));   <span class="cmt">// 'equal'</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <span class="ex-label" style="background:var(--c-purple-dim);color:var(--c-purple);">Prime Number Check</span>
+    <div class="code-block">
+      <pre><span class="kw">function</span> <span class="fn">isPrime</span>(<span class="var">n</span>) {
+  <span class="kw">if</span> (<span class="var">n</span> <span class="op"><</span> <span class="num">2</span>) <span class="kw">return</span> <span class="bool">false</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> <span class="op">=</span> <span class="num">2</span>; <span class="var">i</span> <span class="op"><=</span> Math.<span class="fn">sqrt</span>(<span class="var">n</span>); <span class="var">i</span><span class="op">++</span>) {
+    <span class="kw">if</span> (<span class="var">n</span> <span class="op">%</span> <span class="var">i</span> <span class="op">===</span> <span class="num">0</span>) <span class="kw">return</span> <span class="bool">false</span>;  <span class="cmt">// divisible — not prime</span>
+  }
+  <span class="kw">return</span> <span class="bool">true</span>;
+}
+
+console.<span class="fn">log</span>(<span class="fn">isPrime</span>(<span class="num">7</span>));   <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="fn">isPrime</span>(<span class="num">10</span>));  <span class="cmt">// false</span>
+console.<span class="fn">log</span>(<span class="fn">isPrime</span>(<span class="num">2</span>));   <span class="cmt">// true</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 5: OBJECTS (DEEP DIVE)
+     ============================================================ -->
+<div class="chapter theme-coral" id="objects-basics">
+  <div class="section-header">
+    <div class="section-icon">🗂️</div>
+    <div>
+      <h2>Objects Deep Dive</h2>
+      <div class="section-num">Chapter 5 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Factory Functions</div>
+    <p>A factory function is a regular function that creates and returns a new object. Use when you need to create multiple similar objects without the <code>new</code> keyword complexity.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Factory function convention: camelCase name</span>
+<span class="kw">function</span> <span class="fn">createUser</span>(<span class="var">name</span>, <span class="var">age</span>, <span class="var">email</span>) {
+  <span class="kw">return</span> {
+    <span class="prop">name</span>,       <span class="cmt">// shorthand for name: name (ES6)</span>
+    <span class="prop">age</span>,
+    <span class="prop">email</span>,
+    <span class="fn">greet</span>() {
+      <span class="kw">return</span> <span class="str">`Hello, ${<span class="kw">this</span>.<span class="prop">name</span>}!`</span>;
+    },
+    <span class="fn">isAdult</span>() {
+      <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">age</span> <span class="op">>=</span> <span class="num">18</span>;
+    }
+  };
+}
+
+<span class="kw">const</span> <span class="var">alice</span> <span class="op">=</span> <span class="fn">createUser</span>(<span class="str">'Alice'</span>, <span class="num">30</span>, <span class="str">'alice@x.com'</span>);
+<span class="kw">const</span> <span class="var">bob</span>   <span class="op">=</span> <span class="fn">createUser</span>(<span class="str">'Bob'</span>, <span class="num">16</span>, <span class="str">'bob@x.com'</span>);
+
+console.<span class="fn">log</span>(<span class="var">alice</span>.<span class="fn">greet</span>());    <span class="cmt">// 'Hello, Alice!'</span>
+console.<span class="fn">log</span>(<span class="var">bob</span>.<span class="fn">isAdult</span>());   <span class="cmt">// false</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Constructor Functions</div>
+    <p>Constructor functions use <code>new</code> to create objects. By convention, their names start with a capital letter. <code>new</code> automatically creates an empty object, sets <code>this</code> to it, and returns it.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Constructor function — PascalCase by convention</span>
+<span class="kw">function</span> <span class="cls">Circle</span>(<span class="var">radius</span>) {
+  <span class="cmt">// 'this' refers to the new object being created</span>
+  <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">=</span> <span class="var">radius</span>;
+  <span class="kw">this</span>.<span class="fn">area</span> <span class="op">=</span> <span class="kw">function</span>() {
+    <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>;
+  };
+  <span class="kw">this</span>.<span class="fn">perimeter</span> <span class="op">=</span> <span class="kw">function</span>() {
+    <span class="kw">return</span> <span class="num">2</span> <span class="op">*</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span>;
+  };
+}
+
+<span class="kw">const</span> <span class="var">c1</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>);
+console.<span class="fn">log</span>(<span class="var">c1</span>.<span class="fn">area</span>());       <span class="cmt">// 78.53...</span>
+console.<span class="fn">log</span>(<span class="var">c1</span>.<span class="fn">perimeter</span>()); <span class="cmt">// 31.41...</span>
+console.<span class="fn">log</span>(<span class="var">c1</span> <span class="kw">instanceof</span> <span class="cls">Circle</span>); <span class="cmt">// true</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Value Types vs Reference Types</div>
+    <div class="compare-grid">
+      <div class="compare-card" style="background:var(--c-blue-dim);border-color:var(--c-blue-mid);">
+        <h4 style="color:var(--c-blue);">Primitives = By Value</h4>
+        <div class="code-block">
+          <pre><span class="kw">let</span> <span class="var">a</span> <span class="op">=</span> <span class="num">10</span>;
+<span class="kw">let</span> <span class="var">b</span> <span class="op">=</span> <span class="var">a</span>;  <span class="cmt">// COPY</span>
+<span class="var">b</span> <span class="op">=</span> <span class="num">20</span>;
+console.<span class="fn">log</span>(<span class="var">a</span>); <span class="cmt">// 10 — unchanged!</span>
+console.<span class="fn">log</span>(<span class="var">b</span>); <span class="cmt">// 20</span></pre>
+        </div>
+      </div>
+      <div class="compare-card" style="background:var(--c-coral-dim);border-color:var(--c-coral-mid);">
+        <h4 style="color:var(--c-coral);">Objects = By Reference</h4>
+        <div class="code-block">
+          <pre><span class="kw">let</span> <span class="var">x</span> <span class="op">=</span> { <span class="prop">n</span>: <span class="num">10</span> };
+<span class="kw">let</span> <span class="var">y</span> <span class="op">=</span> <span class="var">x</span>;   <span class="cmt">// REFERENCE</span>
+<span class="var">y</span>.<span class="prop">n</span> <span class="op">=</span> <span class="num">20</span>;
+console.<span class="fn">log</span>(<span class="var">x</span>.<span class="prop">n</span>); <span class="cmt">// 20 — x changed!</span>
+console.<span class="fn">log</span>(<span class="var">y</span>.<span class="prop">n</span>); <span class="cmt">// 20</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Cloning Objects</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — 3 Ways to Clone</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">original</span> <span class="op">=</span> { <span class="prop">a</span>: <span class="num">1</span>, <span class="prop">b</span>: <span class="num">2</span>, <span class="prop">nested</span>: { <span class="prop">c</span>: <span class="num">3</span> } };
+
+<span class="cmt">// 1. Object.assign — shallow clone</span>
+<span class="kw">const</span> <span class="var">clone1</span> <span class="op">=</span> Object.<span class="fn">assign</span>({}, <span class="var">original</span>);
+
+<span class="cmt">// 2. Spread operator — shallow clone (modern way)</span>
+<span class="kw">const</span> <span class="var">clone2</span> <span class="op">=</span> { ...<span class="var">original</span> };
+
+<span class="cmt">// 3. JSON trick — deep clone (loses functions/Date)</span>
+<span class="kw">const</span> <span class="var">deepClone</span> <span class="op">=</span> JSON.<span class="fn">parse</span>(JSON.<span class="fn">stringify</span>(<span class="var">original</span>));
+
+<span class="cmt">// Shallow clone SHARES nested objects:</span>
+<span class="var">clone2</span>.<span class="prop">nested</span>.<span class="prop">c</span> <span class="op">=</span> <span class="num">99</span>;
+console.<span class="fn">log</span>(<span class="var">original</span>.<span class="prop">nested</span>.<span class="prop">c</span>); <span class="cmt">// 99 — both affected!</span>
+
+<span class="cmt">// Deep clone is truly independent:</span>
+<span class="var">deepClone</span>.<span class="prop">nested</span>.<span class="prop">c</span> <span class="op">=</span> <span class="num">42</span>;
+console.<span class="fn">log</span>(<span class="var">original</span>.<span class="prop">nested</span>.<span class="prop">c</span>); <span class="cmt">// 99 — unchanged</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Built-in Objects: Math, String, Date</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — Math Object</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre>Math.<span class="fn">abs</span>(<span class="op">-</span><span class="num">7</span>)        <span class="cmt">// 7</span>
+Math.<span class="fn">ceil</span>(<span class="num">4.2</span>)      <span class="cmt">// 5  — round up</span>
+Math.<span class="fn">floor</span>(<span class="num">4.9</span>)     <span class="cmt">// 4  — round down</span>
+Math.<span class="fn">round</span>(<span class="num">4.5</span>)     <span class="cmt">// 5  — nearest integer</span>
+Math.<span class="fn">max</span>(<span class="num">1</span>, <span class="num">5</span>, <span class="num">3</span>)   <span class="cmt">// 5</span>
+Math.<span class="fn">min</span>(<span class="num">1</span>, <span class="num">5</span>, <span class="num">3</span>)   <span class="cmt">// 1</span>
+Math.<span class="fn">sqrt</span>(<span class="num">16</span>)       <span class="cmt">// 4</span>
+Math.<span class="fn">pow</span>(<span class="num">2</span>, <span class="num">10</span>)     <span class="cmt">// 1024</span>
+Math.<span class="fn">random</span>()       <span class="cmt">// random float [0, 1)</span>
+
+<span class="cmt">// Random integer from 1 to 6 (dice)</span>
+<span class="kw">const</span> <span class="var">dice</span> <span class="op">=</span> Math.<span class="fn">floor</span>(Math.<span class="fn">random</span>() <span class="op">*</span> <span class="num">6</span>) <span class="op">+</span> <span class="num">1</span>;</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — String Methods</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">s</span> <span class="op">=</span> <span class="str">'  Hello, World!  '</span>;
+
+<span class="var">s</span>.<span class="prop">length</span>              <span class="cmt">// 18</span>
+<span class="var">s</span>.<span class="fn">trim</span>()              <span class="cmt">// 'Hello, World!'</span>
+<span class="var">s</span>.<span class="fn">trimStart</span>()         <span class="cmt">// 'Hello, World!  '</span>
+<span class="var">s</span>.<span class="fn">toUpperCase</span>()       <span class="cmt">// '  HELLO, WORLD!  '</span>
+<span class="var">s</span>.<span class="fn">toLowerCase</span>()       <span class="cmt">// '  hello, world!  '</span>
+<span class="var">s</span>.<span class="fn">includes</span>(<span class="str">'World'</span>) <span class="cmt">// true</span>
+<span class="var">s</span>.<span class="fn">startsWith</span>(<span class="str">'  H'</span>) <span class="cmt">// true</span>
+<span class="var">s</span>.<span class="fn">indexOf</span>(<span class="str">'o'</span>)       <span class="cmt">// 5</span>
+<span class="var">s</span>.<span class="fn">replace</span>(<span class="str">'World'</span>, <span class="str">'JS'</span>) <span class="cmt">// '  Hello, JS!  '</span>
+<span class="var">s</span>.<span class="fn">split</span>(<span class="str">','</span>)          <span class="cmt">// ['  Hello', ' World!  ']</span>
+<span class="var">s</span>.<span class="fn">slice</span>(<span class="num">2</span>, <span class="num">7</span>)         <span class="cmt">// 'Hello'</span>
+<span class="str">'ha'</span>.<span class="fn">repeat</span>(<span class="num">3</span>)        <span class="cmt">// 'hahaha'</span>
+
+<span class="cmt">// Template literals — preferred over concatenation</span>
+<span class="kw">const</span> <span class="var">name</span> <span class="op">=</span> <span class="str">'Alice'</span>;
+<span class="kw">const</span> <span class="var">msg</span> <span class="op">=</span> <span class="str">`Hello, ${name.toUpperCase()}! Today is ${new Date().toLocaleDateString()}`</span>;</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 6: ARRAYS
+     ============================================================ -->
+<div class="chapter theme-teal" id="arrays">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <div>
+      <h2>Arrays</h2>
+      <div class="section-num">Chapter 6 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Adding & Removing Elements</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">arr</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+
+<span class="cmt">// Add to END</span>
+<span class="var">arr</span>.<span class="fn">push</span>(<span class="num">4</span>, <span class="num">5</span>);       <span class="cmt">// [1, 2, 3, 4, 5]</span>
+
+<span class="cmt">// Add to BEGINNING</span>
+<span class="var">arr</span>.<span class="fn">unshift</span>(<span class="num">0</span>);       <span class="cmt">// [0, 1, 2, 3, 4, 5]</span>
+
+<span class="cmt">// Add in MIDDLE (splice)</span>
+<span class="var">arr</span>.<span class="fn">splice</span>(<span class="num">2</span>, <span class="num">0</span>, <span class="num">99</span>); <span class="cmt">// at index 2, delete 0, insert 99</span>
+<span class="cmt">// [0, 1, 99, 2, 3, 4, 5]</span>
+
+<span class="cmt">// Remove from END</span>
+<span class="var">arr</span>.<span class="fn">pop</span>();             <span class="cmt">// removes 5, returns 5</span>
+
+<span class="cmt">// Remove from BEGINNING</span>
+<span class="var">arr</span>.<span class="fn">shift</span>();           <span class="cmt">// removes 0, returns 0</span>
+
+<span class="cmt">// Remove from MIDDLE (splice)</span>
+<span class="var">arr</span>.<span class="fn">splice</span>(<span class="num">1</span>, <span class="num">2</span>);     <span class="cmt">// at index 1, delete 2 items</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Finding Elements</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">nums</span> <span class="op">=</span> [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">20</span>];
+
+<span class="var">nums</span>.<span class="fn">indexOf</span>(<span class="num">20</span>)          <span class="cmt">// 1  — first occurrence index</span>
+<span class="var">nums</span>.<span class="fn">lastIndexOf</span>(<span class="num">20</span>)      <span class="cmt">// 3  — last occurrence index</span>
+<span class="var">nums</span>.<span class="fn">includes</span>(<span class="num">30</span>)         <span class="cmt">// true</span>
+<span class="var">nums</span>.<span class="fn">indexOf</span>(<span class="num">99</span>)          <span class="cmt">// -1 — not found</span>
+
+<span class="cmt">// find — returns first ELEMENT that passes test</span>
+<span class="kw">const</span> <span class="var">users</span> <span class="op">=</span> [
+  { <span class="prop">id</span>: <span class="num">1</span>, <span class="prop">name</span>: <span class="str">'Alice'</span> },
+  { <span class="prop">id</span>: <span class="num">2</span>, <span class="prop">name</span>: <span class="str">'Bob'</span>   }
+];
+
+<span class="kw">const</span> <span class="var">user</span> <span class="op">=</span> <span class="var">users</span>.<span class="fn">find</span>(<span class="var">u</span> <span class="op">=></span> <span class="var">u</span>.<span class="prop">id</span> <span class="op">===</span> <span class="num">2</span>);
+console.<span class="fn">log</span>(<span class="var">user</span>);  <span class="cmt">// { id: 2, name: 'Bob' }</span>
+
+<span class="cmt">// findIndex — returns INDEX of first match</span>
+<span class="kw">const</span> <span class="var">idx</span> <span class="op">=</span> <span class="var">users</span>.<span class="fn">findIndex</span>(<span class="var">u</span> <span class="op">=></span> <span class="var">u</span>.<span class="prop">id</span> <span class="op">===</span> <span class="num">2</span>); <span class="cmt">// 1</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">
+      Array Higher-Order Methods
+      <span class="tag pill" style="background:var(--c-teal-dim);color:var(--c-teal);">Must Know</span>
+    </div>
+    <p>These methods take a callback function and are the backbone of modern JavaScript data processing. They never mutate the original array.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">map — transforms each element</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">prices</span> <span class="op">=</span> [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>];
+
+<span class="cmt">// Apply 20% discount to each price</span>
+<span class="kw">const</span> <span class="var">discounted</span> <span class="op">=</span> <span class="var">prices</span>.<span class="fn">map</span>(<span class="var">p</span> <span class="op">=></span> <span class="var">p</span> <span class="op">*</span> <span class="num">0.8</span>);
+console.<span class="fn">log</span>(<span class="var">discounted</span>); <span class="cmt">// [8, 16, 24]</span>
+
+<span class="cmt">// Transform objects</span>
+<span class="kw">const</span> <span class="var">items</span> <span class="op">=</span> [{ <span class="prop">name</span>: <span class="str">'a'</span>, <span class="prop">price</span>: <span class="num">5</span> }, { <span class="prop">name</span>: <span class="str">'b'</span>, <span class="prop">price</span>: <span class="num">10</span> }];
+<span class="kw">const</span> <span class="var">names</span> <span class="op">=</span> <span class="var">items</span>.<span class="fn">map</span>(<span class="var">item</span> <span class="op">=></span> <span class="var">item</span>.<span class="prop">name</span>);
+console.<span class="fn">log</span>(<span class="var">names</span>); <span class="cmt">// ['a', 'b']</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">filter — keeps elements that pass a test</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">numbers</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>];
+
+<span class="kw">const</span> <span class="var">evens</span>   <span class="op">=</span> <span class="var">numbers</span>.<span class="fn">filter</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">%</span> <span class="num">2</span> <span class="op">===</span> <span class="num">0</span>); <span class="cmt">// [2, 4, 6]</span>
+<span class="kw">const</span> <span class="var">bigOnes</span> <span class="op">=</span> <span class="var">numbers</span>.<span class="fn">filter</span>(<span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">></span> <span class="num">3</span>);        <span class="cmt">// [4, 5, 6]</span>
+
+<span class="cmt">// Filter out falsy values</span>
+<span class="kw">const</span> <span class="var">mixed</span> <span class="op">=</span> [<span class="num">0</span>, <span class="num">1</span>, <span class="bool">null</span>, <span class="num">2</span>, <span class="str">''</span>, <span class="num">3</span>, <span class="bool">undefined</span>];
+<span class="kw">const</span> <span class="var">truthy</span> <span class="op">=</span> <span class="var">mixed</span>.<span class="fn">filter</span>(Boolean); <span class="cmt">// [1, 2, 3]</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">reduce — accumulates to a single value</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">nums</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cmt">// Sum — accumulator starts at 0</span>
+<span class="kw">const</span> <span class="var">sum</span> <span class="op">=</span> <span class="var">nums</span>.<span class="fn">reduce</span>((<span class="var">acc</span>, <span class="var">cur</span>) <span class="op">=></span> <span class="var">acc</span> <span class="op">+</span> <span class="var">cur</span>, <span class="num">0</span>);
+console.<span class="fn">log</span>(<span class="var">sum</span>); <span class="cmt">// 15</span>
+
+<span class="cmt">// Product</span>
+<span class="kw">const</span> <span class="var">product</span> <span class="op">=</span> <span class="var">nums</span>.<span class="fn">reduce</span>((<span class="var">acc</span>, <span class="var">cur</span>) <span class="op">=></span> <span class="var">acc</span> <span class="op">*</span> <span class="var">cur</span>, <span class="num">1</span>);
+console.<span class="fn">log</span>(<span class="var">product</span>); <span class="cmt">// 120</span>
+
+<span class="cmt">// Count items with a property</span>
+<span class="kw">const</span> <span class="var">cart</span> <span class="op">=</span> [{ <span class="prop">price</span>: <span class="num">5</span> }, { <span class="prop">price</span>: <span class="num">10</span> }, { <span class="prop">price</span>: <span class="num">3</span> }];
+<span class="kw">const</span> <span class="var">total</span> <span class="op">=</span> <span class="var">cart</span>.<span class="fn">reduce</span>((<span class="var">acc</span>, <span class="var">item</span>) <span class="op">=></span> <span class="var">acc</span> <span class="op">+</span> <span class="var">item</span>.<span class="prop">price</span>, <span class="num">0</span>);
+console.<span class="fn">log</span>(<span class="var">total</span>); <span class="cmt">// 18</span></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">every, some, sort, forEach</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">ages</span> <span class="op">=</span> [22, 18, 35, 16];
+
+<span class="cmt">// every — ALL must pass</span>
+<span class="var">ages</span>.<span class="fn">every</span>(<span class="var">a</span> <span class="op">=></span> <span class="var">a</span> <span class="op">>=</span> <span class="num">18</span>); <span class="cmt">// false (16 fails)</span>
+
+<span class="cmt">// some — at least ONE must pass</span>
+<span class="var">ages</span>.<span class="fn">some</span>(<span class="var">a</span> <span class="op">=></span> <span class="var">a</span> <span class="op">>=</span> <span class="num">18</span>);  <span class="cmt">// true</span>
+
+<span class="cmt">// sort — sorts in place (mutates original!)</span>
+[<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">5</span>].<span class="fn">sort</span>();                 <span class="cmt">// [1, 1, 3, 4, 5] — strings!</span>
+[<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>].<span class="fn">sort</span>((<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">a</span> <span class="op">-</span> <span class="var">b</span>);     <span class="cmt">// [1, 3, 4] ascending</span>
+[<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>].<span class="fn">sort</span>((<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">b</span> <span class="op">-</span> <span class="var">a</span>);     <span class="cmt">// [4, 3, 1] descending</span>
+
+<span class="cmt">// forEach — iterate (no return value)</span>
+[<span class="str">'a'</span>, <span class="str">'b'</span>, <span class="str">'c'</span>].<span class="fn">forEach</span>((<span class="var">val</span>, <span class="var">i</span>) <span class="op">=></span> {
+  console.<span class="fn">log</span>(<span class="var">i</span>, <span class="var">val</span>); <span class="cmt">// 0 'a', 1 'b', 2 'c'</span>
+});</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Spread & Rest with Arrays</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Spread — expand array into individual elements</span>
+<span class="kw">const</span> <span class="var">a</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="kw">const</span> <span class="var">b</span> <span class="op">=</span> [<span class="num">4</span>, <span class="num">5</span>, <span class="num">6</span>];
+
+<span class="kw">const</span> <span class="var">combined</span> <span class="op">=</span> [...<span class="var">a</span>, ...<span class="var">b</span>];  <span class="cmt">// [1, 2, 3, 4, 5, 6]</span>
+<span class="kw">const</span> <span class="var">copy</span> <span class="op">=</span> [...<span class="var">a</span>];             <span class="cmt">// shallow copy</span>
+
+Math.<span class="fn">max</span>(...<span class="var">a</span>);                 <span class="cmt">// 3 — spread as args</span>
+
+<span class="cmt">// Destructuring with rest</span>
+<span class="kw">const</span> [<span class="var">first</span>, <span class="var">second</span>, ...<span class="var">rest</span>] <span class="op">=</span> [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>];
+console.<span class="fn">log</span>(<span class="var">first</span>);  <span class="cmt">// 10</span>
+console.<span class="fn">log</span>(<span class="var">rest</span>);   <span class="cmt">// [30, 40]</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 7: FUNCTIONS
+     ============================================================ -->
+<div class="chapter theme-pink" id="functions">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <div>
+      <h2>Functions</h2>
+      <div class="section-num">Chapter 7 · JavaScript Basics</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Declaration vs Expression vs Arrow</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — 3 Ways to Define Functions</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// 1. Function Declaration — hoisted (can call before declaration)</span>
+<span class="kw">function</span> <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+}
+
+<span class="cmt">// 2. Function Expression — NOT hoisted</span>
+<span class="kw">const</span> <span class="fn">multiply</span> <span class="op">=</span> <span class="kw">function</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">*</span> <span class="var">b</span>;
+};
+
+<span class="cmt">// 3. Arrow Function (ES6) — concise, no own 'this'</span>
+<span class="kw">const</span> <span class="fn">subtract</span> <span class="op">=</span> (<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">a</span> <span class="op">-</span> <span class="var">b</span>;          <span class="cmt">// implicit return</span>
+<span class="kw">const</span> <span class="fn">square</span>   <span class="op">=</span> <span class="var">n</span> <span class="op">=></span> <span class="var">n</span> <span class="op">*</span> <span class="var">n</span>;                <span class="cmt">// single param — no parens</span>
+<span class="kw">const</span> <span class="fn">greet</span>    <span class="op">=</span> () <span class="op">=></span> <span class="str">'Hello!'</span>;             <span class="cmt">// no params</span>
+<span class="kw">const</span> <span class="fn">getObj</span>   <span class="op">=</span> () <span class="op">=></span> ({ <span class="prop">x</span>: <span class="num">1</span> });           <span class="cmt">// return object — wrap in ()</span>
+
+<span class="cmt">// Multi-line arrow function</span>
+<span class="kw">const</span> <span class="fn">describe</span> <span class="op">=</span> (<span class="var">name</span>, <span class="var">age</span>) <span class="op">=></span> {
+  <span class="kw">const</span> <span class="var">status</span> <span class="op">=</span> <span class="var">age</span> <span class="op">>=</span> <span class="num">18</span> <span class="op">?</span> <span class="str">'adult'</span> <span class="op">:</span> <span class="str">'minor'</span>;
+  <span class="kw">return</span> <span class="str">`${name} is a ${status}`</span>;
+};</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Arguments, Rest & Default Parameters</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Default parameters — used when argument is undefined</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">name</span> <span class="op">=</span> <span class="str">'Stranger'</span>, <span class="var">greeting</span> <span class="op">=</span> <span class="str">'Hello'</span>) {
+  <span class="kw">return</span> <span class="str">`${greeting}, ${name}!`</span>;
+}
+console.<span class="fn">log</span>(<span class="fn">greet</span>());              <span class="cmt">// 'Hello, Stranger!'</span>
+console.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">'Alice'</span>));      <span class="cmt">// 'Hello, Alice!'</span>
+console.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">'Bob'</span>, <span class="str">'Hi'</span>)); <span class="cmt">// 'Hi, Bob!'</span>
+
+<span class="cmt">// Rest operator — collects extra arguments into an array</span>
+<span class="kw">function</span> <span class="fn">sum</span>(...<span class="var">numbers</span>) {
+  <span class="kw">return</span> <span class="var">numbers</span>.<span class="fn">reduce</span>((<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>, <span class="num">0</span>);
+}
+console.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>));      <span class="cmt">// 6</span>
+console.<span class="fn">log</span>(<span class="fn">sum</span>(<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>)); <span class="cmt">// 100</span>
+
+<span class="cmt">// arguments object (old way — not in arrow functions)</span>
+<span class="kw">function</span> <span class="fn">oldStyle</span>() {
+  console.<span class="fn">log</span>(<span class="kw">arguments</span>);  <span class="cmt">// array-like object</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Scope: Local vs Global, let vs var</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">let</span> <span class="var">global</span> <span class="op">=</span> <span class="str">'I am global'</span>;
+
+<span class="kw">function</span> <span class="fn">myFunc</span>() {
+  <span class="kw">let</span> <span class="var">local</span> <span class="op">=</span> <span class="str">'I am local'</span>;
+  console.<span class="fn">log</span>(<span class="var">global</span>);  <span class="cmt">// ✅ can access global</span>
+  console.<span class="fn">log</span>(<span class="var">local</span>);   <span class="cmt">// ✅ local is in scope</span>
+}
+
+<span class="cmt">// console.log(local); ← ❌ ReferenceError</span>
+
+<span class="cmt">// Block scope difference: let vs var</span>
+{
+  <span class="kw">let</span> <span class="var">blockLet</span> <span class="op">=</span> <span class="str">'block'</span>;
+  <span class="kw">var</span> <span class="var">blockVar</span> <span class="op">=</span> <span class="str">'function'</span>;
+}
+<span class="cmt">// console.log(blockLet); ← ❌ not accessible</span>
+console.<span class="fn">log</span>(<span class="var">blockVar</span>);    <span class="cmt">// ✅ var leaks out of blocks!</span>
+
+<span class="cmt">// var in loops — classic bug</span>
+<span class="kw">for</span> (<span class="kw">var</span> <span class="var">i</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">i</span> <span class="op"><</span> <span class="num">3</span>; <span class="var">i</span><span class="op">++</span>) {
+  setTimeout(() <span class="op">=></span> console.<span class="fn">log</span>(<span class="var">i</span>), <span class="num">100</span>); <span class="cmt">// 3 3 3</span>
+}
+<span class="kw">for</span> (<span class="kw">let</span> <span class="var">j</span> <span class="op">=</span> <span class="num">0</span>; <span class="var">j</span> <span class="op"><</span> <span class="num">3</span>; <span class="var">j</span><span class="op">++</span>) {
+  setTimeout(() <span class="op">=></span> console.<span class="fn">log</span>(<span class="var">j</span>), <span class="num">100</span>); <span class="cmt">// 0 1 2 ✅</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Getters & Setters</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">person</span> <span class="op">=</span> {
+  <span class="prop">firstName</span>: <span class="str">'John'</span>,
+  <span class="prop">lastName</span>: <span class="str">'Doe'</span>,
+
+  <span class="cmt">// getter — access like a property, not a function</span>
+  <span class="kw">get</span> <span class="fn">fullName</span>() {
+    <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">firstName</span>} ${<span class="kw">this</span>.<span class="prop">lastName</span>}`</span>;
+  },
+
+  <span class="cmt">// setter — validates / transforms input</span>
+  <span class="kw">set</span> <span class="fn">fullName</span>(<span class="var">value</span>) {
+    <span class="kw">const</span> [<span class="var">first</span>, <span class="var">last</span>] <span class="op">=</span> <span class="var">value</span>.<span class="fn">split</span>(<span class="str">' '</span>);
+    <span class="kw">this</span>.<span class="prop">firstName</span> <span class="op">=</span> <span class="var">first</span>;
+    <span class="kw">this</span>.<span class="prop">lastName</span> <span class="op">=</span> <span class="var">last</span>;
+  }
+};
+
+console.<span class="fn">log</span>(<span class="var">person</span>.<span class="prop">fullName</span>);       <span class="cmt">// 'John Doe'</span>
+<span class="var">person</span>.<span class="prop">fullName</span> <span class="op">=</span> <span class="str">'Jane Smith'</span>;
+console.<span class="fn">log</span>(<span class="var">person</span>.<span class="prop">firstName</span>);      <span class="cmt">// 'Jane'</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Error Handling: try / catch / finally</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">function</span> <span class="fn">divide</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">if</span> (<span class="var">b</span> <span class="op">===</span> <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">Error</span>(<span class="str">'Cannot divide by zero'</span>);
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">/</span> <span class="var">b</span>;
+}
+
+<span class="kw">try</span> {
+  <span class="kw">const</span> <span class="var">result</span> <span class="op">=</span> <span class="fn">divide</span>(<span class="num">10</span>, <span class="num">0</span>);
+  console.<span class="fn">log</span>(<span class="var">result</span>);
+} <span class="kw">catch</span> (<span class="var">error</span>) {
+  console.<span class="fn">log</span>(<span class="str">'Error:'</span>, <span class="var">error</span>.<span class="prop">message</span>); <span class="cmt">// 'Cannot divide by zero'</span>
+} <span class="kw">finally</span> {
+  console.<span class="fn">log</span>(<span class="str">'Always runs'</span>); <span class="cmt">// cleanup, logging, etc.</span>
+}
+
+<span class="cmt">// Custom error types</span>
+<span class="kw">function</span> <span class="fn">validateAge</span>(<span class="var">age</span>) {
+  <span class="kw">if</span> (<span class="kw">typeof</span> <span class="var">age</span> <span class="op">!==</span> <span class="str">'number'</span>) <span class="kw">throw new</span> <span class="cls">TypeError</span>(<span class="str">'Age must be a number'</span>);
+  <span class="kw">if</span> (<span class="var">age</span> <span class="op"><</span> <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">RangeError</span>(<span class="str">'Age cannot be negative'</span>);
+  <span class="kw">return</span> <span class="bool">true</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">The <code>this</code> Keyword</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// 'this' refers to the object calling the method</span>
+<span class="kw">const</span> <span class="var">counter</span> <span class="op">=</span> {
+  <span class="prop">count</span>: <span class="num">0</span>,
+  <span class="fn">increment</span>() {
+    <span class="kw">this</span>.<span class="prop">count</span><span class="op">++</span>;    <span class="cmt">// 'this' = counter object</span>
+  },
+  <span class="fn">reset</span>() {
+    <span class="kw">this</span>.<span class="prop">count</span> <span class="op">=</span> <span class="num">0</span>;
+  }
+};
+
+<span class="cmt">// Arrow functions DON'T have their own 'this'</span>
+<span class="cmt">// They inherit 'this' from the enclosing scope</span>
+<span class="kw">const</span> <span class="var">obj</span> <span class="op">=</span> {
+  <span class="prop">name</span>: <span class="str">'test'</span>,
+  <span class="fn">regular</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">name</span>; },        <span class="cmt">// 'test'</span>
+  <span class="fn">arrow</span>: () <span class="op">=></span> <span class="kw">this</span>.<span class="prop">name</span>                    <span class="cmt">// undefined (window)</span>
+};
+
+<span class="cmt">// call, apply, bind — change 'this' explicitly</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">greeting</span>) {
+  <span class="kw">return</span> <span class="str">`${greeting}, ${<span class="kw">this</span>.<span class="prop">name</span>}!`</span>;
+}
+<span class="kw">const</span> <span class="var">user</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="str">'Alice'</span> };
+
+<span class="fn">greet</span>.<span class="fn">call</span>(<span class="var">user</span>, <span class="str">'Hello'</span>);          <span class="cmt">// 'Hello, Alice!'</span>
+<span class="fn">greet</span>.<span class="fn">apply</span>(<span class="var">user</span>, [<span class="str">'Hi'</span>]);          <span class="cmt">// 'Hi, Alice!'</span>
+<span class="kw">const</span> <span class="fn">boundGreet</span> <span class="op">=</span> <span class="fn">greet</span>.<span class="fn">bind</span>(<span class="var">user</span>); <span class="cmt">// new function with this = user</span>
+<span class="fn">boundGreet</span>(<span class="str">'Hey'</span>);                   <span class="cmt">// 'Hey, Alice!'</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     OOP SECTION DIVIDER
+     ============================================================ -->
+<div style="margin:4rem 0 3rem; padding:2rem; background:linear-gradient(135deg, #1a2035 0%, #252d40 100%); border-radius:14px; border:1px solid var(--border); text-align:center;">
+  <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:0.5rem;">Part 2</div>
+  <h2 style="font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--c-orange);">Object-Oriented Programming</h2>
+  <p style="color:var(--muted);margin-top:0.5rem;">Prototypes · Inheritance · ES6 Classes · Modules</p>
+</div>
+
+<!-- ============================================================
+     CHAPTER 8: OOP CONCEPTS
+     ============================================================ -->
+<div class="chapter theme-orange" id="oop-intro">
+  <div class="section-header">
+    <div class="section-icon">🏛️</div>
+    <div>
+      <h2>OOP Concepts</h2>
+      <div class="section-num">Chapter 8 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">The 4 Pillars of OOP</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;">
+      <div style="background:var(--c-blue-dim);border:1px solid var(--c-blue-mid);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--c-blue);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">1. Encapsulation</h4>
+        <p style="font-size:13px;color:#9ecfff;line-height:1.6;">Bundle data + methods together. Hide internal details. Expose only what's needed via a clean interface.</p>
+      </div>
+      <div style="background:var(--c-green-dim);border:1px solid var(--c-green-mid);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--c-green);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">2. Abstraction</h4>
+        <p style="font-size:13px;color:#8de8b8;line-height:1.6;">Hide implementation complexity. Expose a simple interface. Users don't need to know HOW it works.</p>
+      </div>
+      <div style="background:var(--c-purple-dim);border:1px solid var(--c-purple-mid);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--c-purple);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">3. Inheritance</h4>
+        <p style="font-size:13px;color:#c4afff;line-height:1.6;">Child classes inherit properties and methods from parent classes. Promotes code reuse and reduces duplication.</p>
+      </div>
+      <div style="background:var(--c-coral-dim);border:1px solid var(--c-coral-mid);border-radius:8px;padding:1rem;">
+        <h4 style="color:var(--c-coral);font-size:13px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">4. Polymorphism</h4>
+        <p style="font-size:13px;color:#ffaa9e;line-height:1.6;">Same interface, different implementation. Objects of different types respond to the same method call differently.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 9: OOP OBJECTS DEEP DIVE
+     ============================================================ -->
+<div class="chapter theme-yellow" id="oop-objects">
+  <div class="section-header">
+    <div class="section-icon">🔒</div>
+    <div>
+      <h2>Objects: Encapsulation & Abstraction</h2>
+      <div class="section-num">Chapter 9 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Private Properties (Closures)</div>
+    <p>JavaScript didn't have true private fields until ES2022. The classic approach uses closures — variables in the constructor function scope that aren't directly accessible from outside.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — Closure-based Privacy</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">function</span> <span class="cls">BankAccount</span>(<span class="var">initialBalance</span>) {
+  <span class="cmt">// 'balance' is private — in function scope</span>
+  <span class="kw">let</span> <span class="var">balance</span> <span class="op">=</span> <span class="var">initialBalance</span>;
+  <span class="kw">let</span> <span class="var">transactions</span> <span class="op">=</span> [];
+
+  <span class="cmt">// Public interface (returned object)</span>
+  <span class="kw">this</span>.<span class="fn">deposit</span> <span class="op">=</span> (<span class="var">amount</span>) <span class="op">=></span> {
+    <span class="kw">if</span> (<span class="var">amount</span> <span class="op"><=</span> <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">Error</span>(<span class="str">'Amount must be positive'</span>);
+    <span class="var">balance</span> <span class="op">+=</span> <span class="var">amount</span>;
+    <span class="var">transactions</span>.<span class="fn">push</span>({ <span class="prop">type</span>: <span class="str">'deposit'</span>, <span class="var">amount</span> });
+  };
+
+  <span class="kw">this</span>.<span class="fn">withdraw</span> <span class="op">=</span> (<span class="var">amount</span>) <span class="op">=></span> {
+    <span class="kw">if</span> (<span class="var">amount</span> <span class="op">></span> <span class="var">balance</span>) <span class="kw">throw new</span> <span class="cls">Error</span>(<span class="str">'Insufficient funds'</span>);
+    <span class="var">balance</span> <span class="op">-=</span> <span class="var">amount</span>;
+  };
+
+  <span class="cmt">// Getter — read-only access to private data</span>
+  Object.<span class="fn">defineProperty</span>(<span class="kw">this</span>, <span class="str">'balance'</span>, {
+    <span class="fn">get</span>: () <span class="op">=></span> <span class="var">balance</span>
+  });
+}
+
+<span class="kw">const</span> <span class="var">account</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="num">100</span>);
+<span class="var">account</span>.<span class="fn">deposit</span>(<span class="num">50</span>);
+console.<span class="fn">log</span>(<span class="var">account</span>.<span class="prop">balance</span>);  <span class="cmt">// 150</span>
+<span class="cmt">// account.balance = 9999; ← Won't work — getter only</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Private Fields with # (ES2022)</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — Modern Private Fields</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Counter</span> {
+  <span class="prop">#count</span> <span class="op">=</span> <span class="num">0</span>;  <span class="cmt">// # prefix = private field</span>
+  <span class="prop">#step</span>;
+
+  <span class="fn">constructor</span>(<span class="var">step</span> <span class="op">=</span> <span class="num">1</span>) {
+    <span class="kw">this</span>.<span class="prop">#step</span> <span class="op">=</span> <span class="var">step</span>;
+  }
+
+  <span class="fn">increment</span>() { <span class="kw">this</span>.<span class="prop">#count</span> <span class="op">+=</span> <span class="kw">this</span>.<span class="prop">#step</span>; }
+  <span class="fn">reset</span>()     { <span class="kw">this</span>.<span class="prop">#count</span> <span class="op">=</span> <span class="num">0</span>; }
+
+  <span class="kw">get</span> <span class="fn">value</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">#count</span>; }
+}
+
+<span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Counter</span>(<span class="num">5</span>);
+<span class="var">c</span>.<span class="fn">increment</span>();
+<span class="var">c</span>.<span class="fn">increment</span>();
+console.<span class="fn">log</span>(<span class="var">c</span>.<span class="prop">value</span>);  <span class="cmt">// 10</span>
+<span class="cmt">// c.#count; ← SyntaxError: private field</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 10: PROTOTYPES
+     ============================================================ -->
+<div class="chapter theme-blue" id="prototypes">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <div>
+      <h2>Prototypes & Prototypical Inheritance</h2>
+      <div class="section-num">Chapter 10 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">The Prototype Chain</div>
+    <p>Every JavaScript object has a hidden <code>[[Prototype]]</code> link. When you access a property, JS first looks at the object, then walks up the chain until it finds it or reaches <code>null</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">function</span> <span class="cls">Animal</span>(<span class="var">name</span>) {
+  <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> <span class="var">name</span>;
+}
+
+<span class="cmt">// Methods on prototype — shared by ALL instances</span>
+<span class="cls">Animal</span>.<span class="prop">prototype</span>.<span class="fn">eat</span> <span class="op">=</span> <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} is eating`</span>;
+};
+
+<span class="cls">Animal</span>.<span class="prop">prototype</span>.<span class="fn">sleep</span> <span class="op">=</span> <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} is sleeping`</span>;
+};
+
+<span class="kw">const</span> <span class="var">dog</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Animal</span>(<span class="str">'Rex'</span>);
+console.<span class="fn">log</span>(<span class="var">dog</span>.<span class="fn">eat</span>());    <span class="cmt">// 'Rex is eating'</span>
+
+<span class="cmt">// Property lookup chain:</span>
+<span class="cmt">// dog → Animal.prototype → Object.prototype → null</span>
+console.<span class="fn">log</span>(<span class="var">dog</span>.<span class="fn">toString</span>()); <span class="cmt">// from Object.prototype</span>
+
+<span class="cmt">// Own property vs prototype property</span>
+console.<span class="fn">log</span>(<span class="var">dog</span>.<span class="fn">hasOwnProperty</span>(<span class="str">'name'</span>)); <span class="cmt">// true (own)</span>
+console.<span class="fn">log</span>(<span class="var">dog</span>.<span class="fn">hasOwnProperty</span>(<span class="str">'eat'</span>));  <span class="cmt">// false (prototype)</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Property Descriptors</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">obj</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="str">'Alice'</span> };
+
+<span class="cmt">// View a property's descriptor</span>
+Object.<span class="fn">getOwnPropertyDescriptor</span>(<span class="var">obj</span>, <span class="str">'name'</span>);
+<span class="cmt">// { value: 'Alice', writable: true, enumerable: true, configurable: true }</span>
+
+<span class="cmt">// Define a property with specific attributes</span>
+Object.<span class="fn">defineProperty</span>(<span class="var">obj</span>, <span class="str">'id'</span>, {
+  <span class="prop">value</span>: <span class="num">42</span>,
+  <span class="prop">writable</span>: <span class="bool">false</span>,      <span class="cmt">// cannot be changed</span>
+  <span class="prop">enumerable</span>: <span class="bool">false</span>,   <span class="cmt">// won't show in for...in</span>
+  <span class="prop">configurable</span>: <span class="bool">false</span>  <span class="cmt">// cannot be deleted</span>
+});
+
+<span class="var">obj</span>.<span class="prop">id</span> <span class="op">=</span> <span class="num">99</span>;              <span class="cmt">// silently fails (or error in strict mode)</span>
+console.<span class="fn">log</span>(<span class="var">obj</span>.<span class="prop">id</span>);    <span class="cmt">// 42 — unchanged</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Iterating Instance vs Prototype Members</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">function</span> <span class="cls">Circle</span>(<span class="var">r</span>) { <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">=</span> <span class="var">r</span>; }
+<span class="cls">Circle</span>.<span class="prop">prototype</span>.<span class="fn">area</span> <span class="op">=</span> <span class="kw">function</span>() { <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>; };
+
+<span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>);
+
+<span class="cmt">// for...in iterates OWN + PROTOTYPE properties</span>
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">key</span> <span class="kw">in</span> <span class="var">c</span>) console.<span class="fn">log</span>(<span class="var">key</span>); <span class="cmt">// 'radius', 'area'</span>
+
+<span class="cmt">// hasOwnProperty filters to only own</span>
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">key</span> <span class="kw">in</span> <span class="var">c</span>) {
+  <span class="kw">if</span> (<span class="var">c</span>.<span class="fn">hasOwnProperty</span>(<span class="var">key</span>)) console.<span class="fn">log</span>(<span class="var">key</span>); <span class="cmt">// 'radius' only</span>
+}
+
+<span class="cmt">// Object.keys — only own enumerable</span>
+Object.<span class="fn">keys</span>(<span class="var">c</span>); <span class="cmt">// ['radius']</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 11: PROTOTYPICAL INHERITANCE
+     ============================================================ -->
+<div class="chapter theme-green" id="proto-inheritance">
+  <div class="section-header">
+    <div class="section-icon">🧬</div>
+    <div>
+      <h2>Prototypical Inheritance</h2>
+      <div class="section-num">Chapter 11 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Creating Custom Inheritance</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — Manual Prototype Chain</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// PARENT</span>
+<span class="kw">function</span> <span class="cls">Shape</span>(<span class="var">color</span>) {
+  <span class="kw">this</span>.<span class="prop">color</span> <span class="op">=</span> <span class="var">color</span>;
+}
+<span class="cls">Shape</span>.<span class="prop">prototype</span>.<span class="fn">describe</span> <span class="op">=</span> <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`A ${<span class="kw">this</span>.<span class="prop">color</span>} shape`</span>;
+};
+
+<span class="cmt">// CHILD</span>
+<span class="kw">function</span> <span class="cls">Circle</span>(<span class="var">color</span>, <span class="var">radius</span>) {
+  <span class="cmt">// Step 1: Call parent constructor</span>
+  <span class="cls">Shape</span>.<span class="fn">call</span>(<span class="kw">this</span>, <span class="var">color</span>);
+  <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">=</span> <span class="var">radius</span>;
+}
+
+<span class="cmt">// Step 2: Set up prototype chain</span>
+<span class="cls">Circle</span>.<span class="prop">prototype</span> <span class="op">=</span> Object.<span class="fn">create</span>(<span class="cls">Shape</span>.<span class="prop">prototype</span>);
+
+<span class="cmt">// Step 3: Fix the constructor reference</span>
+<span class="cls">Circle</span>.<span class="prop">prototype</span>.<span class="prop">constructor</span> <span class="op">=</span> <span class="cls">Circle</span>;
+
+<span class="cmt">// Step 4: Add child methods</span>
+<span class="cls">Circle</span>.<span class="prop">prototype</span>.<span class="fn">area</span> <span class="op">=</span> <span class="kw">function</span>() {
+  <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>;
+};
+
+<span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Circle</span>(<span class="str">'red'</span>, <span class="num">5</span>);
+console.<span class="fn">log</span>(<span class="var">c</span>.<span class="fn">describe</span>());  <span class="cmt">// 'A red shape' (inherited)</span>
+console.<span class="fn">log</span>(<span class="var">c</span>.<span class="fn">area</span>());      <span class="cmt">// 78.53...</span>
+console.<span class="fn">log</span>(<span class="var">c</span> <span class="kw">instanceof</span> <span class="cls">Circle</span>); <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="var">c</span> <span class="kw">instanceof</span> <span class="cls">Shape</span>);  <span class="cmt">// true</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Method Overriding & Polymorphism</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">function</span> <span class="cls">Animal</span>(<span class="var">name</span>) { <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> <span class="var">name</span>; }
+<span class="cls">Animal</span>.<span class="prop">prototype</span>.<span class="fn">speak</span> <span class="op">=</span> <span class="kw">function</span>() {
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} makes a sound`</span>;
+};
+
+<span class="kw">function</span> <span class="cls">Dog</span>(<span class="var">name</span>) { <span class="cls">Animal</span>.<span class="fn">call</span>(<span class="kw">this</span>, <span class="var">name</span>); }
+<span class="cls">Dog</span>.<span class="prop">prototype</span> <span class="op">=</span> Object.<span class="fn">create</span>(<span class="cls">Animal</span>.<span class="prop">prototype</span>);
+<span class="cls">Dog</span>.<span class="prop">prototype</span>.<span class="prop">constructor</span> <span class="op">=</span> <span class="cls">Dog</span>;
+<span class="cls">Dog</span>.<span class="prop">prototype</span>.<span class="fn">speak</span> <span class="op">=</span> <span class="kw">function</span>() {   <span class="cmt">// OVERRIDE</span>
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} barks!`</span>;
+};
+
+<span class="kw">function</span> <span class="cls">Cat</span>(<span class="var">name</span>) { <span class="cls">Animal</span>.<span class="fn">call</span>(<span class="kw">this</span>, <span class="var">name</span>); }
+<span class="cls">Cat</span>.<span class="prop">prototype</span> <span class="op">=</span> Object.<span class="fn">create</span>(<span class="cls">Animal</span>.<span class="prop">prototype</span>);
+<span class="cls">Cat</span>.<span class="prop">prototype</span>.<span class="prop">constructor</span> <span class="op">=</span> <span class="cls">Cat</span>;
+<span class="cls">Cat</span>.<span class="prop">prototype</span>.<span class="fn">speak</span> <span class="op">=</span> <span class="kw">function</span>() {   <span class="cmt">// OVERRIDE</span>
+  <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} meows!`</span>;
+};
+
+<span class="cmt">// Polymorphism — same method, different behavior</span>
+<span class="kw">const</span> <span class="var">animals</span> <span class="op">=</span> [<span class="kw">new</span> <span class="cls">Dog</span>(<span class="str">'Rex'</span>), <span class="kw">new</span> <span class="cls">Cat</span>(<span class="str">'Whiskers'</span>), <span class="kw">new</span> <span class="cls">Animal</span>(<span class="str">'Generic'</span>)];
+<span class="var">animals</span>.<span class="fn">forEach</span>(<span class="var">a</span> <span class="op">=></span> console.<span class="fn">log</span>(<span class="var">a</span>.<span class="fn">speak</span>()));
+<span class="cmt">// 'Rex barks!'</span>
+<span class="cmt">// 'Whiskers meows!'</span>
+<span class="cmt">// 'Generic makes a sound'</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Mixins — Composition over Inheritance</div>
+    <p>Mixins let you add abilities to objects without deep inheritance chains. Great when multiple "traits" are needed.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">const</span> <span class="var">canSwim</span> <span class="op">=</span> {
+  <span class="fn">swim</span>() { <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} is swimming`</span>; }
+};
+
+<span class="kw">const</span> <span class="var">canFly</span> <span class="op">=</span> {
+  <span class="fn">fly</span>() { <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} is flying`</span>; }
+};
+
+<span class="kw">function</span> <span class="cls">Duck</span>(<span class="var">name</span>) { <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> <span class="var">name</span>; }
+
+<span class="cmt">// Mix in both abilities</span>
+Object.<span class="fn">assign</span>(<span class="cls">Duck</span>.<span class="prop">prototype</span>, <span class="var">canSwim</span>, <span class="var">canFly</span>);
+
+<span class="kw">const</span> <span class="var">duck</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Duck</span>(<span class="str">'Donald'</span>);
+console.<span class="fn">log</span>(<span class="var">duck</span>.<span class="fn">swim</span>()); <span class="cmt">// 'Donald is swimming'</span>
+console.<span class="fn">log</span>(<span class="var">duck</span>.<span class="fn">fly</span>());  <span class="cmt">// 'Donald is flying'</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 12: ES6 CLASSES
+     ============================================================ -->
+<div class="chapter theme-purple" id="es6-classes">
+  <div class="section-header">
+    <div class="section-icon">🏗️</div>
+    <div>
+      <h2>ES6 Classes</h2>
+      <div class="section-num">Chapter 12 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="callout callout-note">
+    <span class="callout-icon"></span>
+    <div class="callout-body">
+      <strong>Classes are Syntactic Sugar</strong>
+      ES6 classes don't introduce a new inheritance model — they're cleaner syntax over the same prototype-based system. Under the hood, it's still prototypes.
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Class Syntax</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — ES6 Class</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Person</span> {
+  <span class="cmt">// Private field (ES2022)</span>
+  <span class="prop">#age</span>;
+
+  <span class="cmt">// constructor — called with 'new'</span>
+  <span class="fn">constructor</span>(<span class="var">name</span>, <span class="var">age</span>) {
+    <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> <span class="var">name</span>;
+    <span class="kw">this</span>.<span class="prop">#age</span> <span class="op">=</span> <span class="var">age</span>;
+  }
+
+  <span class="cmt">// Instance method</span>
+  <span class="fn">greet</span>() {
+    <span class="kw">return</span> <span class="str">`Hi, I'm ${<span class="kw">this</span>.<span class="prop">name</span>}`</span>;
+  }
+
+  <span class="cmt">// Getter</span>
+  <span class="kw">get</span> <span class="fn">age</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">#age</span>; }
+
+  <span class="cmt">// Setter with validation</span>
+  <span class="kw">set</span> <span class="fn">age</span>(<span class="var">val</span>) {
+    <span class="kw">if</span> (<span class="var">val</span> <span class="op"><</span> <span class="num">0</span>) <span class="kw">throw new</span> <span class="cls">RangeError</span>(<span class="str">'Age must be positive'</span>);
+    <span class="kw">this</span>.<span class="prop">#age</span> <span class="op">=</span> <span class="var">val</span>;
+  }
+
+  <span class="cmt">// Static method — called on class, not instance</span>
+  <span class="kw">static</span> <span class="fn">compare</span>(<span class="var">p1</span>, <span class="var">p2</span>) {
+    <span class="kw">return</span> <span class="var">p1</span>.<span class="prop">#age</span> <span class="op">-</span> <span class="var">p2</span>.<span class="prop">#age</span>;
+  }
+
+  <span class="fn">toString</span>() {
+    <span class="kw">return</span> <span class="str">`Person(${<span class="kw">this</span>.<span class="prop">name</span>}, ${<span class="kw">this</span>.<span class="prop">#age</span>})`</span>;
+  }
+}
+
+<span class="kw">const</span> <span class="var">alice</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">'Alice'</span>, <span class="num">30</span>);
+<span class="kw">const</span> <span class="var">bob</span>   <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">'Bob'</span>, <span class="num">25</span>);
+
+console.<span class="fn">log</span>(<span class="var">alice</span>.<span class="fn">greet</span>());           <span class="cmt">// 'Hi, I'm Alice'</span>
+console.<span class="fn">log</span>(<span class="var">alice</span>.<span class="prop">age</span>);               <span class="cmt">// 30</span>
+<span class="var">alice</span>.<span class="prop">age</span> <span class="op">=</span> <span class="num">31</span>;                       <span class="cmt">// setter</span>
+console.<span class="fn">log</span>(<span class="cls">Person</span>.<span class="fn">compare</span>(<span class="var">alice</span>, <span class="var">bob</span>)); <span class="cmt">// 6 (static)</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Class Inheritance with extends & super</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — Class Inheritance</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Animal</span> {
+  <span class="fn">constructor</span>(<span class="var">name</span>, <span class="var">sound</span>) {
+    <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> <span class="var">name</span>;
+    <span class="kw">this</span>.<span class="prop">sound</span> <span class="op">=</span> <span class="var">sound</span>;
+  }
+
+  <span class="fn">speak</span>() {
+    <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} says ${<span class="kw">this</span>.<span class="prop">sound</span>}`</span>;
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Dog</span> <span class="kw">extends</span> <span class="cls">Animal</span> {
+  <span class="fn">constructor</span>(<span class="var">name</span>, <span class="var">breed</span>) {
+    <span class="kw">super</span>(<span class="var">name</span>, <span class="str">'Woof'</span>);  <span class="cmt">// MUST call super first</span>
+    <span class="kw">this</span>.<span class="prop">breed</span> <span class="op">=</span> <span class="var">breed</span>;
+  }
+
+  <span class="cmt">// Method override</span>
+  <span class="fn">speak</span>() {
+    <span class="kw">return</span> <span class="str">`${<span class="kw">super</span>.<span class="fn">speak</span>()} (${<span class="kw">this</span>.<span class="prop">breed</span>})`</span>;
+  }
+
+  <span class="fn">fetch</span>(<span class="var">item</span>) {
+    <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">name</span>} fetches the ${<span class="var">item</span>}!`</span>;
+  }
+}
+
+<span class="kw">class</span> <span class="cls">GuideDog</span> <span class="kw">extends</span> <span class="cls">Dog</span> {
+  <span class="fn">constructor</span>(<span class="var">name</span>, <span class="var">breed</span>, <span class="var">owner</span>) {
+    <span class="kw">super</span>(<span class="var">name</span>, <span class="var">breed</span>);
+    <span class="kw">this</span>.<span class="prop">owner</span> <span class="op">=</span> <span class="var">owner</span>;
+  }
+}
+
+<span class="kw">const</span> <span class="var">d</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Dog</span>(<span class="str">'Rex'</span>, <span class="str">'Labrador'</span>);
+console.<span class="fn">log</span>(<span class="var">d</span>.<span class="fn">speak</span>());   <span class="cmt">// 'Rex says Woof (Labrador)'</span>
+console.<span class="fn">log</span>(<span class="var">d</span>.<span class="fn">fetch</span>(<span class="str">'ball'</span>)); <span class="cmt">// 'Rex fetches the ball!'</span>
+
+<span class="kw">const</span> <span class="var">g</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">GuideDog</span>(<span class="str">'Buddy'</span>, <span class="str">'Golden'</span>, <span class="str">'John'</span>);
+console.<span class="fn">log</span>(<span class="var">g</span>.<span class="fn">speak</span>());  <span class="cmt">// 'Buddy says Woof (Golden)'</span>
+console.<span class="fn">log</span>(<span class="var">g</span> <span class="kw">instanceof</span> <span class="cls">Animal</span>); <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="var">g</span> <span class="kw">instanceof</span> <span class="cls">Dog</span>);    <span class="cmt">// true</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Static Methods & Properties</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">MathHelper</span> {
+  <span class="kw">static</span> <span class="prop">PI</span> <span class="op">=</span> <span class="num">3.14159</span>;
+
+  <span class="kw">static</span> <span class="fn">circleArea</span>(<span class="var">r</span>) { <span class="kw">return</span> <span class="cls">MathHelper</span>.<span class="prop">PI</span> <span class="op">*</span> <span class="var">r</span> <span class="op">**</span> <span class="num">2</span>; }
+  <span class="kw">static</span> <span class="fn">factorial</span>(<span class="var">n</span>) {
+    <span class="kw">if</span> (<span class="var">n</span> <span class="op"><=</span> <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+    <span class="kw">return</span> <span class="var">n</span> <span class="op">*</span> <span class="cls">MathHelper</span>.<span class="fn">factorial</span>(<span class="var">n</span> <span class="op">-</span> <span class="num">1</span>);
+  }
+}
+
+<span class="cmt">// Call on CLASS, not instance</span>
+console.<span class="fn">log</span>(<span class="cls">MathHelper</span>.<span class="fn">circleArea</span>(<span class="num">5</span>)); <span class="cmt">// 78.53...</span>
+console.<span class="fn">log</span>(<span class="cls">MathHelper</span>.<span class="fn">factorial</span>(<span class="num">5</span>)); <span class="cmt">// 120</span>
+
+<span class="cmt">// new MathHelper().circleArea(5); ← undefined — can't call static on instance</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 13: ES6 TOOLING
+     ============================================================ -->
+<div class="chapter theme-coral" id="es6-tooling">
+  <div class="section-header">
+    <div class="section-icon">🔧</div>
+    <div>
+      <h2>ES6 Tooling: Modules, Babel & Webpack</h2>
+      <div class="section-num">Chapter 13 · OOP in JavaScript</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">ES6 Modules (import / export)</div>
+    <p>Modules let you split code across files, control what's exposed, and avoid polluting the global scope.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">math.js — Exporting</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Named exports — multiple per file</span>
+<span class="kw">export const</span> <span class="var">PI</span> <span class="op">=</span> <span class="num">3.14159</span>;
+
+<span class="kw">export function</span> <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>; }
+<span class="kw">export function</span> <span class="fn">subtract</span>(<span class="var">a</span>, <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">-</span> <span class="var">b</span>; }
+
+<span class="cmt">// Default export — one per file</span>
+<span class="kw">export default class</span> <span class="cls">Calculator</span> {
+  <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>; }
+  <span class="fn">divide</span>(<span class="var">a</span>, <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">/</span> <span class="var">b</span>; }
+}</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">app.js — Importing</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Import named exports</span>
+<span class="kw">import</span> { <span class="var">PI</span>, <span class="fn">add</span>, <span class="fn">subtract</span> } <span class="kw">from</span> <span class="str">'./math.js'</span>;
+
+<span class="cmt">// Import with alias</span>
+<span class="kw">import</span> { <span class="fn">add</span> <span class="kw">as</span> <span class="fn">sum</span> } <span class="kw">from</span> <span class="str">'./math.js'</span>;
+
+<span class="cmt">// Import everything</span>
+<span class="kw">import</span> <span class="op">*</span> <span class="kw">as</span> <span class="var">MathUtils</span> <span class="kw">from</span> <span class="str">'./math.js'</span>;
+<span class="var">MathUtils</span>.<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);
+
+<span class="cmt">// Import default export (any name)</span>
+<span class="kw">import</span> <span class="cls">Calculator</span> <span class="kw">from</span> <span class="str">'./math.js'</span>;
+<span class="kw">const</span> <span class="var">calc</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Calculator</span>();
+
+<span class="cmt">// Import both default and named</span>
+<span class="kw">import</span> <span class="cls">Calculator</span>, { <span class="var">PI</span> } <span class="kw">from</span> <span class="str">'./math.js'</span>;</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">CommonJS Modules (Node.js)</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — CommonJS</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// utils.js — exporting</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">name</span>) { <span class="kw">return</span> <span class="str">`Hello, ${name}!`</span>; }
+<span class="kw">const</span> <span class="var">VERSION</span> <span class="op">=</span> <span class="str">'1.0'</span>;
+
+<span class="var">module</span>.<span class="prop">exports</span> <span class="op">=</span> { <span class="fn">greet</span>, <span class="var">VERSION</span> };
+
+<span class="cmt">// app.js — importing</span>
+<span class="kw">const</span> { <span class="fn">greet</span>, <span class="var">VERSION</span> } <span class="op">=</span> <span class="fn">require</span>(<span class="str">'./utils'</span>);
+console.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="str">'Alice'</span>)); <span class="cmt">// 'Hello, Alice!'</span></pre>
+    </div>
+
+    <table class="ref-table">
+      <thead>
+        <tr><th>Feature</th><th>CommonJS (require)</th><th>ES Modules (import)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Syntax</td><td><code>require() / module.exports</code></td><td><code>import / export</code></td></tr>
+        <tr><td>Loading</td><td>Synchronous</td><td>Asynchronous</td></tr>
+        <tr><td>Default in</td><td>Node.js</td><td>Browsers, modern Node</td></tr>
+        <tr><td>Tree-shaking</td><td style="color:var(--c-coral);">No</td><td style="color:var(--c-green);">Yes</td></tr>
+        <tr><td>File extension</td><td>.js</td><td>.js or .mjs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Babel & Webpack</div>
+    <div class="compare-grid">
+      <div class="compare-card" style="background:var(--c-yellow-dim);border-color:var(--c-yellow-mid);">
+        <h4 style="color:var(--c-yellow);">Babel — Transpiler</h4>
+        <p style="font-size:13px;color:#f0dc8a;line-height:1.6;margin-bottom:0.75rem;">Converts modern ES6+ JavaScript into ES5 that older browsers understand. Write tomorrow's JS today.</p>
+        <div class="code-block"><pre><span class="cmt">// Input (ES6+)</span>
+<span class="kw">const</span> <span class="fn">greet</span> <span class="op">=</span> (<span class="var">name</span>) <span class="op">=></span> <span class="str">`Hi ${name}`</span>;
+
+<span class="cmt">// Output (ES5)</span>
+<span class="kw">var</span> <span class="fn">greet</span> <span class="op">=</span> <span class="kw">function</span>(<span class="var">name</span>) {
+  <span class="kw">return</span> <span class="str">"Hi " + name</span>;
+};</pre></div>
+      </div>
+      <div class="compare-card" style="background:var(--c-teal-dim);border-color:var(--c-teal-mid);">
+        <h4 style="color:var(--c-teal);">Webpack — Bundler</h4>
+        <p style="font-size:13px;color:#8de8ea;line-height:1.6;margin-bottom:0.75rem;">Bundles all JS files and their dependencies into one (or few) optimized files for the browser.</p>
+        <div class="code-block"><pre><span class="cmt">// webpack.config.js</span>
+<span class="var">module</span>.<span class="prop">exports</span> <span class="op">=</span> {
+  <span class="prop">entry</span>: <span class="str">'./src/index.js'</span>,
+  <span class="prop">output</span>: {
+    <span class="prop">path</span>: __dirname <span class="op">+</span> <span class="str">'/dist'</span>,
+    <span class="prop">filename</span>: <span class="str">'bundle.js'</span>
+  }
+};</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL EXERCISE -->
+  <div class="topic">
+    <div class="topic-title" style="color:var(--c-coral);">
+      Putting It All Together — Full Example
+      <span class="tag pill" style="background:var(--c-coral-dim);color:var(--c-coral);">Capstone</span>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript — ES6 Class with all features</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Vehicle</span> {
+  <span class="prop">#speed</span> <span class="op">=</span> <span class="num">0</span>;
+  <span class="kw">static</span> <span class="prop">count</span> <span class="op">=</span> <span class="num">0</span>;
+
+  <span class="fn">constructor</span>(<span class="var">make</span>, <span class="var">model</span>, <span class="var">maxSpeed</span>) {
+    <span class="kw">this</span>.<span class="prop">make</span> <span class="op">=</span> <span class="var">make</span>;
+    <span class="kw">this</span>.<span class="prop">model</span> <span class="op">=</span> <span class="var">model</span>;
+    <span class="kw">this</span>.<span class="prop">maxSpeed</span> <span class="op">=</span> <span class="var">maxSpeed</span>;
+    <span class="cls">Vehicle</span>.<span class="prop">count</span><span class="op">++</span>;
+  }
+
+  <span class="fn">accelerate</span>(<span class="var">amount</span>) {
+    <span class="kw">this</span>.<span class="prop">#speed</span> <span class="op">=</span> Math.<span class="fn">min</span>(<span class="kw">this</span>.<span class="prop">#speed</span> <span class="op">+</span> <span class="var">amount</span>, <span class="kw">this</span>.<span class="prop">maxSpeed</span>);
+  }
+
+  <span class="fn">brake</span>(<span class="var">amount</span>) {
+    <span class="kw">this</span>.<span class="prop">#speed</span> <span class="op">=</span> Math.<span class="fn">max</span>(<span class="kw">this</span>.<span class="prop">#speed</span> <span class="op">-</span> <span class="var">amount</span>, <span class="num">0</span>);
+  }
+
+  <span class="kw">get</span> <span class="fn">speed</span>() { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">#speed</span>; }
+
+  <span class="fn">toString</span>() {
+    <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">make</span>} ${<span class="kw">this</span>.<span class="prop">model</span>} @ ${<span class="kw">this</span>.<span class="prop">#speed</span>}km/h`</span>;
+  }
+
+  <span class="kw">static</span> <span class="fn">getCount</span>() { <span class="kw">return</span> <span class="cls">Vehicle</span>.<span class="prop">count</span>; }
+}
+
+<span class="kw">class</span> <span class="cls">ElectricCar</span> <span class="kw">extends</span> <span class="cls">Vehicle</span> {
+  <span class="prop">#battery</span>;
+
+  <span class="fn">constructor</span>(<span class="var">make</span>, <span class="var">model</span>, <span class="var">maxSpeed</span>, <span class="var">batteryKwh</span>) {
+    <span class="kw">super</span>(<span class="var">make</span>, <span class="var">model</span>, <span class="var">maxSpeed</span>);
+    <span class="kw">this</span>.<span class="prop">#battery</span> <span class="op">=</span> <span class="var">batteryKwh</span>;
+  }
+
+  <span class="fn">charge</span>() { <span class="kw">return</span> <span class="str">`${<span class="kw">this</span>.<span class="prop">make</span>} charging to 100%`</span>; }
+
+  <span class="fn">toString</span>() {
+    <span class="kw">return</span> <span class="str">`⚡ ${<span class="kw">super</span>.<span class="fn">toString</span>()} [${<span class="kw">this</span>.<span class="prop">#battery</span>}kWh]`</span>;
+  }
+}
+
+<span class="kw">const</span> <span class="var">tesla</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">ElectricCar</span>(<span class="str">'Tesla'</span>, <span class="str">'Model 3'</span>, <span class="num">250</span>, <span class="num">75</span>);
+<span class="var">tesla</span>.<span class="fn">accelerate</span>(<span class="num">100</span>);
+<span class="var">tesla</span>.<span class="fn">accelerate</span>(<span class="num">80</span>);
+console.<span class="fn">log</span>(<span class="var">tesla</span>.<span class="fn">toString</span>());  <span class="cmt">// ⚡ Tesla Model 3 @ 180km/h [75kWh]</span>
+console.<span class="fn">log</span>(<span class="cls">Vehicle</span>.<span class="fn">getCount</span>()); <span class="cmt">// 1</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:12px;">
+  <p>JavaScript Complete Notes · Basics + OOP · All examples are runnable in browser console or Node.js</p>
+</div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // Highlight active nav item on scroll
+  const chapters = document.querySelectorAll('.chapter');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navItems.forEach(n => {
+          n.classList.toggle('active', n.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  chapters.forEach(c => observer.observe(c));
+
+  // Update progress bar
+  window.addEventListener('scroll', () => {
+    const p = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.querySelector('.progress-fill').style.width = p + '%';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    /* Topic colors */
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+
+    .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-yellow);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 0.5rem 0;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-yellow); border-left-color: var(--c-yellow); background: var(--c-yellow-dim); }
+
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: var(--text); }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-yellow), var(--c-orange));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 3rem 3rem 5rem;
+    max-width: 920px;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .section-num {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===== TOPIC CARD ===== */
+  .topic {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .topic p {
+    color: #c4cad8;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .code-header .dots {
+    display: flex; gap: 5px;
+  }
+
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a;
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #c792ea; }         /* keywords: let, const, function */
+  .fn { color: #82aaff; }         /* function names */
+  .str { color: #c3e88d; }        /* strings */
+  .num { color: #f78c6c; }        /* numbers */
+  .cmt { color: #546e7a; font-style: italic; } /* comments */
+  .var { color: #eeffff; }        /* variables */
+  .op { color: #89ddff; }         /* operators */
+  .cls { color: #ffcb6b; }        /* class names */
+  .prop { color: #f07178; }       /* properties */
+  .bool { color: #ff5572; }       /* booleans */
+  .type { color: #ffcb6b; }       /* types */
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-icon::after { content: "💡"; }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-icon::after { content: "⚠️"; }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-icon::after { content: "✅"; }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-icon::after { content: "🚫"; }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== REFERENCE TABLE ===== */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1rem 0;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--bg3);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg2); }
+
+  .ref-table code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== INLINE HIGHLIGHT ===== */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== EXAMPLE LABEL ===== */
+  .ex-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== PILL BADGES ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter {
+    margin-top: 4rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .chapter:first-child { margin-top: 0; }
+
+  /* ===== OUTPUT BOX ===== */
+  .output-box {
+    background: var(--bg);
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--c-green);
+    margin-top: -1px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--c-yellow); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Color theming per section */
+  .theme-yellow .section-icon { background: var(--c-yellow-dim); color: var(--c-yellow); }
+  .theme-yellow .section-header h2 { color: var(--c-yellow); }
+
+  .theme-blue .section-icon { background: var(--c-blue-dim); color: var(--c-blue); }
+  .theme-blue .section-header h2 { color: var(--c-blue); }
+
+  .theme-green .section-icon { background: var(--c-green-dim); color: var(--c-green); }
+  .theme-green .section-header h2 { color: var(--c-green); }
+
+  .theme-purple .section-icon { background: var(--c-purple-dim); color: var(--c-purple); }
+  .theme-purple .section-header h2 { color: var(--c-purple); }
+
+  .theme-coral .section-icon { background: var(--c-coral-dim); color: var(--c-coral); }
+  .theme-coral .section-header h2 { color: var(--c-coral); }
+
+  .theme-teal .section-icon { background: var(--c-teal-dim); color: var(--c-teal); }
+  .theme-teal .section-header h2 { color: var(--c-teal); }
+
+  .theme-pink .section-icon { background: var(--c-pink-dim); color: var(--c-pink); }
+  .theme-pink .section-header h2 { color: var(--c-pink); }
+
+  .theme-orange .section-icon { background: var(--c-orange-dim); color: var(--c-orange); }
+  .theme-orange .section-header h2 { color: var(--c-orange); }
+
+  .nav-y { background: var(--c-yellow); }
+  .nav-b { background: var(--c-blue); }
+  .nav-g { background: var(--c-green); }
+  .nav-p { background: var(--c-purple); }
+  .nav-r { background: var(--c-coral); }
+  .nav-t { background: var(--c-teal); }
+  .nav-k { background: var(--c-pink); }
+  .nav-o { background: var(--c-orange); }
+
+  /* Subtle separator */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Multi-example grid */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .example-row { grid-template-columns: 1fr; } }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== REACT-TS SPECIFIC ===== */
+
+  /* Sidebar structure override (react-ts uses #sidebar not .sidebar) */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--c-yellow); letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  #main { margin-left: 270px; min-height: 100vh; }
+
+  .progress-text { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; white-space: nowrap; }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-bottom: 4rem; scroll-margin-top: 5rem; }
+
+  .section-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--c-yellow);
+    background: var(--c-yellow-dim);
+    border: 1px solid var(--c-yellow-mid);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--c-yellow); }
+
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection h3::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--c-orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .subsection h4 { font-size: 13px; font-weight: 600; color: var(--c-teal); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  p { color: #c4cad8; margin-bottom: 1rem; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* ===== CONCEPT GRID ===== */
+  .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1rem 0; }
+  .concept-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .concept-card-title { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-yellow); font-weight: 600; margin-bottom: 8px; }
+  .concept-card p { font-size: 13px; margin-bottom: 0; color: var(--muted); }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .feature-list li { color: #c4cad8; padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-yellow); font-size: 11px; top: 6px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13.5px; }
+  .compare-table th { background: var(--bg3); color: var(--muted); font-weight: 600; padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .compare-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--bg3); color: #c4cad8; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .compare-table code { font-family: 'Fira Code', monospace; font-size: 12.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal); }
+
+  /* ===== HERO ===== */
+  .hero-badge { display: none; } /* replaced by hero-eyebrow */
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+  .tag-blue   { background: var(--c-blue-dim);   color: var(--c-blue);   border: 1px solid var(--c-blue-mid);   font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-purple { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-green  { background: var(--c-green-dim);  color: var(--c-green);  border: 1px solid var(--c-green-mid);  font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-orange { background: var(--c-orange-dim); color: var(--c-orange); border: 1px solid var(--c-orange-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+
+  /* ===== CALLOUTS (react-ts uses callout-info/err not note/danger) ===== */
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-title { font-size: 13px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .callout-body p { margin-bottom: 0; font-size: 13.5px; }
+
+  .callout-info { background: var(--c-blue-dim); border-left: 3px solid var(--c-blue); border-radius: 8px; }
+  .callout-info .callout-title { color: var(--c-blue); }
+  .callout-info .callout-body { color: #9ecfff; }
+
+  .callout-tip { background: var(--c-green-dim); border-left: 3px solid var(--c-green); border-radius: 8px; }
+  .callout-tip .callout-title { color: var(--c-green); }
+  .callout-tip .callout-body { color: #8de8b8; }
+
+  .callout-warn { background: var(--c-yellow-dim); border-left: 3px solid var(--c-yellow); border-radius: 8px; }
+  .callout-warn .callout-title { color: var(--c-yellow); }
+  .callout-warn .callout-body { color: #f0dc8a; }
+
+  .callout-err { background: var(--c-coral-dim); border-left: 3px solid var(--c-coral); border-radius: 8px; }
+  .callout-err .callout-title { color: var(--c-coral); }
+  .callout-err .callout-body { color: #ffaa9e; }
+
+  /* ===== EXERCISE BLOCKS ===== */
+  .exercise {
+    background: linear-gradient(135deg, var(--c-yellow-dim), var(--c-orange-dim));
+    border: 1px solid var(--c-yellow-mid);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+  }
+  .exercise-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .exercise-badge { background: var(--c-yellow); color: #0f1117; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 99px; }
+  .exercise-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .exercise ol { padding-left: 1.25rem; }
+  .exercise li { color: #c4cad8; margin-bottom: 6px; font-size: 14px; }
+  .exercise li strong { color: var(--text); }
+  .exercise-hint { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-yellow-mid); font-size: 13px; color: var(--muted); }
+  .exercise-hint span { color: var(--c-yellow); font-weight: 600; }
+
+  /* ===== TOPIC DIVIDER ===== */
+  .topic-divider { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ===== SCROLL TOP ===== */
+  #scrollTop {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--c-yellow); color: #0f1117;
+    border: none; width: 40px; height: 40px; border-radius: 50%;
+    font-size: 16px; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 200;
+    font-weight: 700;
+  }
+  #scrollTop:hover { background: var(--c-orange); }
+
+  /* ===== SYNTAX: extra tokens not in js-notes ===== */
+  .cm   { color: #546e7a; font-style: italic; }
+  .tp   { color: #ffcb6b; }
+  .jsx  { color: #4dd0e1; }
+  .attr { color: #ffcb6b; }
+  .code-filename { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+
+  <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-header">
+    <span class="sidebar-logo">☕ Java Complete Notes</span>
+    <span class="sidebar-sub">Fundamentals · 5 Chapters</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Java Fundamentals</div>
+    <a href="#s1" class="nav-item active"><span class="num">01</span>Getting Started</a>
+    <a href="#s2" class="nav-item"><span class="num">02</span>Types &amp; Variables</a>
+    <a href="#s3" class="nav-item"><span class="num">03</span>Control Flow</a>
+    <a href="#s4" class="nav-item"><span class="num">04</span>Clean Coding</a>
+    <a href="#s5" class="nav-item"><span class="num">05</span>Debugging &amp; Deploying</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Reference</div>
+    <a href="#s6" class="nav-item"><span class="num">06</span>Quick Reference</a>
+  </div>
+</nav>
+
+<!-- Main -->
+<div id="main">
+  <div class="top-bar">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+
+  <div class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">Complete Study Notes</div>
+      <h1>Java<br><span>Fundamentals</span></h1>
+      <p>Comprehensive notes covering every topic from Setting Up to Debugging, with color-coded syntax, real-world examples, and exercises after every chapter.</p>
+      <div class="hero-tags">
+        <span class="tag tag-orange">JDK 17+</span>
+        <span class="tag tag-blue">OOP</span>
+        <span class="tag tag-green">IntelliJ IDEA</span>
+        <span class="tag tag-purple">Clean Code</span>
+      </div>
+      <div class="hero-stats" style="margin-top:1.5rem;">
+        <div class="hero-stat"><span class="val">5</span><span class="lbl">Chapters</span></div>
+        <div class="hero-stat"><span class="val">100+</span><span class="lbl">Code Examples</span></div>
+        <div class="hero-stat"><span class="val">25+</span><span class="lbl">Exercises</span></div>
+        <div class="hero-stat"><span class="val">JDK 17+</span><span class="lbl">Java Version</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: GETTING STARTED -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>Getting Started</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Development Environment Setup</h3>
+        <p>Java requires two things: the <strong>JDK</strong> (Java Development Kit) to compile/run code, and an <strong>IDE</strong> like IntelliJ IDEA to write it comfortably. The JDK includes the compiler (<code>javac</code>) and the JVM (Java Virtual Machine).</p>
+        <div class="compare-grid">
+          <div class="compare-card" style="background:var(--c-orange-dim);border-color:var(--c-orange-mid);">
+            <h4 style="color:var(--c-orange);">JDK — Java Development Kit</h4>
+            <p style="font-size:13px;color:#fcd8b0;line-height:1.6;">Download from <code>oracle.com/java</code> or use OpenJDK. Gives you the compiler and runtime. Recommended: JDK 17 (LTS) or JDK 21 (LTS).</p>
+          </div>
+          <div class="compare-card" style="background:var(--c-blue-dim);border-color:var(--c-blue-mid);">
+            <h4 style="color:var(--c-blue);">IntelliJ IDEA — IDE</h4>
+            <p style="font-size:13px;color:#9ecfff;line-height:1.6;">The most popular Java IDE. The Community Edition is free and has everything you need for learning. Download from <code>jetbrains.com</code>.</p>
+          </div>
+        </div>
+
+        <h3>Anatomy of a Java Program</h3>
+        <p>Every Java program lives inside a <strong>class</strong>. Execution begins at the <code>main</code> method. Java is case-sensitive and every statement ends with a semicolon <code>;</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">HelloWorld.java</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt">// File must be named: HelloWorld.java</span>
+<span class="kw">public class</span> <span class="cls">HelloWorld</span> {
+
+    <span class="cmt">// main method — entry point of every Java application</span>
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="cls">String</span>[] <span class="var">args</span>) {
+        System.out.<span class="fn">println</span>(<span class="str">"Hello, World!"</span>);   <span class="cmt">// prints with newline</span>
+        System.out.<span class="fn">print</span>(<span class="str">"No newline here"</span>);    <span class="cmt">// prints without newline</span>
+        System.out.<span class="fn">printf</span>(<span class="str">"Name: %s, Age: %d%n"</span>, <span class="str">"Alice"</span>, <span class="num">30</span>); <span class="cmt">// formatted</span>
+    }
+}</pre>
+        </div>
+        <div class="output-label">Output</div>
+        <div class="output-box">Hello, World!<br>No newline hereAlice, Age: 30</div>
+        <div class="callout callout-note"><div class="callout-icon"></div><div class="callout-body"><strong>Naming Rule</strong>The file name must exactly match the public class name, including capitalization. <code>HelloWorld.java</code> must contain <code>public class HelloWorld</code>.</div></div>
+
+        <h3>How Java Code Gets Executed</h3>
+        <p>Java is unique — it compiles to <strong>bytecode</strong> (not machine code), which then runs on the <strong>JVM</strong>. This is why Java is platform-independent: "Write Once, Run Anywhere."</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Terminal — Compile &amp; Run</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt"># Step 1: Compile .java → .class (bytecode)</span>
+$ javac HelloWorld.java
+
+<span class="cmt"># Step 2: Run the bytecode on the JVM</span>
+$ java HelloWorld
+
+<span class="cmt"># Output:</span>
+Hello, World!</pre>
+        </div>
+        <table class="compare-table">
+          <thead><tr><th>Stage</th><th>Tool</th><th>Input</th><th>Output</th></tr></thead>
+          <tbody>
+            <tr><td>Compile</td><td><code>javac</code></td><td><code>HelloWorld.java</code></td><td><code>HelloWorld.class</code> (bytecode)</td></tr>
+            <tr><td>Run</td><td><code>java</code> (JVM)</td><td><code>HelloWorld.class</code></td><td>Program executes on your OS</td></tr>
+          </tbody>
+        </table>
+
+        <h3>5 Key Facts About Java</h3>
+        <table class="compare-table">
+          <thead><tr><th>#</th><th>Fact</th><th>Details</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--c-yellow);font-weight:700;">1</td><td>Platform Independent</td><td>Bytecode runs on any OS with a JVM installed</td></tr>
+            <tr><td style="color:var(--c-yellow);font-weight:700;">2</td><td>Object-Oriented</td><td>Everything lives inside a class; promotes modular, reusable code</td></tr>
+            <tr><td style="color:var(--c-yellow);font-weight:700;">3</td><td>Statically Typed</td><td>Variable types are declared at compile time — fewer runtime surprises</td></tr>
+            <tr><td style="color:var(--c-yellow);font-weight:700;">4</td><td>Garbage Collected</td><td>Memory is managed automatically — no manual <code>free()</code> like C/C++</td></tr>
+            <tr><td style="color:var(--c-yellow);font-weight:700;">5</td><td>Massive Ecosystem</td><td>Used in Android, web servers (Spring), big data (Hadoop), and more</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 01</span>
+          <span class="exercise-title">Getting Started with Java</span>
+        </div>
+        <ol>
+          <li>Create a class named <code>MyProfile</code> with a <code>main</code> method that prints your name, age, and city on separate lines using <code>println</code>.</li>
+          <li>Use <code>printf</code> to print: <em>"My name is John and I am 25 years old."</em> using format specifiers <code>%s</code> and <code>%d</code>.</li>
+          <li>Intentionally rename the file to <code>hello.java</code> while keeping the class as <code>HelloWorld</code>. Try to compile. Observe the error message.</li>
+          <li>What is the difference between <code>println</code>, <code>print</code>, and <code>printf</code>? Write one example for each.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> The filename must exactly match the class name including capitalization.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: TYPES & VARIABLES -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>Types &amp; Variables</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Variables</h3>
+        <p>A variable is a named container for a value. In Java, you must declare the <strong>type</strong> before using a variable. Use <code>var</code> (Java 10+) to let the compiler infer the type.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — Variable Declaration</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt">// Syntax: type variableName = value;</span>
+<span class="tp">int</span> <span class="var">age</span> <span class="op">=</span> <span class="num">30</span>;
+<span class="tp">double</span> <span class="var">price</span> <span class="op">=</span> <span class="num">9.99</span>;
+<span class="tp">boolean</span> <span class="var">isActive</span> <span class="op">=</span> <span class="bool">true</span>;
+<span class="cls">String</span> <span class="var">name</span> <span class="op">=</span> <span class="str">"Alice"</span>;
+
+<span class="cmt">// var — type inferred by compiler (Java 10+)</span>
+<span class="kw">var</span> <span class="var">city</span> <span class="op">=</span> <span class="str">"New York"</span>;   <span class="cmt">// inferred as String</span>
+<span class="kw">var</span> <span class="var">count</span> <span class="op">=</span> <span class="num">42</span>;           <span class="cmt">// inferred as int</span>
+
+<span class="cmt">// Multiple variables of same type</span>
+<span class="tp">int</span> <span class="var">x</span> <span class="op">=</span> <span class="num">1</span>, <span class="var">y</span> <span class="op">=</span> <span class="num">2</span>, <span class="var">z</span> <span class="op">=</span> <span class="num">3</span>;</pre>
+        </div>
+        <div class="callout callout-tip"><div class="callout-icon"></div><div class="callout-body"><strong>Naming Convention</strong>Use <strong>camelCase</strong> for variables: <code>firstName</code>, <code>totalAmount</code>. Use ALL_CAPS for constants: <code>MAX_SIZE</code>. Class names use PascalCase: <code>BankAccount</code>.</div></div>
+
+        <h3>Primitive Types</h3>
+        <p>Java has 8 primitive types. They store simple values directly in memory (on the stack), making them fast and memory-efficient.</p>
+        <table class="compare-table">
+          <thead><tr><th>Type</th><th>Size</th><th>Range / Purpose</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><code>byte</code></td><td>1 byte</td><td>-128 to 127</td><td><code>byte b = 100;</code></td></tr>
+            <tr><td><code>short</code></td><td>2 bytes</td><td>-32,768 to 32,767</td><td><code>short s = 30000;</code></td></tr>
+            <tr><td><code>int</code></td><td>4 bytes</td><td>~±2 billion · Most common integer</td><td><code>int age = 25;</code></td></tr>
+            <tr><td><code>long</code></td><td>8 bytes</td><td>Very large integers · Needs <code>L</code> suffix</td><td><code>long pop = 8_000_000_000L;</code></td></tr>
+            <tr><td><code>float</code></td><td>4 bytes</td><td>Decimal · ~7 sig digits · Needs <code>f</code> suffix</td><td><code>float pi = 3.14f;</code></td></tr>
+            <tr><td><code>double</code></td><td>8 bytes</td><td>Decimal · ~15 sig digits · Default for decimals</td><td><code>double salary = 75000.50;</code></td></tr>
+            <tr><td><code>char</code></td><td>2 bytes</td><td>Single Unicode character · Use single quotes</td><td><code>char grade = 'A';</code></td></tr>
+            <tr><td><code>boolean</code></td><td>1 bit</td><td><code>true</code> or <code>false</code></td><td><code>boolean done = false;</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Strings</h3>
+        <p><code>String</code> is a reference type, but it behaves like a primitive in many ways. Strings are <strong>immutable</strong> — once created, they cannot be changed.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — String Methods</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cls">String</span> <span class="var">msg</span> <span class="op">=</span> <span class="str">"  Hello, Java World!  "</span>;
+
+System.out.<span class="fn">println</span>(<span class="var">msg</span>.<span class="fn">length</span>());          <span class="cmt">// 22</span>
+System.out.<span class="fn">println</span>(<span class="var">msg</span>.<span class="fn">trim</span>());            <span class="cmt">// "Hello, Java World!"</span>
+System.out.<span class="fn">println</span>(<span class="var">msg</span>.<span class="fn">toUpperCase</span>());     <span class="cmt">// "  HELLO, JAVA WORLD!  "</span>
+System.out.<span class="fn">println</span>(<span class="var">msg</span>.<span class="fn">contains</span>(<span class="str">"Java"</span>));  <span class="cmt">// true</span>
+System.out.<span class="fn">println</span>(<span class="var">msg</span>.<span class="fn">replace</span>(<span class="str">"Java"</span>, <span class="str">"Python"</span>)); <span class="cmt">// replaces text</span>
+
+<span class="cmt">// String comparison — NEVER use == for content!</span>
+<span class="cls">String</span> <span class="var">a</span> <span class="op">=</span> <span class="str">"hello"</span>;
+<span class="cls">String</span> <span class="var">b</span> <span class="op">=</span> <span class="str">"hello"</span>;
+System.out.<span class="fn">println</span>(<span class="var">a</span>.<span class="fn">equals</span>(<span class="var">b</span>));           <span class="cmt">// true (compare content)</span>
+System.out.<span class="fn">println</span>(<span class="var">a</span>.<span class="fn">equalsIgnoreCase</span>(<span class="str">"HELLO"</span>)); <span class="cmt">// true</span></pre>
+        </div>
+        <div class="callout callout-danger"><div class="callout-icon"></div><div class="callout-body"><strong>Never use == to compare Strings!</strong><code>==</code> compares memory addresses, not content. Always use <code>.equals()</code> for string comparison.</div></div>
+
+        <h3>Arrays</h3>
+        <p>An array stores a <strong>fixed-size</strong> sequence of elements of the same type. Once created, the size cannot change. Array indices start at <strong>0</strong>.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — Arrays</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="tp">int</span>[] <span class="var">scores</span> <span class="op">=</span> { <span class="num">85</span>, <span class="num">90</span>, <span class="num">78</span>, <span class="num">92</span>, <span class="num">88</span> };
+
+System.out.<span class="fn">println</span>(<span class="var">scores</span>[<span class="num">0</span>]);          <span class="cmt">// 85 (first)</span>
+System.out.<span class="fn">println</span>(<span class="var">scores</span>.length);      <span class="cmt">// 5</span>
+
+<span class="cmt">// Sort an array</span>
+java.util.Arrays.<span class="fn">sort</span>(<span class="var">scores</span>);
+System.out.<span class="fn">println</span>(java.util.Arrays.<span class="fn">toString</span>(<span class="var">scores</span>)); <span class="cmt">// [85, 88, 90, 92, 95]</span></pre>
+        </div>
+
+        <h3>Type Casting</h3>
+        <p><strong>Widening</strong> (automatic) goes from smaller to larger type. <strong>Narrowing</strong> (manual) goes from larger to smaller and may lose data.</p>
+        <div class="example-row">
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">Widening — Automatic</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="tp">int</span> <span class="var">i</span> <span class="op">=</span> <span class="num">42</span>;
+<span class="tp">double</span> <span class="var">d</span> <span class="op">=</span> <span class="var">i</span>;   <span class="cmt">// int → double, safe</span>
+System.out.<span class="fn">println</span>(<span class="var">d</span>); <span class="cmt">// 42.0</span></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">Narrowing — Manual Cast</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="tp">double</span> <span class="var">pi</span> <span class="op">=</span> <span class="num">3.99</span>;
+<span class="tp">int</span> <span class="var">n</span> <span class="op">=</span> (<span class="tp">int</span>) <span class="var">pi</span>;   <span class="cmt">// truncates to 3</span>
+System.out.<span class="fn">println</span>(<span class="var">n</span>); <span class="cmt">// 3 (not 4!)</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 02</span>
+          <span class="exercise-title">Types &amp; Variables</span>
+        </div>
+        <ol>
+          <li>Declare variables of all 8 primitive types and print each one with a label.</li>
+          <li>Create a <code>String</code> with your full name. Using String methods, print: its length, uppercased version, and whether it contains your first name.</li>
+          <li>Create a 5-element <code>int[]</code> with your 5 favorite numbers. Sort it, then print the smallest and largest.</li>
+          <li><strong>Mortgage Calculator:</strong> Read principal, annual interest rate, and loan period in years. Calculate and display the monthly payment formatted as currency.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>NumberFormat.getCurrencyInstance()</code> for currency formatting.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: CONTROL FLOW -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>Control Flow</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Comparison &amp; Logical Operators</h3>
+        <div class="example-row">
+          <table class="compare-table">
+            <thead><tr><th>Comparison</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>==</code></td><td>Equal to</td></tr>
+              <tr><td><code>!=</code></td><td>Not equal to</td></tr>
+              <tr><td><code>&gt;</code></td><td>Greater than</td></tr>
+              <tr><td><code>&lt;</code></td><td>Less than</td></tr>
+              <tr><td><code>&gt;=</code></td><td>Greater than or equal</td></tr>
+              <tr><td><code>&lt;=</code></td><td>Less than or equal</td></tr>
+            </tbody>
+          </table>
+          <table class="compare-table">
+            <thead><tr><th>Logical</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>&amp;&amp;</code></td><td>AND — both must be true</td></tr>
+              <tr><td><code>||</code></td><td>OR — at least one true</td></tr>
+              <tr><td><code>!</code></td><td>NOT — flip the boolean</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>If / Else If / Else</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — If-Else</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="tp">int</span> <span class="var">temperature</span> <span class="op">=</span> <span class="num">28</span>;
+
+<span class="kw">if</span> (<span class="var">temperature</span> <span class="op">&gt;</span> <span class="num">30</span>) {
+    System.out.<span class="fn">println</span>(<span class="str">"Hot day!"</span>);
+} <span class="kw">else if</span> (<span class="var">temperature</span> <span class="op">&gt;</span> <span class="num">20</span>) {
+    System.out.<span class="fn">println</span>(<span class="str">"Nice weather"</span>);     <span class="cmt">// ← executes this</span>
+} <span class="kw">else</span> {
+    System.out.<span class="fn">println</span>(<span class="str">"Bundle up!"</span>);
+}
+
+<span class="cmt">// Ternary operator</span>
+<span class="tp">int</span> <span class="var">age</span> <span class="op">=</span> <span class="num">20</span>;
+<span class="cls">String</span> <span class="var">status</span> <span class="op">=</span> (<span class="var">age</span> <span class="op">&gt;=</span> <span class="num">18</span>) <span class="op">?</span> <span class="str">"Adult"</span> <span class="op">:</span> <span class="str">"Minor"</span>;
+System.out.<span class="fn">println</span>(<span class="var">status</span>);  <span class="cmt">// Adult</span></pre>
+        </div>
+
+        <h3>Switch Statements</h3>
+        <div class="example-row">
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">Traditional Switch</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="tp">int</span> <span class="var">day</span> <span class="op">=</span> <span class="num">3</span>;
+<span class="kw">switch</span> (<span class="var">day</span>) {
+    <span class="kw">case</span> <span class="num">1</span>: System.out.<span class="fn">println</span>(<span class="str">"Monday"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">2</span>: System.out.<span class="fn">println</span>(<span class="str">"Tuesday"</span>); <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="num">3</span>: System.out.<span class="fn">println</span>(<span class="str">"Wednesday"</span>); <span class="kw">break</span>;
+    <span class="kw">default</span>: System.out.<span class="fn">println</span>(<span class="str">"Other"</span>);
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">Switch Expression (Java 14+)</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="cls">String</span> <span class="var">dayName</span> <span class="op">=</span> <span class="kw">switch</span> (<span class="var">day</span>) {
+    <span class="kw">case</span> <span class="num">1</span> <span class="op">-&gt;</span> <span class="str">"Monday"</span>;
+    <span class="kw">case</span> <span class="num">2</span> <span class="op">-&gt;</span> <span class="str">"Tuesday"</span>;
+    <span class="kw">case</span> <span class="num">3</span> <span class="op">-&gt;</span> <span class="str">"Wednesday"</span>;
+    <span class="kw">default</span> <span class="op">-&gt;</span> <span class="str">"Weekend"</span>;
+};
+System.out.<span class="fn">println</span>(<span class="var">dayName</span>); <span class="cmt">// Wednesday</span></pre>
+          </div>
+        </div>
+
+        <h3>For, While &amp; For-Each Loops</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — Loops</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt">// For loop</span>
+<span class="kw">for</span> (<span class="tp">int</span> <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>; <span class="var">i</span> <span class="op">&lt;=</span> <span class="num">5</span>; <span class="var">i</span><span class="op">++</span>) {
+    System.out.<span class="fn">println</span>(<span class="str">"Count: "</span> <span class="op">+</span> <span class="var">i</span>);
+}
+
+<span class="cmt">// While loop</span>
+<span class="tp">int</span> <span class="var">i</span> <span class="op">=</span> <span class="num">1</span>;
+<span class="kw">while</span> (<span class="var">i</span> <span class="op">&lt;=</span> <span class="num">5</span>) {
+    System.out.<span class="fn">println</span>(<span class="var">i</span>);
+    <span class="var">i</span><span class="op">++</span>;
+}
+
+<span class="cmt">// For-each — cleanest way to iterate arrays</span>
+<span class="tp">int</span>[] <span class="var">scores</span> <span class="op">=</span> { <span class="num">85</span>, <span class="num">90</span>, <span class="num">78</span>, <span class="num">92</span> };
+<span class="kw">for</span> (<span class="tp">int</span> <span class="var">score</span> : <span class="var">scores</span>) {
+    System.out.<span class="fn">println</span>(<span class="var">score</span>);
+}
+
+<span class="cmt">// FizzBuzz — classic exercise</span>
+<span class="kw">for</span> (<span class="tp">int</span> <span class="var">n</span> <span class="op">=</span> <span class="num">1</span>; <span class="var">n</span> <span class="op">&lt;=</span> <span class="num">20</span>; <span class="var">n</span><span class="op">++</span>) {
+    <span class="kw">if</span>      (<span class="var">n</span> <span class="op">%</span> <span class="num">15</span> <span class="op">==</span> <span class="num">0</span>) System.out.<span class="fn">println</span>(<span class="str">"FizzBuzz"</span>);
+    <span class="kw">else if</span> (<span class="var">n</span> <span class="op">%</span> <span class="num">3</span>  <span class="op">==</span> <span class="num">0</span>) System.out.<span class="fn">println</span>(<span class="str">"Fizz"</span>);
+    <span class="kw">else if</span> (<span class="var">n</span> <span class="op">%</span> <span class="num">5</span>  <span class="op">==</span> <span class="num">0</span>) System.out.<span class="fn">println</span>(<span class="str">"Buzz"</span>);
+    <span class="kw">else</span>                 System.out.<span class="fn">println</span>(<span class="var">n</span>);
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 03</span>
+          <span class="exercise-title">Control Flow</span>
+        </div>
+        <ol>
+          <li>Write a program that reads a number and prints whether it is positive, negative, or zero.</li>
+          <li>Using a <code>switch</code> expression, read a month number (1–12) and print the season it belongs to.</li>
+          <li>Write a for loop that prints the multiplication table for any number entered by the user up to 12.</li>
+          <li><strong>Lottery Game:</strong> Generate a random number 1–10. Let the user guess in a do-while loop, giving "Too high" or "Too low" hints until they get it right.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>(int)(Math.random() * 10) + 1</code> to generate a random int from 1 to 10.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: CLEAN CODING -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>Clean Coding</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is Clean Code?</h3>
+        <p>Clean code is code that is easy to read, understand, and maintain. It reads almost like prose. The goal is to write code for <em>humans first</em>, computers second.</p>
+        <div class="compare-grid">
+          <div class="compare-card" style="background:var(--c-coral-dim);border-color:var(--c-coral-mid);">
+            <h4 style="color:var(--c-coral);">❌ Dirty Code</h4>
+            <div class="code-block"><pre><span class="tp">int</span> <span class="var">x</span> <span class="op">=</span> <span class="num">5</span>;
+<span class="tp">int</span> <span class="var">y</span> <span class="op">=</span> <span class="num">12</span>;
+<span class="tp">double</span> <span class="var">z</span>;
+<span class="var">z</span> <span class="op">=</span> <span class="var">x</span> <span class="op">*</span> <span class="var">y</span> <span class="op">*</span> <span class="num">0.0833</span>;
+System.out.<span class="fn">println</span>(<span class="var">z</span>);</pre></div>
+          </div>
+          <div class="compare-card" style="background:var(--c-green-dim);border-color:var(--c-green-mid);">
+            <h4 style="color:var(--c-green);">✅ Clean Code</h4>
+            <div class="code-block"><pre><span class="kw">final</span> <span class="tp">double</span> <span class="var">HOURLY_RATE</span> <span class="op">=</span> <span class="num">0.0833</span>;
+<span class="tp">int</span> <span class="var">hoursWorked</span> <span class="op">=</span> <span class="num">5</span>;
+<span class="tp">int</span> <span class="var">daysInMonth</span> <span class="op">=</span> <span class="num">12</span>;
+<span class="tp">double</span> <span class="var">monthlySalary</span> <span class="op">=</span>
+  <span class="var">hoursWorked</span> <span class="op">*</span> <span class="var">daysInMonth</span> <span class="op">*</span> <span class="var">HOURLY_RATE</span>;
+System.out.<span class="fn">println</span>(<span class="var">monthlySalary</span>);</pre></div>
+          </div>
+        </div>
+
+        <h3>Creating Methods</h3>
+        <p>A method is a reusable block of code that performs one specific task. Methods reduce repetition (DRY principle) and improve readability.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — Method Anatomy</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="kw">public class</span> <span class="cls">Calculator</span> {
+
+    <span class="cmt">// Method with return value</span>
+    <span class="kw">static</span> <span class="tp">double</span> <span class="fn">add</span>(<span class="tp">double</span> <span class="var">a</span>, <span class="tp">double</span> <span class="var">b</span>) {
+        <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+    }
+
+    <span class="cmt">// Method with no return (void)</span>
+    <span class="kw">static</span> <span class="tp">void</span> <span class="fn">printGreeting</span>(<span class="cls">String</span> <span class="var">name</span>) {
+        System.out.<span class="fn">println</span>(<span class="str">"Hello, "</span> <span class="op">+</span> <span class="var">name</span> <span class="op">+</span> <span class="str">"!"</span>);
+    }
+
+    <span class="cmt">// Overloading — same name, different parameters</span>
+    <span class="kw">static</span> <span class="tp">int</span> <span class="fn">multiply</span>(<span class="tp">int</span> <span class="var">a</span>, <span class="tp">int</span> <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">*</span> <span class="var">b</span>; }
+    <span class="kw">static</span> <span class="tp">double</span> <span class="fn">multiply</span>(<span class="tp">double</span> <span class="var">a</span>, <span class="tp">double</span> <span class="var">b</span>) { <span class="kw">return</span> <span class="var">a</span> <span class="op">*</span> <span class="var">b</span>; }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="cls">String</span>[] <span class="var">args</span>) {
+        System.out.<span class="fn">println</span>(<span class="fn">add</span>(<span class="num">3.5</span>, <span class="num">2.5</span>));       <span class="cmt">// 6.0</span>
+        <span class="fn">printGreeting</span>(<span class="str">"Alice"</span>);                <span class="cmt">// Hello, Alice!</span>
+        System.out.<span class="fn">println</span>(<span class="fn">multiply</span>(<span class="num">3</span>, <span class="num">4</span>));    <span class="cmt">// 12 (int version)</span>
+    }
+}</pre>
+        </div>
+        <div class="callout callout-tip"><div class="callout-icon"></div><div class="callout-body"><strong>Method Design Principles</strong>A method should <em>do one thing only</em>. If you can't describe what it does without using "and", it should be split. Keep methods under ~20 lines. Name them with a verb: <code>calculateTotal</code>, <code>printReport</code>, <code>isValidAge</code>.</div></div>
+
+        <h3>Refactoring — Before &amp; After</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — After Refactoring ✅</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="kw">public class</span> <span class="cls">MortgageCalculator</span> {
+    <span class="kw">static final</span> <span class="tp">int</span> <span class="var">MONTHS_IN_YEAR</span> <span class="op">=</span> <span class="num">12</span>;
+    <span class="kw">static final</span> <span class="tp">int</span> <span class="var">PERCENT</span> <span class="op">=</span> <span class="num">100</span>;
+
+    <span class="kw">static</span> <span class="tp">double</span> <span class="fn">calculateMortgage</span>(<span class="tp">int</span> <span class="var">principal</span>, <span class="tp">float</span> <span class="var">annualRate</span>, <span class="tp">byte</span> <span class="var">years</span>) {
+        <span class="tp">double</span> <span class="var">monthlyRate</span> <span class="op">=</span> <span class="fn">getMonthlyRate</span>(<span class="var">annualRate</span>);
+        <span class="tp">int</span> <span class="var">numPayments</span> <span class="op">=</span> <span class="fn">getNumberOfPayments</span>(<span class="var">years</span>);
+        <span class="kw">return</span> <span class="var">principal</span>
+            <span class="op">*</span> (<span class="var">monthlyRate</span> <span class="op">*</span> Math.<span class="fn">pow</span>(<span class="num">1</span> <span class="op">+</span> <span class="var">monthlyRate</span>, <span class="var">numPayments</span>))
+            <span class="op">/</span> (Math.<span class="fn">pow</span>(<span class="num">1</span> <span class="op">+</span> <span class="var">monthlyRate</span>, <span class="var">numPayments</span>) <span class="op">-</span> <span class="num">1</span>);
+    }
+
+    <span class="kw">private static</span> <span class="tp">double</span> <span class="fn">getMonthlyRate</span>(<span class="tp">float</span> <span class="var">annualRate</span>) {
+        <span class="kw">return</span> <span class="var">annualRate</span> <span class="op">/</span> <span class="var">PERCENT</span> <span class="op">/</span> <span class="var">MONTHS_IN_YEAR</span>;
+    }
+
+    <span class="kw">private static</span> <span class="tp">int</span> <span class="fn">getNumberOfPayments</span>(<span class="tp">byte</span> <span class="var">years</span>) {
+        <span class="kw">return</span> <span class="var">years</span> <span class="op">*</span> <span class="var">MONTHS_IN_YEAR</span>;
+    }
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="cls">String</span>[] <span class="var">args</span>) {
+        <span class="tp">double</span> <span class="var">mortgage</span> <span class="op">=</span> <span class="fn">calculateMortgage</span>(<span class="num">300_000</span>, <span class="num">3.92f</span>, (<span class="tp">byte</span>)<span class="num">30</span>);
+        System.out.<span class="fn">printf</span>(<span class="str">"Monthly Payment: $%.2f%n"</span>, <span class="var">mortgage</span>);
+    }
+}</pre>
+        </div>
+        <div class="output-label">Output</div>
+        <div class="output-box">Monthly Payment: $1,415.29</div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 04</span>
+          <span class="exercise-title">Clean Coding &amp; Methods</span>
+        </div>
+        <ol>
+          <li>Write a method <code>isEven(int n)</code> that returns <code>true</code> if <code>n</code> is even. Write an overloaded version for <code>long</code> inputs.</li>
+          <li>Write a method <code>maxOfThree(int a, int b, int c)</code> that returns the maximum of 3 integers without using <code>Math.max()</code>.</li>
+          <li>Write a method <code>isPalindrome(String s)</code> that returns true if the string reads the same forwards and backwards.</li>
+          <li><strong>Payment Schedule:</strong> Add a <code>printPaymentSchedule</code> method that prints — for each month — the payment, interest portion, principal portion, and remaining balance.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Each method should do exactly one thing. If it needs "and" in its description, split it up.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: DEBUGGING & DEPLOYING -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2>Debugging &amp; Deploying</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Types of Errors</h3>
+        <table class="compare-table">
+          <thead><tr><th>Type</th><th>When Detected</th><th>Example</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--c-yellow);font-weight:600;">Syntax Error</td><td>At compile time</td><td>Missing <code>;</code> or <code>}</code></td><td>IDE underlines it — just fix it</td></tr>
+            <tr><td style="color:var(--c-coral);font-weight:600;">Runtime Error</td><td>While running</td><td><code>NullPointerException</code>, divide by 0</td><td>Add null checks, validate inputs</td></tr>
+            <tr><td style="color:var(--c-purple);font-weight:600;">Logic Error</td><td>Wrong output</td><td>Using <code>&lt;</code> instead of <code>&lt;=</code></td><td>Use the debugger, add print statements</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Common Mistakes</h3>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Java — Common Errors</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt">// ❌ Missing semicolon</span>
+<span class="tp">int</span> <span class="var">x</span> <span class="op">=</span> <span class="num">5</span>   <span class="cmt">// compile error: ';' expected</span>
+
+<span class="cmt">// ❌ Array out of bounds (runtime error)</span>
+<span class="tp">int</span>[] <span class="var">arr</span> <span class="op">=</span> { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span> };
+System.out.<span class="fn">println</span>(<span class="var">arr</span>[<span class="num">5</span>]);  <span class="cmt">// ArrayIndexOutOfBoundsException</span>
+
+<span class="cmt">// ❌ NullPointerException</span>
+<span class="cls">String</span> <span class="var">s</span> <span class="op">=</span> <span class="bool">null</span>;
+System.out.<span class="fn">println</span>(<span class="var">s</span>.<span class="fn">length</span>()); <span class="cmt">// NPE — can't call methods on null</span>
+
+<span class="cmt">// ✅ Fix: null check before use</span>
+<span class="kw">if</span> (<span class="var">s</span> <span class="op">!=</span> <span class="bool">null</span>)
+    System.out.<span class="fn">println</span>(<span class="var">s</span>.<span class="fn">length</span>());</pre>
+        </div>
+
+        <h3>Debugging in IntelliJ IDEA</h3>
+        <p>The debugger lets you pause execution at any line (breakpoint) and inspect the values of all variables. This is far more powerful than adding <code>System.out.println()</code> everywhere.</p>
+        <table class="compare-table">
+          <thead><tr><th>Action</th><th>Mac</th><th>Windows</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td>Set Breakpoint</td><td><code>⌘F8</code></td><td><code>Ctrl+F8</code></td><td>Marks a line to pause at</td></tr>
+            <tr><td>Start Debugger</td><td><code>⌃D</code></td><td><code>Shift+F9</code></td><td>Runs program in debug mode</td></tr>
+            <tr><td>Step Over</td><td><code>F8</code></td><td><code>F8</code></td><td>Execute current line, go to next</td></tr>
+            <tr><td>Step Into</td><td><code>F7</code></td><td><code>F7</code></td><td>Enter the method being called</td></tr>
+            <tr><td>Resume</td><td><code>⌘⌥R</code></td><td><code>F9</code></td><td>Continue until next breakpoint</td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout-tip"><div class="callout-icon"></div><div class="callout-body"><strong>Debugging Strategy</strong>Set a breakpoint just before the bug. Run in debug mode. Use Step Over to walk through line by line, watching the Variables panel. When a variable has an unexpected value, you've found the bug.</div></div>
+
+        <h3>Packaging Java Applications (JAR)</h3>
+        <p>A <strong>JAR</strong> (Java ARchive) bundles all your compiled <code>.class</code> files into a single distributable file. Anyone with a JRE can run it with <code>java -jar</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><span class="code-filename">Terminal — Build &amp; Run JAR</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+          <pre><span class="cmt"># Compile all Java files</span>
+$ javac -d out src/*.java
+
+<span class="cmt"># Create JAR with a manifest specifying Main class</span>
+$ jar cfe MyApp.jar com.example.Main -C out .
+
+<span class="cmt"># Run the JAR</span>
+$ java -jar MyApp.jar</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 05</span>
+          <span class="exercise-title">Debugging &amp; Deploying</span>
+        </div>
+        <ol>
+          <li>Identify and fix: <code>for (int i = 0; i &lt; 10; i++) { if (i = 5) System.out.println("Found!"); }</code> — what are the two errors?</li>
+          <li>Write a method that divides two numbers. Pass <code>0</code> as the divisor, observe the exception, then add an <code>if</code> check to prevent it.</li>
+          <li>Create a program that causes an <code>ArrayIndexOutOfBoundsException</code>. Use the IntelliJ debugger to set a breakpoint and identify the bad index.</li>
+          <li>Create a small project with two classes: <code>Main</code> and <code>Greeter</code>. Package it as a JAR and run it from the terminal.</li>
+          <li><strong>Challenge:</strong> Add try-catch exception handling to your Mortgage Calculator so invalid input shows a friendly error and re-prompts the user.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>try { } catch (Exception e) { }</code> around the Scanner input calls.</div>
+      </div>
+    </div>
+
+    <!-- SECTION 6: QUICK REFERENCE -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2>Quick Reference</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>printf Format Specifiers</h3>
+        <table class="compare-table">
+          <thead><tr><th>Specifier</th><th>Type</th><th>Example</th><th>Output</th></tr></thead>
+          <tbody>
+            <tr><td><code>%d</code></td><td>int, long</td><td><code>printf("%d", 42)</code></td><td>42</td></tr>
+            <tr><td><code>%f</code></td><td>float, double</td><td><code>printf("%.2f", 3.14159)</code></td><td>3.14</td></tr>
+            <tr><td><code>%s</code></td><td>String</td><td><code>printf("%s", "hi")</code></td><td>hi</td></tr>
+            <tr><td><code>%c</code></td><td>char</td><td><code>printf("%c", 'A')</code></td><td>A</td></tr>
+            <tr><td><code>%b</code></td><td>boolean</td><td><code>printf("%b", true)</code></td><td>true</td></tr>
+            <tr><td><code>%n</code></td><td>newline</td><td><code>printf("line%n")</code></td><td>newline</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Java Naming Conventions</h3>
+        <table class="compare-table">
+          <thead><tr><th>Entity</th><th>Convention</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Variables &amp; methods</td><td>camelCase</td><td><code>firstName</code>, <code>calculateTax()</code></td></tr>
+            <tr><td>Classes &amp; interfaces</td><td>PascalCase</td><td><code>BankAccount</code>, <code>Runnable</code></td></tr>
+            <tr><td>Constants (<code>final</code>)</td><td>ALL_CAPS_SNAKE</td><td><code>MAX_SIZE</code>, <code>PI</code></td></tr>
+            <tr><td>Packages</td><td>lowercase.dot.separated</td><td><code>com.example.myapp</code></td></tr>
+            <tr><td>Boolean methods</td><td>starts with <code>is</code> / <code>has</code></td><td><code>isActive()</code>, <code>hasPermission()</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Operator Precedence (High → Low)</h3>
+        <table class="compare-table">
+          <thead><tr><th>Priority</th><th>Operators</th></tr></thead>
+          <tbody>
+            <tr><td>1 (highest)</td><td><code>++</code> <code>--</code> (postfix) · <code>(cast)</code></td></tr>
+            <tr><td>2</td><td><code>*</code> <code>/</code> <code>%</code></td></tr>
+            <tr><td>3</td><td><code>+</code> <code>-</code></td></tr>
+            <tr><td>4</td><td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td></tr>
+            <tr><td>5</td><td><code>==</code> <code>!=</code></td></tr>
+            <tr><td>6</td><td><code>&amp;&amp;</code></td></tr>
+            <tr><td>7</td><td><code>||</code></td></tr>
+            <tr><td>8 (lowest)</td><td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code></td></tr>
+          </tbody>
+        </table>
+        <div class="callout callout-note"><div class="callout-icon"></div><div class="callout-body"><strong>When in doubt, use parentheses!</strong>Instead of memorizing all precedence rules, wrap sub-expressions in <code>()</code>. <code>(a + b) * c</code> is always clearer than relying on implicit precedence.</div></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="padding: 48px 0 24px; border-top: 1px solid var(--border); margin-top: 40px;">
+      <p style="color: var(--muted); font-size: 13px; text-align: center;">
+        ☕ Java Complete Notes · Ultimate Java Part 1 Fundamentals · All examples tested with <strong style="color: var(--c-yellow)">JDK 17+</strong>
+      </p>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #main -->
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = Math.round((scrolled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+    document.getElementById('scrollTop').style.display = scrolled > 400 ? 'flex' : 'none';
+  }
+
+  function updateNav() {
+    const sections = document.querySelectorAll('.section');
+    const navItems = document.querySelectorAll('.nav-item');
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+  }
+
+  window.addEventListener('scroll', () => { updateProgress(); updateNav(); });
+
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

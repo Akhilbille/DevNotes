@@ -1,0 +1,2476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    /* Topic colors */
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+
+    .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-yellow);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 0.5rem 0;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-yellow); border-left-color: var(--c-yellow); background: var(--c-yellow-dim); }
+
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: var(--text); }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-yellow), var(--c-orange));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 3rem 3rem 5rem;
+    max-width: 920px;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .section-num {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===== TOPIC CARD ===== */
+  .topic {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .topic p {
+    color: #c4cad8;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .code-header .dots {
+    display: flex; gap: 5px;
+  }
+
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a;
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #c792ea; }         /* keywords: let, const, function */
+  .fn { color: #82aaff; }         /* function names */
+  .str { color: #c3e88d; }        /* strings */
+  .num { color: #f78c6c; }        /* numbers */
+  .cmt { color: #546e7a; font-style: italic; } /* comments */
+  .var { color: #eeffff; }        /* variables */
+  .op { color: #89ddff; }         /* operators */
+  .cls { color: #ffcb6b; }        /* class names */
+  .prop { color: #f07178; }       /* properties */
+  .bool { color: #ff5572; }       /* booleans */
+  .type { color: #ffcb6b; }       /* types */
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-icon::after { content: "💡"; }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-icon::after { content: "⚠️"; }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-icon::after { content: "✅"; }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-icon::after { content: "🚫"; }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== REFERENCE TABLE ===== */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1rem 0;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--bg3);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg2); }
+
+  .ref-table code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== INLINE HIGHLIGHT ===== */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== EXAMPLE LABEL ===== */
+  .ex-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== PILL BADGES ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter {
+    margin-top: 4rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .chapter:first-child { margin-top: 0; }
+
+  /* ===== OUTPUT BOX ===== */
+  .output-box {
+    background: var(--bg);
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--c-green);
+    margin-top: -1px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--c-yellow); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Color theming per section */
+  .theme-yellow .section-icon { background: var(--c-yellow-dim); color: var(--c-yellow); }
+  .theme-yellow .section-header h2 { color: var(--c-yellow); }
+
+  .theme-blue .section-icon { background: var(--c-blue-dim); color: var(--c-blue); }
+  .theme-blue .section-header h2 { color: var(--c-blue); }
+
+  .theme-green .section-icon { background: var(--c-green-dim); color: var(--c-green); }
+  .theme-green .section-header h2 { color: var(--c-green); }
+
+  .theme-purple .section-icon { background: var(--c-purple-dim); color: var(--c-purple); }
+  .theme-purple .section-header h2 { color: var(--c-purple); }
+
+  .theme-coral .section-icon { background: var(--c-coral-dim); color: var(--c-coral); }
+  .theme-coral .section-header h2 { color: var(--c-coral); }
+
+  .theme-teal .section-icon { background: var(--c-teal-dim); color: var(--c-teal); }
+  .theme-teal .section-header h2 { color: var(--c-teal); }
+
+  .theme-pink .section-icon { background: var(--c-pink-dim); color: var(--c-pink); }
+  .theme-pink .section-header h2 { color: var(--c-pink); }
+
+  .theme-orange .section-icon { background: var(--c-orange-dim); color: var(--c-orange); }
+  .theme-orange .section-header h2 { color: var(--c-orange); }
+
+  .nav-y { background: var(--c-yellow); }
+  .nav-b { background: var(--c-blue); }
+  .nav-g { background: var(--c-green); }
+  .nav-p { background: var(--c-purple); }
+  .nav-r { background: var(--c-coral); }
+  .nav-t { background: var(--c-teal); }
+  .nav-k { background: var(--c-pink); }
+  .nav-o { background: var(--c-orange); }
+
+  /* Subtle separator */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Multi-example grid */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .example-row { grid-template-columns: 1fr; } }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== REACT-TS SPECIFIC ===== */
+
+  /* Sidebar structure override (react-ts uses #sidebar not .sidebar) */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--c-yellow); letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  #main { margin-left: 270px; min-height: 100vh; }
+
+  .progress-text { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; white-space: nowrap; }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-bottom: 4rem; scroll-margin-top: 5rem; }
+
+  .section-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--c-yellow);
+    background: var(--c-yellow-dim);
+    border: 1px solid var(--c-yellow-mid);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--c-yellow); }
+
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection h3::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--c-orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .subsection h4 { font-size: 13px; font-weight: 600; color: var(--c-teal); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  p { color: #c4cad8; margin-bottom: 1rem; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* ===== CONCEPT GRID ===== */
+  .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1rem 0; }
+  .concept-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .concept-card-title { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-yellow); font-weight: 600; margin-bottom: 8px; }
+  .concept-card p { font-size: 13px; margin-bottom: 0; color: var(--muted); }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .feature-list li { color: #c4cad8; padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-yellow); font-size: 11px; top: 6px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13.5px; }
+  .compare-table th { background: var(--bg3); color: var(--muted); font-weight: 600; padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .compare-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--bg3); color: #c4cad8; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .compare-table code { font-family: 'Fira Code', monospace; font-size: 12.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal); }
+
+  /* ===== HERO ===== */
+  .hero-badge { display: none; } /* replaced by hero-eyebrow */
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+  .tag-blue   { background: var(--c-blue-dim);   color: var(--c-blue);   border: 1px solid var(--c-blue-mid);   font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-purple { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-green  { background: var(--c-green-dim);  color: var(--c-green);  border: 1px solid var(--c-green-mid);  font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-orange { background: var(--c-orange-dim); color: var(--c-orange); border: 1px solid var(--c-orange-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+
+  /* ===== CALLOUTS (react-ts uses callout-info/err not note/danger) ===== */
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-title { font-size: 13px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .callout-body p { margin-bottom: 0; font-size: 13.5px; }
+
+  .callout-info { background: var(--c-blue-dim); border-left: 3px solid var(--c-blue); border-radius: 8px; }
+  .callout-info .callout-title { color: var(--c-blue); }
+  .callout-info .callout-body { color: #9ecfff; }
+
+  .callout-tip { background: var(--c-green-dim); border-left: 3px solid var(--c-green); border-radius: 8px; }
+  .callout-tip .callout-title { color: var(--c-green); }
+  .callout-tip .callout-body { color: #8de8b8; }
+
+  .callout-warn { background: var(--c-yellow-dim); border-left: 3px solid var(--c-yellow); border-radius: 8px; }
+  .callout-warn .callout-title { color: var(--c-yellow); }
+  .callout-warn .callout-body { color: #f0dc8a; }
+
+  .callout-err { background: var(--c-coral-dim); border-left: 3px solid var(--c-coral); border-radius: 8px; }
+  .callout-err .callout-title { color: var(--c-coral); }
+  .callout-err .callout-body { color: #ffaa9e; }
+
+  /* ===== EXERCISE BLOCKS ===== */
+  .exercise {
+    background: linear-gradient(135deg, var(--c-yellow-dim), var(--c-orange-dim));
+    border: 1px solid var(--c-yellow-mid);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+  }
+  .exercise-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .exercise-badge { background: var(--c-yellow); color: #0f1117; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 99px; }
+  .exercise-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .exercise ol { padding-left: 1.25rem; }
+  .exercise li { color: #c4cad8; margin-bottom: 6px; font-size: 14px; }
+  .exercise li strong { color: var(--text); }
+  .exercise-hint { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-yellow-mid); font-size: 13px; color: var(--muted); }
+  .exercise-hint span { color: var(--c-yellow); font-weight: 600; }
+
+  /* ===== TOPIC DIVIDER ===== */
+  .topic-divider { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ===== SCROLL TOP ===== */
+  #scrollTop {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--c-yellow); color: #0f1117;
+    border: none; width: 40px; height: 40px; border-radius: 50%;
+    font-size: 16px; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 200;
+    font-weight: 700;
+  }
+  #scrollTop:hover { background: var(--c-orange); }
+
+  /* ===== SYNTAX: extra tokens not in js-notes ===== */
+  .cm   { color: #546e7a; font-style: italic; }
+  .tp   { color: #ffcb6b; }
+  .jsx  { color: #4dd0e1; }
+  .attr { color: #ffcb6b; }
+  .code-filename { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-header">
+    <span class="sidebar-logo">TypeScript Complete Notes</span>
+    <span class="sidebar-sub">11 Modules · 180+ Examples</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">TypeScript Core</div>
+    <a class="nav-item active" href="#getting-started"><span class="num">01</span>Getting Started</a>
+    <a class="nav-item" href="#fundamentals"><span class="num">02</span>Fundamentals</a>
+    <a class="nav-item" href="#advanced-types"><span class="num">03</span>Advanced Types</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Object-Oriented TS</div>
+    <a class="nav-item" href="#oop"><span class="num">04</span>Classes &amp; OOP</a>
+    <a class="nav-item" href="#generics"><span class="num">05</span>Generics</a>
+    <a class="nav-item" href="#decorators"><span class="num">06</span>Decorators</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced</div>
+    <a class="nav-item" href="#modules"><span class="num">07</span>Modules</a>
+    <a class="nav-item" href="#js-integration"><span class="num">08</span>JS Integration</a>
+    <a class="nav-item" href="#react-ts"><span class="num">09</span>React + TypeScript</a>
+    <a class="nav-item" href="#node-ts"><span class="num">10</span>Node &amp; Express</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Complete Study Notes</div>
+    <h1>TypeScript<br><span>Complete Reference</span></h1>
+    <p>Comprehensive notes covering every topic from Fundamentals to React & Node integration, with color-coded examples, callouts, and exercises.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="val">11</span><span class="lbl">Chapters</span></div>
+      <div class="hero-stat"><span class="val">180+</span><span class="lbl">Code Examples</span></div>
+      <div class="hero-stat"><span class="val">60+</span><span class="lbl">Exercises</span></div>
+      <div class="hero-stat"><span class="val">TS 5+</span><span class="lbl">Modern Syntax</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+<!-- ============================================================
+     CHAPTER 1: GETTING STARTED
+     ============================================================ -->
+<div class="chapter theme-yellow" id="getting-started">
+  <div class="section-header">
+    <div class="section-icon">🚀</div>
+    <div>
+      <span class="section-num">Chapter 1 · TypeScript Core</span>
+      <h2>Getting Started</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">What is TypeScript?
+      <span class="tag pill" style="background:var(--c-yellow-dim);color:var(--c-yellow);">Intro</span>
+    </div>
+    <p>TypeScript is a <strong>typed superset of JavaScript</strong> developed by Microsoft. It compiles down to plain JavaScript, adding static type checking, interfaces, generics, and enhanced tooling. Every valid JavaScript file is also valid TypeScript.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card" style="background:var(--c-coral-dim);border-color:var(--c-coral-mid);">
+        <h4 style="color:var(--c-coral);">JavaScript</h4>
+        <div class="code-block"><pre><span class="cmt">// No type info — bug at runtime</span>
+<span class="kw">function</span> <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+}
+<span class="fn">add</span>(<span class="str">"5"</span>, <span class="num">3</span>); <span class="cmt">// "53" — wrong!</span></pre></div>
+      </div>
+      <div class="compare-card" style="background:var(--c-green-dim);border-color:var(--c-green-mid);">
+        <h4 style="color:var(--c-green);">TypeScript</h4>
+        <div class="code-block"><pre><span class="cmt">// Types catch bug at compile time</span>
+<span class="kw">function</span> <span class="fn">add</span>(<span class="var">a</span>: <span class="type">number</span>, <span class="var">b</span>: <span class="type">number</span>): <span class="type">number</span> {
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+}
+<span class="fn">add</span>(<span class="str">"5"</span>, <span class="num">3</span>); <span class="cmt">// ❌ Error before running!</span></pre></div>
+      </div>
+    </div>
+
+    <div class="callout callout-note">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Key Benefits</strong>
+        TypeScript catches errors at compile time (not runtime), provides intelligent IDE autocomplete, makes large codebases maintainable, and documents code via types — all while outputting standard JS.
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Installation & Setup</div>
+    <p>Install TypeScript globally via npm. The <code>tsc</code> command compiles <code>.ts</code> files to <code>.js</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">Terminal — Setup</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt"># Install TypeScript globally</span>
+npm install <span class="op">-</span>g typescript
+
+<span class="cmt"># Verify installation</span>
+tsc <span class="op">--</span>version       <span class="cmt"># Version 5.x.x</span>
+
+<span class="cmt"># Compile a single file</span>
+tsc hello.ts        <span class="cmt"># → produces hello.js</span>
+
+<span class="cmt"># Watch mode (re-compiles on save)</span>
+tsc hello.ts <span class="op">--</span>watch
+
+<span class="cmt"># Initialize a project config</span>
+tsc <span class="op">--</span>init          <span class="cmt"># → creates tsconfig.json</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">tsconfig.json — The TypeScript Compiler Config</div>
+    <p>The <code>tsconfig.json</code> file controls how TypeScript compiles your project — output folder, JS version target, strictness settings, and more.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">tsconfig.json</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre>{
+  <span class="str">"compilerOptions"</span>: {
+    <span class="str">"target"</span>: <span class="str">"ES2016"</span>,       <span class="cmt">// Output JS version</span>
+    <span class="str">"module"</span>: <span class="str">"commonjs"</span>,    <span class="cmt">// Module system</span>
+    <span class="str">"rootDir"</span>: <span class="str">"./src"</span>,      <span class="cmt">// Input folder</span>
+    <span class="str">"outDir"</span>: <span class="str">"./dist"</span>,      <span class="cmt">// Output folder</span>
+    <span class="str">"strict"</span>: <span class="bool">true</span>,          <span class="cmt">// Enable all strict checks</span>
+    <span class="str">"noImplicitAny"</span>: <span class="bool">true</span>,   <span class="cmt">// Disallow implicit 'any'</span>
+    <span class="str">"sourceMap"</span>: <span class="bool">true</span>,       <span class="cmt">// For debugging</span>
+    <span class="str">"removeComments"</span>: <span class="bool">true</span>  <span class="cmt">// Strip comments in output</span>
+  }
+}</pre>
+    </div>
+    <table class="ref-table">
+      <thead><tr><th>Option</th><th>Purpose</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td><code>strict</code></td><td>Enables all strict type checks at once</td><td style="color:var(--c-green);">true</td></tr>
+        <tr><td><code>noImplicitAny</code></td><td>Error when type is inferred as <code>any</code></td><td style="color:var(--c-green);">true</td></tr>
+        <tr><td><code>strictNullChecks</code></td><td>Prevents assigning <code>null/undefined</code> to typed vars</td><td style="color:var(--c-green);">true</td></tr>
+        <tr><td><code>target</code></td><td>Which JS version to compile to</td><td>ES2016+</td></tr>
+        <tr><td><code>sourceMap</code></td><td>Generates .map files for debugging TS in browser</td><td style="color:var(--c-green);">true</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Debugging TypeScript</div>
+    <p>Set <code>"sourceMap": true</code> in tsconfig, then configure your debugger (VS Code) to use the <code>.ts</code> sources instead of compiled <code>.js</code>.</p>
+    <div class="callout callout-tip">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>VS Code Debugging</strong>
+        In <code>launch.json</code>, set <code>"preLaunchTask": "tsc: build"</code> and <code>"outFiles": ["${workspaceFolder}/dist/**/*.js"]</code>. You can then set breakpoints directly in <code>.ts</code> files.
+      </div>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 1 Exercises — Getting Started</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Install TypeScript globally and verify the version. Create a file <code>hello.ts</code> that declares a <code>name</code> variable of type <code>string</code> and logs <code>"Hello, {name}!"</code>. Compile it to JS and run the output.</p>
+          <div class="hint">💡 Hint: Use <code>tsc hello.ts</code> then <code>node hello.js</code></div>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Run <code>tsc --init</code> to generate a <code>tsconfig.json</code>. Set <code>rootDir</code> to <code>./src</code>, <code>outDir</code> to <code>./dist</code>, and enable <code>strict</code> mode. Create a <code>src/index.ts</code> and compile the project.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Configure VS Code debugging for a TypeScript project. Enable <code>sourceMap</code> in tsconfig, create a <code>launch.json</code>, and set a breakpoint in your TS file. Step through code in the debugger.</p>
+          <div class="hint">💡 Hint: Use the "Node.js" debug configuration template in VS Code</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 2: FUNDAMENTALS
+     ============================================================ -->
+<div class="chapter theme-blue" id="fundamentals">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <div>
+      <span class="section-num">Chapter 2 · TypeScript Core</span>
+      <h2>Fundamentals</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Built-in Types
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Core</span>
+    </div>
+    <p>TypeScript extends JavaScript's primitive types with explicit type annotations. The compiler uses these to check correctness <em>before</em> your code runs.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Primitive Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// number — all numerics (int, float, hex, binary, octal)</span>
+<span class="kw">let</span> <span class="var">age</span>: <span class="type">number</span> <span class="op">=</span> <span class="num">25</span>;
+<span class="kw">let</span> <span class="var">price</span>: <span class="type">number</span> <span class="op">=</span> <span class="num">9.99</span>;
+<span class="kw">let</span> <span class="var">hex</span>: <span class="type">number</span> <span class="op">=</span> <span class="num">0xff</span>;
+
+<span class="cmt">// string</span>
+<span class="kw">let</span> <span class="var">firstName</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">'Alice'</span>;
+<span class="kw">let</span> <span class="var">greeting</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">`Hello, ${firstName}!`</span>;
+
+<span class="cmt">// boolean</span>
+<span class="kw">let</span> <span class="var">isActive</span>: <span class="type">boolean</span> <span class="op">=</span> <span class="bool">true</span>;
+<span class="kw">let</span> <span class="var">isAdmin</span>: <span class="type">boolean</span> <span class="op">=</span> <span class="bool">false</span>;
+
+<span class="cmt">// Type annotations are often optional — TypeScript can INFER types</span>
+<span class="kw">let</span> <span class="var">score</span> <span class="op">=</span> <span class="num">100</span>;   <span class="cmt">// inferred as number</span>
+<span class="kw">let</span> <span class="var">name</span> <span class="op">=</span> <span class="str">'Bob'</span>; <span class="cmt">// inferred as string</span>
+
+<span class="cmt">// Explicit annotation useful when initializing later</span>
+<span class="kw">let</span> <span class="var">level</span>: <span class="type">number</span>;
+<span class="var">level</span> <span class="op">=</span> <span class="num">5</span>; <span class="cmt">// OK</span>
+<span class="var">level</span> <span class="op">=</span> <span class="str">'five'</span>; <span class="cmt">// ❌ Error: Type 'string' is not assignable to 'number'</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">The <code>any</code> Type
+      <span class="tag pill" style="background:var(--c-coral-dim);color:var(--c-coral);">Avoid</span>
+    </div>
+    <p><code>any</code> turns off TypeScript's type checking for a variable — it can hold anything. It's a last resort for gradual migration or unknown data. Overusing <code>any</code> defeats the purpose of TypeScript.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — any type</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">let</span> <span class="var">data</span>: <span class="type">any</span> <span class="op">=</span> <span class="num">42</span>;
+<span class="var">data</span> <span class="op">=</span> <span class="str">'hello'</span>; <span class="cmt">// OK — any accepts all</span>
+<span class="var">data</span> <span class="op">=</span> <span class="bool">true</span>;
+<span class="var">data</span>.<span class="fn">someMethod</span>(); <span class="cmt">// No error — but may crash at runtime!</span>
+
+<span class="cmt">// Implicit any — happens when noImplicitAny is off</span>
+<span class="kw">function</span> <span class="fn">process</span>(<span class="var">value</span>) { <span class="cmt">// 'value' is implicitly 'any'</span>
+  <span class="var">value</span>.<span class="fn">doSomething</span>(); <span class="cmt">// No error, but risky</span>
+}</pre>
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Avoid any</strong>
+        Using <code>any</code> disables all type safety. Use <code>unknown</code> instead when the type is genuinely unknown — it forces you to narrow the type before using it.
+      </div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Arrays & Tuples</div>
+    <p>TypeScript arrays are typed — all elements must match the declared type. Tuples are fixed-length arrays where each position has a specific type.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Arrays</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Two equivalent array syntaxes</span>
+<span class="kw">let</span> <span class="var">numbers</span>: <span class="type">number</span>[] <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="kw">let</span> <span class="var">strings</span>: <span class="type">Array</span>&lt;<span class="type">string</span>&gt; <span class="op">=</span> [<span class="str">'a'</span>, <span class="str">'b'</span>];
+
+<span class="cmt">// Inferred array type</span>
+<span class="kw">let</span> <span class="var">scores</span> <span class="op">=</span> [<span class="num">90</span>, <span class="num">85</span>, <span class="num">92</span>]; <span class="cmt">// inferred: number[]</span>
+
+<span class="cmt">// Accessing elements is typed</span>
+<span class="kw">let</span> <span class="var">first</span> <span class="op">=</span> <span class="var">numbers</span>[<span class="num">0</span>]; <span class="cmt">// type: number</span>
+
+<span class="cmt">// ❌ Type error</span>
+<span class="var">numbers</span>.<span class="fn">push</span>(<span class="str">'hello'</span>); <span class="cmt">// Error: Argument of type 'string'</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Tuples</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Tuple: fixed-length, each position typed</span>
+<span class="kw">let</span> <span class="var">user</span>: [<span class="type">number</span>, <span class="type">string</span>] <span class="op">=</span> [<span class="num">1</span>, <span class="str">'Alice'</span>];
+
+<span class="cmt">// Destructure tuple</span>
+<span class="kw">const</span> [<span class="var">id</span>, <span class="var">username</span>] <span class="op">=</span> <span class="var">user</span>;
+console.<span class="fn">log</span>(<span class="var">id</span>);       <span class="cmt">// 1  (type: number)</span>
+console.<span class="fn">log</span>(<span class="var">username</span>); <span class="cmt">// 'Alice' (type: string)</span>
+
+<span class="cmt">// Common use: key-value pair</span>
+<span class="kw">let</span> <span class="var">entry</span>: [<span class="type">string</span>, <span class="type">number</span>] <span class="op">=</span> [<span class="str">'score'</span>, <span class="num">100</span>];
+
+<span class="cmt">// ❌ Wrong order gives error</span>
+<span class="kw">let</span> <span class="var">bad</span>: [<span class="type">string</span>, <span class="type">number</span>] <span class="op">=</span> [<span class="num">100</span>, <span class="str">'score'</span>]; <span class="cmt">// Error!</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Enums
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Named Constants</span>
+    </div>
+    <p>Enums define a set of named constants. They make code more readable by replacing magic numbers or strings with meaningful names.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Enums</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Numeric enum (auto-increments from 0)</span>
+<span class="kw">enum</span> <span class="cls">Direction</span> {
+  <span class="prop">Up</span>,    <span class="cmt">// 0</span>
+  <span class="prop">Down</span>,  <span class="cmt">// 1</span>
+  <span class="prop">Left</span>,  <span class="cmt">// 2</span>
+  <span class="prop">Right</span>  <span class="cmt">// 3</span>
+}
+
+<span class="kw">let</span> <span class="var">move</span>: <span class="cls">Direction</span> <span class="op">=</span> <span class="cls">Direction</span>.<span class="prop">Up</span>;
+console.<span class="fn">log</span>(<span class="var">move</span>); <span class="cmt">// 0</span>
+
+<span class="cmt">// String enum (preferred — more readable in debug)</span>
+<span class="kw">enum</span> <span class="cls">Size</span> {
+  <span class="prop">Small</span>  <span class="op">=</span> <span class="str">'S'</span>,
+  <span class="prop">Medium</span> <span class="op">=</span> <span class="str">'M'</span>,
+  <span class="prop">Large</span>  <span class="op">=</span> <span class="str">'L'</span>
+}
+
+<span class="kw">function</span> <span class="fn">getShirt</span>(<span class="var">size</span>: <span class="cls">Size</span>) {
+  <span class="kw">return</span> <span class="str">`Shirt size: ${size}`</span>;
+}
+<span class="fn">getShirt</span>(<span class="cls">Size</span>.<span class="prop">Medium</span>); <span class="cmt">// 'Shirt size: M'</span>
+
+<span class="cmt">// const enum — inlined at compile time (no runtime object)</span>
+<span class="kw">const enum</span> <span class="cls">Status</span> { <span class="prop">Active</span> <span class="op">=</span> <span class="num">1</span>, <span class="prop">Inactive</span> <span class="op">=</span> <span class="num">0</span> }</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Functions
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Typed Params & Return</span>
+    </div>
+    <p>TypeScript allows you to annotate function parameter types and return types, catching wrong arguments and return values at compile time.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Functions</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Basic typed function</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">name</span>: <span class="type">string</span>): <span class="type">string</span> {
+  <span class="kw">return</span> <span class="str">`Hello, ${name}!`</span>;
+}
+
+<span class="cmt">// Optional parameter — use ?</span>
+<span class="kw">function</span> <span class="fn">buildURL</span>(<span class="var">host</span>: <span class="type">string</span>, <span class="var">port</span>?: <span class="type">number</span>): <span class="type">string</span> {
+  <span class="kw">return</span> <span class="var">port</span> ? <span class="str">`${host}:${port}`</span> : <span class="var">host</span>;
+}
+<span class="fn">buildURL</span>(<span class="str">'localhost'</span>);       <span class="cmt">// OK</span>
+<span class="fn">buildURL</span>(<span class="str">'localhost'</span>, <span class="num">3000</span>); <span class="cmt">// OK</span>
+
+<span class="cmt">// Default parameter</span>
+<span class="kw">function</span> <span class="fn">tax</span>(<span class="var">price</span>: <span class="type">number</span>, <span class="var">rate</span>: <span class="type">number</span> <span class="op">=</span> <span class="num">0.1</span>): <span class="type">number</span> {
+  <span class="kw">return</span> <span class="var">price</span> <span class="op">*</span> (<span class="num">1</span> <span class="op">+</span> <span class="var">rate</span>);
+}
+
+<span class="cmt">// void return — function returns nothing</span>
+<span class="kw">function</span> <span class="fn">log</span>(<span class="var">msg</span>: <span class="type">string</span>): <span class="type">void</span> {
+  console.<span class="fn">log</span>(<span class="var">msg</span>);
+}
+
+<span class="cmt">// Arrow function with types</span>
+<span class="kw">const</span> <span class="fn">multiply</span> <span class="op">=</span> (<span class="var">x</span>: <span class="type">number</span>, <span class="var">y</span>: <span class="type">number</span>): <span class="type">number</span> <span class="op">=></span> <span class="var">x</span> <span class="op">*</span> <span class="var">y</span>;
+
+<span class="cmt">// Rest parameters</span>
+<span class="kw">function</span> <span class="fn">sum</span>(<span class="op">...</span><span class="var">nums</span>: <span class="type">number</span>[]): <span class="type">number</span> {
+  <span class="kw">return</span> <span class="var">nums</span>.<span class="fn">reduce</span>((<span class="var">a</span>, <span class="var">b</span>) <span class="op">=></span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>, <span class="num">0</span>);
+}
+<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>); <span class="cmt">// 10</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Objects</div>
+    <p>Object type annotations define the shape of an object — which properties it must have and their types.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Object Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Inline object type annotation</span>
+<span class="kw">let</span> <span class="var">employee</span>: { <span class="prop">id</span>: <span class="type">number</span>; <span class="prop">name</span>: <span class="type">string</span>; <span class="prop">retired</span>?: <span class="type">boolean</span> };
+<span class="var">employee</span> <span class="op">=</span> { <span class="prop">id</span>: <span class="num">1</span>, <span class="prop">name</span>: <span class="str">'Alice'</span> }; <span class="cmt">// OK — retired is optional</span>
+
+<span class="cmt">// Function that takes an object</span>
+<span class="kw">function</span> <span class="fn">printEmployee</span>(<span class="var">emp</span>: { <span class="prop">id</span>: <span class="type">number</span>; <span class="prop">name</span>: <span class="type">string</span> }): <span class="type">void</span> {
+  console.<span class="fn">log</span>(<span class="str">`[${emp.id}] ${emp.name}`</span>);
+}
+
+<span class="cmt">// readonly property — cannot be changed after creation</span>
+<span class="kw">let</span> <span class="var">config</span>: { <span class="kw">readonly</span> <span class="prop">apiUrl</span>: <span class="type">string</span> } <span class="op">=</span> { <span class="prop">apiUrl</span>: <span class="str">'https://api.example.com'</span> };
+<span class="var">config</span>.<span class="prop">apiUrl</span> <span class="op">=</span> <span class="str">'other'</span>; <span class="cmt">// ❌ Error: readonly</span></pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 2 Exercises — Fundamentals</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Declare variables of types <code>number</code>, <code>string</code>, <code>boolean</code> with explicit annotations. Then declare a variable with no annotation and let TypeScript infer the type. Use <code>typeof</code> in hover/IDE to verify inference.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a <code>string[]</code> of your favourite foods. Write a typed function <code>getFirst(arr: string[]): string</code> that returns the first item. What happens if the array is empty? How do you handle it safely?</p>
+          <div class="hint">💡 Hint: Return type could be <code>string | undefined</code></div>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create a tuple type <code>[string, number, boolean]</code> representing a student record (name, grade, passed). Write a function that accepts this tuple and returns a formatted summary string.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">4</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create a string enum <code>CardSuit</code> with values <code>Hearts</code>, <code>Diamonds</code>, <code>Clubs</code>, <code>Spades</code>. Write a function <code>isRed(suit: CardSuit): boolean</code> that returns true for Hearts and Diamonds.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">5</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Write a function <code>describe(value: any): string</code> that uses <code>typeof</code> to return a human-readable description like <code>"a number: 42"</code> or <code>"a string: hello"</code>. Handle <code>number</code>, <code>string</code>, <code>boolean</code>, <code>object</code>, and <code>undefined</code>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 3: ADVANCED TYPES
+     ============================================================ -->
+<div class="chapter theme-green" id="advanced-types">
+  <div class="section-header">
+    <div class="section-icon">🔬</div>
+    <div>
+      <span class="section-num">Chapter 3 · TypeScript Core</span>
+      <h2>Advanced Types</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Type Aliases
+      <span class="tag pill" style="background:var(--c-green-dim);color:var(--c-green);">Reusable Types</span>
+    </div>
+    <p>A <strong>type alias</strong> gives a name to any type — primitives, objects, unions, tuples, functions. It improves readability and avoids repeating complex type shapes.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Type Aliases</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Alias for a primitive</span>
+<span class="kw">type</span> <span class="cls">ID</span> <span class="op">=</span> <span class="type">number</span>;
+<span class="kw">let</span> <span class="var">userId</span>: <span class="cls">ID</span> <span class="op">=</span> <span class="num">101</span>;
+
+<span class="cmt">// Alias for an object shape</span>
+<span class="kw">type</span> <span class="cls">Point</span> <span class="op">=</span> { <span class="prop">x</span>: <span class="type">number</span>; <span class="prop">y</span>: <span class="type">number</span> };
+<span class="kw">let</span> <span class="var">origin</span>: <span class="cls">Point</span> <span class="op">=</span> { <span class="prop">x</span>: <span class="num">0</span>, <span class="prop">y</span>: <span class="num">0</span> };
+
+<span class="cmt">// Alias for a function signature</span>
+<span class="kw">type</span> <span class="cls">Formatter</span> <span class="op">=</span> (<span class="var">value</span>: <span class="type">number</span>) <span class="op">=></span> <span class="type">string</span>;
+<span class="kw">const</span> <span class="fn">toUSD</span>: <span class="cls">Formatter</span> <span class="op">=</span> (<span class="var">v</span>) <span class="op">=></span> <span class="str">`$${v.toFixed(2)}`</span>;
+
+<span class="cmt">// Alias for a complex nested shape</span>
+<span class="kw">type</span> <span class="cls">User</span> <span class="op">=</span> {
+  <span class="prop">id</span>: <span class="type">number</span>;
+  <span class="prop">name</span>: <span class="type">string</span>;
+  <span class="prop">address</span>: {
+    <span class="prop">city</span>: <span class="type">string</span>;
+    <span class="prop">country</span>: <span class="type">string</span>;
+  };
+};
+<span class="kw">const</span> <span class="var">user</span>: <span class="cls">User</span> <span class="op">=</span> { <span class="prop">id</span>: <span class="num">1</span>, <span class="prop">name</span>: <span class="str">'Alice'</span>, <span class="prop">address</span>: { <span class="prop">city</span>: <span class="str">'Paris'</span>, <span class="prop">country</span>: <span class="str">'FR'</span> } };</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Union Types</div>
+    <p>A union type (<code>A | B</code>) allows a variable to hold one of several types. Use <strong>type narrowing</strong> (typeof, instanceof, in) to work with the specific type inside a branch.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Union Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Union type</span>
+<span class="kw">type</span> <span class="cls">StringOrNumber</span> <span class="op">=</span> <span class="type">string</span> <span class="op">|</span> <span class="type">number</span>;
+<span class="kw">let</span> <span class="var">input</span>: <span class="cls">StringOrNumber</span> <span class="op">=</span> <span class="str">'hello'</span>;
+<span class="var">input</span> <span class="op">=</span> <span class="num">42</span>; <span class="cmt">// Also OK</span>
+
+<span class="cmt">// Type narrowing with typeof</span>
+<span class="kw">function</span> <span class="fn">format</span>(<span class="var">value</span>: <span class="type">string</span> <span class="op">|</span> <span class="type">number</span>): <span class="type">string</span> {
+  <span class="kw">if</span> (<span class="kw">typeof</span> <span class="var">value</span> <span class="op">===</span> <span class="str">'string'</span>) {
+    <span class="kw">return</span> <span class="var">value</span>.<span class="fn">toUpperCase</span>(); <span class="cmt">// value is string here</span>
+  }
+  <span class="kw">return</span> <span class="var">value</span>.<span class="fn">toFixed</span>(<span class="num">2</span>); <span class="cmt">// value is number here</span>
+}
+
+<span class="cmt">// Discriminated union — great for state modelling</span>
+<span class="kw">type</span> <span class="cls">Shape</span> <span class="op">=</span>
+  <span class="op">|</span> { <span class="prop">kind</span>: <span class="str">'circle'</span>; <span class="prop">radius</span>: <span class="type">number</span> }
+  <span class="op">|</span> { <span class="prop">kind</span>: <span class="str">'rectangle'</span>; <span class="prop">width</span>: <span class="type">number</span>; <span class="prop">height</span>: <span class="type">number</span> };
+
+<span class="kw">function</span> <span class="fn">area</span>(<span class="var">shape</span>: <span class="cls">Shape</span>): <span class="type">number</span> {
+  <span class="kw">switch</span> (<span class="var">shape</span>.<span class="prop">kind</span>) {
+    <span class="kw">case</span> <span class="str">'circle'</span>:    <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="var">shape</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>;
+    <span class="kw">case</span> <span class="str">'rectangle'</span>: <span class="kw">return</span> <span class="var">shape</span>.<span class="prop">width</span> <span class="op">*</span> <span class="var">shape</span>.<span class="prop">height</span>;
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Intersection Types</div>
+    <p>An intersection type (<code>A &amp; B</code>) combines multiple types into one. The result must satisfy <em>all</em> combined types simultaneously — useful for mixins and composition.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Intersection Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">type</span> <span class="cls">Draggable</span> <span class="op">=</span> { <span class="fn">drag</span>(): <span class="type">void</span> };
+<span class="kw">type</span> <span class="cls">Resizable</span> <span class="op">=</span> { <span class="fn">resize</span>(): <span class="type">void</span> };
+
+<span class="cmt">// Intersection: must implement BOTH drag and resize</span>
+<span class="kw">type</span> <span class="cls">Widget</span> <span class="op">=</span> <span class="cls">Draggable</span> <span class="op">&</span> <span class="cls">Resizable</span>;
+
+<span class="kw">const</span> <span class="var">textBox</span>: <span class="cls">Widget</span> <span class="op">=</span> {
+  <span class="fn">drag</span>() { console.<span class="fn">log</span>(<span class="str">'dragging'</span>); },
+  <span class="fn">resize</span>() { console.<span class="fn">log</span>(<span class="str">'resizing'</span>); }
+};</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Literal Types</div>
+    <p>Literal types restrict a variable to an <em>exact</em> value — not just any string or number. Combined with unions, they create precise, self-documenting APIs.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Literal Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Exact string literals only</span>
+<span class="kw">type</span> <span class="cls">Direction</span> <span class="op">=</span> <span class="str">'left'</span> <span class="op">|</span> <span class="str">'right'</span> <span class="op">|</span> <span class="str">'up'</span> <span class="op">|</span> <span class="str">'down'</span>;
+
+<span class="kw">function</span> <span class="fn">move</span>(<span class="var">dir</span>: <span class="cls">Direction</span>) {
+  console.<span class="fn">log</span>(<span class="str">`Moving ${dir}`</span>);
+}
+<span class="fn">move</span>(<span class="str">'left'</span>);     <span class="cmt">// ✅</span>
+<span class="fn">move</span>(<span class="str">'diagonal'</span>); <span class="cmt">// ❌ Error</span>
+
+<span class="cmt">// Numeric literals</span>
+<span class="kw">type</span> <span class="cls">DiceRoll</span> <span class="op">=</span> <span class="num">1</span> <span class="op">|</span> <span class="num">2</span> <span class="op">|</span> <span class="num">3</span> <span class="op">|</span> <span class="num">4</span> <span class="op">|</span> <span class="num">5</span> <span class="op">|</span> <span class="num">6</span>;
+<span class="kw">let</span> <span class="var">roll</span>: <span class="cls">DiceRoll</span> <span class="op">=</span> <span class="num">4</span>;
+<span class="var">roll</span> <span class="op">=</span> <span class="num">7</span>; <span class="cmt">// ❌ Error</span>
+
+<span class="cmt">// Mixed literal + type</span>
+<span class="kw">type</span> <span class="cls">Margin</span> <span class="op">=</span> <span class="type">number</span> <span class="op">|</span> <span class="str">'auto'</span>;</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Nullable Types, Optional Chaining & Nullish Coalescing</div>
+    <p>With <code>strictNullChecks</code> enabled, <code>null</code> and <code>undefined</code> are separate types. Use optional chaining (<code>?.</code>) to safely access nested properties, and nullish coalescing (<code>??</code>) as a null-safe fallback.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Null Safety</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Nullable type — must include null explicitly</span>
+<span class="kw">let</span> <span class="var">name</span>: <span class="type">string</span> <span class="op">|</span> <span class="type">null</span> <span class="op">=</span> <span class="bool">null</span>;
+<span class="var">name</span> <span class="op">=</span> <span class="str">'Alice'</span>; <span class="cmt">// OK</span>
+
+<span class="cmt">// Optional chaining — stops if null/undefined</span>
+<span class="kw">type</span> <span class="cls">Customer</span> <span class="op">=</span> { <span class="prop">birthday</span>?: { <span class="prop">year</span>: <span class="type">number</span> } };
+<span class="kw">const</span> <span class="var">c</span>: <span class="cls">Customer</span> <span class="op">=</span> {};
+
+<span class="cmt">// Without optional chaining — throws if birthday is undefined</span>
+<span class="cmt">// const year = c.birthday.year; ← ❌ Runtime error</span>
+
+<span class="cmt">// With optional chaining — returns undefined safely</span>
+<span class="kw">const</span> <span class="var">year</span> <span class="op">=</span> <span class="var">c</span>.<span class="prop">birthday</span><span class="op">?.</span><span class="prop">year</span>; <span class="cmt">// undefined</span>
+
+<span class="cmt">// Nullish coalescing — fallback ONLY for null/undefined</span>
+<span class="kw">const</span> <span class="var">displayYear</span> <span class="op">=</span> <span class="var">year</span> <span class="op">??</span> <span class="num">2000</span>; <span class="cmt">// 2000</span>
+
+<span class="cmt">// ?? vs || difference</span>
+console.<span class="fn">log</span>(<span class="num">0</span> <span class="op">||</span> <span class="str">'default'</span>);  <span class="cmt">// 'default' — 0 is falsy</span>
+console.<span class="fn">log</span>(<span class="num">0</span> <span class="op">??</span> <span class="str">'default'</span>);  <span class="cmt">// 0 — only null/undefined trigger ??</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Type Assertions, <code>unknown</code> &amp; <code>never</code></div>
+    <p>Type assertions let you tell the compiler "I know the type better". <code>unknown</code> is the safe version of <code>any</code>. <code>never</code> represents values that never occur — useful for exhaustive checks.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Assertions & Special Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Type assertion — tells TS what type to treat as</span>
+<span class="kw">let</span> <span class="var">input</span> <span class="op">=</span> document.<span class="fn">getElementById</span>(<span class="str">'name'</span>) <span class="kw">as</span> <span class="cls">HTMLInputElement</span>;
+<span class="var">input</span>.<span class="prop">value</span> <span class="op">=</span> <span class="str">'Alice'</span>; <span class="cmt">// OK — TS knows it's an input</span>
+
+<span class="cmt">// unknown — safer than any</span>
+<span class="kw">function</span> <span class="fn">processInput</span>(<span class="var">val</span>: <span class="type">unknown</span>) {
+  <span class="cmt">// Must narrow before using</span>
+  <span class="kw">if</span> (<span class="kw">typeof</span> <span class="var">val</span> <span class="op">===</span> <span class="str">'string'</span>) {
+    console.<span class="fn">log</span>(<span class="var">val</span>.<span class="fn">toUpperCase</span>()); <span class="cmt">// OK inside narrowed block</span>
+  }
+  <span class="var">val</span>.<span class="fn">doSomething</span>(); <span class="cmt">// ❌ Error — can't call without narrowing</span>
+}
+
+<span class="cmt">// never — exhaustiveness checking</span>
+<span class="kw">type</span> <span class="cls">Status</span> <span class="op">=</span> <span class="str">'active'</span> <span class="op">|</span> <span class="str">'inactive'</span>;
+
+<span class="kw">function</span> <span class="fn">handle</span>(<span class="var">s</span>: <span class="cls">Status</span>) {
+  <span class="kw">switch</span> (<span class="var">s</span>) {
+    <span class="kw">case</span> <span class="str">'active'</span>:   <span class="kw">return</span> <span class="str">'active!'</span>;
+    <span class="kw">case</span> <span class="str">'inactive'</span>: <span class="kw">return</span> <span class="str">'inactive!'</span>;
+    <span class="kw">default</span>:
+      <span class="kw">const</span> <span class="var">_check</span>: <span class="type">never</span> <span class="op">=</span> <span class="var">s</span>; <span class="cmt">// Error if a case is missed</span>
+  }
+}</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 3 Exercises — Advanced Types</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a type alias <code>Coordinate</code> for <code>{ x: number; y: number }</code>. Write a function <code>distance(a: Coordinate, b: Coordinate): number</code> that calculates the Euclidean distance between two points.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a union type <code>Result</code> as <code>{ success: true; data: string } | { success: false; error: string }</code>. Write a function that handles both cases using a type guard.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Model a <code>Shape</code> discriminated union with <code>circle</code>, <code>rectangle</code>, and <code>triangle</code>. Write a <code>perimeter(shape: Shape): number</code> function using a switch. Use <code>never</code> in the default case for exhaustiveness.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">4</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Given a deeply nested type <code>Company → Department → Manager → phone?: string</code>, use optional chaining to safely access the phone number. Return <code>"N/A"</code> if it doesn't exist using the nullish coalescing operator.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">5</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Write a function <code>safeParse(json: unknown): { name: string; age: number } | null</code> that accepts <code>unknown</code>, uses <code>typeof</code> and property checks to narrow the type, and returns <code>null</code> if the shape doesn't match.</p>
+          <div class="hint">💡 Hint: Use <code>typeof val === 'object'</code> and then <code>'name' in val</code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 4: CLASSES & OOP
+     ============================================================ -->
+<div class="chapter theme-purple" id="oop">
+  <div class="section-header">
+    <div class="section-icon">🏛️</div>
+    <div>
+      <span class="section-num">Chapter 4 · Object-Oriented TypeScript</span>
+      <h2>Classes & OOP</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Creating Classes & Objects
+      <span class="tag pill" style="background:var(--c-purple-dim);color:var(--c-purple);">OOP</span>
+    </div>
+    <p>TypeScript classes add type annotations to ES6 classes. Properties must be declared with types before use. The constructor initializes them.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Class Basics</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Account</span> {
+  <span class="cmt">// Property declarations (required in TS)</span>
+  <span class="prop">id</span>: <span class="type">number</span>;
+  <span class="prop">owner</span>: <span class="type">string</span>;
+  <span class="prop">balance</span>: <span class="type">number</span>;
+
+  <span class="fn">constructor</span>(<span class="var">id</span>: <span class="type">number</span>, <span class="var">owner</span>: <span class="type">string</span>, <span class="var">balance</span>: <span class="type">number</span>) {
+    <span class="kw">this</span>.<span class="prop">id</span> <span class="op">=</span> <span class="var">id</span>;
+    <span class="kw">this</span>.<span class="prop">owner</span> <span class="op">=</span> <span class="var">owner</span>;
+    <span class="kw">this</span>.<span class="prop">balance</span> <span class="op">=</span> <span class="var">balance</span>;
+  }
+
+  <span class="fn">deposit</span>(<span class="var">amount</span>: <span class="type">number</span>): <span class="type">void</span> {
+    <span class="kw">if</span> (<span class="var">amount</span> <span class="op"><=</span> <span class="num">0</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">Error</span>(<span class="str">'Invalid amount'</span>);
+    <span class="kw">this</span>.<span class="prop">balance</span> <span class="op">+=</span> <span class="var">amount</span>;
+  }
+
+  <span class="fn">toString</span>(): <span class="type">string</span> {
+    <span class="kw">return</span> <span class="str">`Account[${<span class="kw">this</span>.<span class="prop">id</span>}] ${<span class="kw">this</span>.<span class="prop">owner</span>}: $${<span class="kw">this</span>.<span class="prop">balance</span>}`</span>;
+  }
+}
+
+<span class="kw">const</span> <span class="var">acc</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Account</span>(<span class="num">1</span>, <span class="str">'Alice'</span>, <span class="num">1000</span>);
+<span class="var">acc</span>.<span class="fn">deposit</span>(<span class="num">500</span>);
+console.<span class="fn">log</span>(<span class="var">acc</span>.<span class="fn">toString</span>()); <span class="cmt">// Account[1] Alice: $1500</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Access Modifiers, readonly & Parameter Properties</div>
+    <p><code>public</code>, <code>private</code>, and <code>protected</code> control visibility. <strong>Parameter properties</strong> are a TypeScript shortcut that declares and assigns properties directly in the constructor signature.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Modifiers & Parameter Properties</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Account</span> {
+  <span class="cmt">// Parameter properties — TS shortcut!</span>
+  <span class="cmt">// Declares AND assigns all at once</span>
+  <span class="fn">constructor</span>(
+    <span class="kw">public readonly</span> <span class="prop">id</span>: <span class="type">number</span>,
+    <span class="kw">public</span> <span class="prop">owner</span>: <span class="type">string</span>,
+    <span class="kw">private</span> <span class="prop">_balance</span>: <span class="type">number</span>
+  ) {}
+
+  <span class="cmt">// Getter — access private field</span>
+  <span class="kw">get</span> <span class="fn">balance</span>(): <span class="type">number</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">_balance</span>; }
+
+  <span class="cmt">// Setter — with validation</span>
+  <span class="kw">set</span> <span class="fn">balance</span>(<span class="var">value</span>: <span class="type">number</span>) {
+    <span class="kw">if</span> (<span class="var">value</span> <span class="op"><</span> <span class="num">0</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">Error</span>(<span class="str">'Negative balance'</span>);
+    <span class="kw">this</span>.<span class="prop">_balance</span> <span class="op">=</span> <span class="var">value</span>;
+  }
+}
+
+<span class="kw">const</span> <span class="var">a</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Account</span>(<span class="num">1</span>, <span class="str">'Alice'</span>, <span class="num">500</span>);
+console.<span class="fn">log</span>(<span class="var">a</span>.<span class="prop">balance</span>); <span class="cmt">// 500</span>
+<span class="var">a</span>.<span class="prop">balance</span> <span class="op">=</span> <span class="num">750</span>;        <span class="cmt">// calls setter</span>
+<span class="var">a</span>.<span class="prop">id</span> <span class="op">=</span> <span class="num">2</span>;               <span class="cmt">// ❌ Error: readonly</span></pre>
+    </div>
+
+    <table class="ref-table">
+      <thead><tr><th>Modifier</th><th>Accessible from</th><th>Use case</th></tr></thead>
+      <tbody>
+        <tr><td><code>public</code></td><td>Anywhere (default)</td><td>Public API of the class</td></tr>
+        <tr><td><code>private</code></td><td>This class only</td><td>Internal implementation</td></tr>
+        <tr><td><code>protected</code></td><td>This class + subclasses</td><td>Shared state for inheritance</td></tr>
+        <tr><td><code>readonly</code></td><td>Can read anywhere, can't reassign</td><td>Immutable IDs, config</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Static Members & Index Signatures</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Static & Index Signatures</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">MathUtils</span> {
+  <span class="kw">static</span> <span class="prop">PI</span> <span class="op">=</span> <span class="num">3.14159</span>;
+
+  <span class="kw">static</span> <span class="fn">circleArea</span>(<span class="var">r</span>: <span class="type">number</span>): <span class="type">number</span> {
+    <span class="kw">return</span> <span class="cls">MathUtils</span>.<span class="prop">PI</span> <span class="op">*</span> <span class="var">r</span> <span class="op">**</span> <span class="num">2</span>;
+  }
+}
+<span class="cls">MathUtils</span>.<span class="fn">circleArea</span>(<span class="num">5</span>); <span class="cmt">// 78.54 — called on class, not instance</span>
+
+<span class="cmt">// Index signatures — dynamic property keys</span>
+<span class="kw">class</span> <span class="cls">SeatAssignment</span> {
+  [<span class="var">seatNumber</span>: <span class="type">string</span>]: <span class="type">string</span>; <span class="cmt">// any string key → string value</span>
+}
+
+<span class="kw">const</span> <span class="var">seats</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">SeatAssignment</span>();
+<span class="var">seats</span>[<span class="str">'A1'</span>] <span class="op">=</span> <span class="str">'Alice'</span>;
+<span class="var">seats</span>[<span class="str">'B2'</span>] <span class="op">=</span> <span class="str">'Bob'</span>;</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Inheritance, Method Overriding & Polymorphism</div>
+    <p>Classes can extend other classes with <code>extends</code>. Override methods with the <code>override</code> keyword (TS4+). Polymorphism lets you treat subclass instances uniformly through the base type.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Inheritance & Polymorphism</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">class</span> <span class="cls">Animal</span> {
+  <span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">name</span>: <span class="type">string</span>) {}
+
+  <span class="fn">makeSound</span>(): <span class="type">void</span> {
+    console.<span class="fn">log</span>(<span class="str">'...'</span>);
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Dog</span> <span class="kw">extends</span> <span class="cls">Animal</span> {
+  <span class="fn">constructor</span>(<span class="var">name</span>: <span class="type">string</span>, <span class="kw">public</span> <span class="prop">breed</span>: <span class="type">string</span>) {
+    <span class="kw">super</span>(<span class="var">name</span>); <span class="cmt">// must call super() first</span>
+  }
+
+  <span class="kw">override</span> <span class="fn">makeSound</span>(): <span class="type">void</span> {
+    console.<span class="fn">log</span>(<span class="str">'Woof!'</span>);
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Cat</span> <span class="kw">extends</span> <span class="cls">Animal</span> {
+  <span class="kw">override</span> <span class="fn">makeSound</span>(): <span class="type">void</span> { console.<span class="fn">log</span>(<span class="str">'Meow!'</span>); }
+}
+
+<span class="cmt">// Polymorphism — same method, different behavior</span>
+<span class="kw">const</span> <span class="var">animals</span>: <span class="cls">Animal</span>[] <span class="op">=</span> [<span class="kw">new</span> <span class="cls">Dog</span>(<span class="str">'Rex'</span>, <span class="str">'Lab'</span>), <span class="kw">new</span> <span class="cls">Cat</span>(<span class="str">'Mia'</span>)];
+<span class="var">animals</span>.<span class="fn">forEach</span>(<span class="var">a</span> <span class="op">=></span> <span class="var">a</span>.<span class="fn">makeSound</span>()); <span class="cmt">// Woof! Meow!</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Abstract Classes & Interfaces</div>
+    <p>Abstract classes define a common blueprint but can't be instantiated. Interfaces describe the shape of objects/classes — purely a compile-time contract with no runtime overhead.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Abstract Classes</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">abstract class</span> <span class="cls">Shape</span> {
+  <span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">color</span>: <span class="type">string</span>) {}
+
+  <span class="cmt">// Abstract method — subclasses MUST implement</span>
+  <span class="kw">abstract</span> <span class="fn">area</span>(): <span class="type">number</span>;
+
+  <span class="cmt">// Concrete method — shared by all subclasses</span>
+  <span class="fn">describe</span>(): <span class="type">string</span> {
+    <span class="kw">return</span> <span class="str">`A ${<span class="kw">this</span>.<span class="prop">color</span>} shape with area ${<span class="kw">this</span>.<span class="fn">area</span>()}`</span>;
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Circle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+  <span class="fn">constructor</span>(<span class="var">color</span>: <span class="type">string</span>, <span class="kw">public</span> <span class="prop">radius</span>: <span class="type">number</span>) {
+    <span class="kw">super</span>(<span class="var">color</span>);
+  }
+  <span class="kw">override</span> <span class="fn">area</span>() { <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>; }
+}
+
+<span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Circle</span>(<span class="str">'red'</span>, <span class="num">5</span>);
+console.<span class="fn">log</span>(<span class="var">c</span>.<span class="fn">describe</span>()); <span class="cmt">// A red shape with area 78.54</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Interfaces</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Interface — a contract for shape</span>
+<span class="kw">interface</span> <span class="iface">Calendar</span> {
+  <span class="prop">name</span>: <span class="type">string</span>;
+  <span class="fn">addEvent</span>(<span class="var">event</span>: <span class="type">string</span>): <span class="type">void</span>;
+  <span class="fn">removeEvent</span>(<span class="var">event</span>: <span class="type">string</span>): <span class="type">void</span>;
+}
+
+<span class="kw">class</span> <span class="cls">GoogleCalendar</span> <span class="kw">implements</span> <span class="iface">Calendar</span> {
+  <span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">name</span>: <span class="type">string</span>) {}
+  <span class="fn">addEvent</span>(<span class="var">e</span>: <span class="type">string</span>) { console.<span class="fn">log</span>(<span class="str">`Adding ${e} to Google`</span>); }
+  <span class="fn">removeEvent</span>(<span class="var">e</span>: <span class="type">string</span>) { console.<span class="fn">log</span>(<span class="str">`Removing ${e}`</span>); }
+}
+
+<span class="cmt">// Interface vs Type: interfaces can be merged, types can't</span>
+<span class="kw">interface</span> <span class="iface">User</span> { <span class="prop">name</span>: <span class="type">string</span>; }
+<span class="kw">interface</span> <span class="iface">User</span> { <span class="prop">age</span>: <span class="type">number</span>; }  <span class="cmt">// merges with first User</span>
+<span class="cmt">// User now has both name and age</span></pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 4 Exercises — Classes & OOP</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a <code>Person</code> class with <code>firstName</code>, <code>lastName</code> (public), and <code>birthYear</code> (private) using parameter properties. Add a getter <code>age</code> that calculates current age from the year, and a method <code>fullName()</code>.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create a <code>BankAccount</code> class with private <code>_balance</code>. Implement <code>deposit()</code>, <code>withdraw()</code> (with overdraft check), and a getter/setter for balance with validation. Use a static <code>interestRate</code> and a method <code>applyInterest()</code>.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create an abstract class <code>Vehicle</code> with <code>make</code>, <code>model</code>, and an abstract method <code>fuelType(): string</code>. Extend it with <code>ElectricCar</code> and <code>GasCar</code> subclasses. Create an array of vehicles and call <code>fuelType()</code> on each.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">4</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Design an interface <code>Logger</code> with methods <code>log(msg: string)</code>, <code>warn(msg: string)</code>, and <code>error(msg: string)</code>. Implement it with two classes: <code>ConsoleLogger</code> (logs to console with prefixes) and <code>FileLogger</code> (stores messages in an array, accessible via <code>getHistory()</code>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 5: GENERICS
+     ============================================================ -->
+<div class="chapter theme-coral" id="generics">
+  <div class="section-header">
+    <div class="section-icon">🧬</div>
+    <div>
+      <span class="section-num">Chapter 5 · Object-Oriented TypeScript</span>
+      <h2>Generics</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">The Problem Generics Solve
+      <span class="tag pill" style="background:var(--c-coral-dim);color:var(--c-coral);">Reusability</span>
+    </div>
+    <p>Without generics, you'd either duplicate code for each type, or use <code>any</code> and lose type safety. Generics let you write code that works with <em>any type</em> while keeping full type safety.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Without vs With Generics</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Without generics — forced to duplicate</span>
+<span class="kw">function</span> <span class="fn">wrapNumber</span>(<span class="var">val</span>: <span class="type">number</span>): { <span class="prop">value</span>: <span class="type">number</span> } { <span class="kw">return</span> { <span class="prop">value</span>: <span class="var">val</span> }; }
+<span class="kw">function</span> <span class="fn">wrapString</span>(<span class="var">val</span>: <span class="type">string</span>): { <span class="prop">value</span>: <span class="type">string</span> } { <span class="kw">return</span> { <span class="prop">value</span>: <span class="var">val</span> }; }
+
+<span class="cmt">// With generics — one function handles all types!</span>
+<span class="kw">function</span> <span class="fn">wrap</span>&lt;<span class="type">T</span>&gt;(<span class="var">val</span>: <span class="type">T</span>): { <span class="prop">value</span>: <span class="type">T</span> } {
+  <span class="kw">return</span> { <span class="prop">value</span>: <span class="var">val</span> };
+}
+
+<span class="kw">const</span> <span class="var">n</span> <span class="op">=</span> <span class="fn">wrap</span>(<span class="num">42</span>);        <span class="cmt">// T inferred as number → { value: number }</span>
+<span class="kw">const</span> <span class="var">s</span> <span class="op">=</span> <span class="fn">wrap</span>(<span class="str">'hello'</span>);  <span class="cmt">// T inferred as string → { value: string }</span>
+<span class="var">s</span>.<span class="prop">value</span>.<span class="fn">toUpperCase</span>();   <span class="cmt">// ✅ TypeScript knows it's a string!</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Generic Classes & Interfaces</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Generic Class</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Generic class — Stack data structure</span>
+<span class="kw">class</span> <span class="cls">Stack</span>&lt;<span class="type">T</span>&gt; {
+  <span class="kw">private</span> <span class="prop">items</span>: <span class="type">T</span>[] <span class="op">=</span> [];
+
+  <span class="fn">push</span>(<span class="var">item</span>: <span class="type">T</span>): <span class="type">void</span> { <span class="kw">this</span>.<span class="prop">items</span>.<span class="fn">push</span>(<span class="var">item</span>); }
+
+  <span class="fn">pop</span>(): <span class="type">T</span> <span class="op">|</span> <span class="type">undefined</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">items</span>.<span class="fn">pop</span>(); }
+
+  <span class="fn">peek</span>(): <span class="type">T</span> <span class="op">|</span> <span class="type">undefined</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">items</span>[<span class="kw">this</span>.<span class="prop">items</span>.<span class="prop">length</span> <span class="op">-</span> <span class="num">1</span>]; }
+
+  <span class="kw">get</span> <span class="fn">size</span>(): <span class="type">number</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">items</span>.<span class="prop">length</span>; }
+
+  <span class="fn">isEmpty</span>(): <span class="type">boolean</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">items</span>.<span class="prop">length</span> <span class="op">===</span> <span class="num">0</span>; }
+}
+
+<span class="kw">const</span> <span class="var">numStack</span> <span class="op">=</span> <span class="kw">new</span> <span class="cls">Stack</span>&lt;<span class="type">number</span>&gt;();
+<span class="var">numStack</span>.<span class="fn">push</span>(<span class="num">1</span>);
+<span class="var">numStack</span>.<span class="fn">push</span>(<span class="num">2</span>);
+console.<span class="fn">log</span>(<span class="var">numStack</span>.<span class="fn">pop</span>()); <span class="cmt">// 2 — TypeScript knows it's number</span>
+
+<span class="cmt">// Generic interface</span>
+<span class="kw">interface</span> <span class="iface">Repository</span>&lt;<span class="type">T</span>&gt; {
+  <span class="fn">findById</span>(<span class="var">id</span>: <span class="type">number</span>): <span class="type">T</span> <span class="op">|</span> <span class="type">undefined</span>;
+  <span class="fn">save</span>(<span class="var">entity</span>: <span class="type">T</span>): <span class="type">void</span>;
+  <span class="fn">delete</span>(<span class="var">id</span>: <span class="type">number</span>): <span class="type">void</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Generic Constraints & <code>keyof</code></div>
+    <p>Constraints (<code>T extends Something</code>) restrict which types can be used as the generic argument. <code>keyof</code> produces the union of keys of a type.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Constraints & keyof</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Constrain T to have a .length property</span>
+<span class="kw">function</span> <span class="fn">longest</span>&lt;<span class="type">T</span> <span class="kw">extends</span> { <span class="prop">length</span>: <span class="type">number</span> }&gt;(<span class="var">a</span>: <span class="type">T</span>, <span class="var">b</span>: <span class="type">T</span>): <span class="type">T</span> {
+  <span class="kw">return</span> <span class="var">a</span>.<span class="prop">length</span> <span class="op">>=</span> <span class="var">b</span>.<span class="prop">length</span> ? <span class="var">a</span> : <span class="var">b</span>;
+}
+<span class="fn">longest</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>], [<span class="num">1</span>, <span class="num">2</span>]);       <span class="cmt">// [1,2,3]</span>
+<span class="fn">longest</span>(<span class="str">'hello'</span>, <span class="str">'hi'</span>);          <span class="cmt">// 'hello'</span>
+
+<span class="cmt">// keyof — keys of an object type as a union</span>
+<span class="kw">function</span> <span class="fn">pluck</span>&lt;<span class="type">T</span>, <span class="type">K</span> <span class="kw">extends</span> <span class="kw">keyof</span> <span class="type">T</span>&gt;(<span class="var">obj</span>: <span class="type">T</span>, <span class="var">key</span>: <span class="type">K</span>): <span class="type">T</span>[<span class="type">K</span>] {
+  <span class="kw">return</span> <span class="var">obj</span>[<span class="var">key</span>];
+}
+
+<span class="kw">const</span> <span class="var">person</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="str">'Alice'</span>, <span class="prop">age</span>: <span class="num">30</span> };
+<span class="fn">pluck</span>(<span class="var">person</span>, <span class="str">'name'</span>); <span class="cmt">// 'Alice' — typed as string</span>
+<span class="fn">pluck</span>(<span class="var">person</span>, <span class="str">'age'</span>);  <span class="cmt">// 30 — typed as number</span>
+<span class="fn">pluck</span>(<span class="var">person</span>, <span class="str">'x'</span>);   <span class="cmt">// ❌ Error: 'x' not a key of person</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Type Mapping</div>
+    <p>Mapped types transform every property of a type. TypeScript's built-in utilities like <code>Partial</code>, <code>Required</code>, <code>Readonly</code>, and <code>Pick</code> are all built using mapped types.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Mapped Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Custom mapped type — make all properties optional</span>
+<span class="kw">type</span> <span class="cls">Optional</span>&lt;<span class="type">T</span>&gt; <span class="op">=</span> { [<span class="type">K</span> <span class="kw">in</span> <span class="kw">keyof</span> <span class="type">T</span>]?: <span class="type">T</span>[<span class="type">K</span>] };
+
+<span class="cmt">// Built-in utility types</span>
+<span class="kw">type</span> <span class="cls">User</span> <span class="op">=</span> { <span class="prop">name</span>: <span class="type">string</span>; <span class="prop">email</span>: <span class="type">string</span>; <span class="prop">age</span>: <span class="type">number</span> };
+
+<span class="kw">type</span> <span class="cls">PartialUser</span>  <span class="op">=</span> <span class="type">Partial</span>&lt;<span class="cls">User</span>&gt;;    <span class="cmt">// all optional</span>
+<span class="kw">type</span> <span class="cls">ReadonlyUser</span> <span class="op">=</span> <span class="type">Readonly</span>&lt;<span class="cls">User</span>&gt;;   <span class="cmt">// all readonly</span>
+<span class="kw">type</span> <span class="cls">NameOnly</span>    <span class="op">=</span> <span class="type">Pick</span>&lt;<span class="cls">User</span>, <span class="str">'name'</span> <span class="op">|</span> <span class="str">'email'</span>&gt;; <span class="cmt">// subset</span>
+<span class="kw">type</span> <span class="cls">WithoutAge</span>  <span class="op">=</span> <span class="type">Omit</span>&lt;<span class="cls">User</span>, <span class="str">'age'</span>&gt;;  <span class="cmt">// exclude field</span>
+
+<span class="cmt">// Real world — update function only needs changed fields</span>
+<span class="kw">function</span> <span class="fn">updateUser</span>(<span class="var">id</span>: <span class="type">number</span>, <span class="var">fields</span>: <span class="type">Partial</span>&lt;<span class="cls">User</span>&gt;): <span class="type">void</span> {
+  console.<span class="fn">log</span>(<span class="str">`Updating user ${id}`</span>, <span class="var">fields</span>);
+}
+<span class="fn">updateUser</span>(<span class="num">1</span>, { <span class="prop">name</span>: <span class="str">'Bob'</span> }); <span class="cmt">// Only update name — OK!</span></pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 5 Exercises — Generics</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Write a generic function <code>identity&lt;T&gt;(val: T): T</code> and call it with a number, string, and an object. Observe that TypeScript infers the correct return type each time.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Implement a generic <code>Queue&lt;T&gt;</code> class with <code>enqueue(item: T)</code>, <code>dequeue(): T | undefined</code>, <code>front(): T | undefined</code>, and an <code>isEmpty()</code> method. Test it with both <code>string</code> and <code>number</code> queues.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Write a generic function <code>filterArray&lt;T&gt;(arr: T[], predicate: (item: T) => boolean): T[]</code>. Use it to filter an array of numbers over 50, and an array of strings starting with "A".</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">4</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Using <code>keyof</code> and a generic constraint, write a function <code>getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K]</code>. Then create a type <code>Required&lt;T&gt;</code> (without using the built-in) that makes all properties required using a mapped type.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 6: DECORATORS
+     ============================================================ -->
+<div class="chapter theme-teal" id="decorators">
+  <div class="section-header">
+    <div class="section-icon">🎨</div>
+    <div>
+      <span class="section-num">Chapter 6 · Object-Oriented TypeScript</span>
+      <h2>Decorators</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">What Are Decorators?
+      <span class="tag pill" style="background:var(--c-teal-dim);color:var(--c-teal);">Experimental</span>
+    </div>
+    <p>Decorators are special functions prefixed with <code>@</code> that augment classes, methods, properties, or parameters. They are widely used in frameworks like Angular and NestJS.</p>
+    <div class="callout callout-warn">
+      <span class="callout-icon"></span>
+      <div class="callout-body">
+        <strong>Enable in tsconfig</strong>
+        Set <code>"experimentalDecorators": true</code> in tsconfig.json to use decorators.
+      </div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Class Decorator</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// A class decorator is a function that receives the constructor</span>
+<span class="kw">function</span> <span class="fn">Component</span>(<span class="var">constructor</span>: <span class="type">Function</span>) {
+  constructor.<span class="prop">prototype</span>.<span class="prop">uniqueId</span> <span class="op">=</span> Date.<span class="fn">now</span>();
+}
+
+<span class="dec">@Component</span>
+<span class="kw">class</span> <span class="cls">ProfileComponent</span> {
+  <span class="prop">name</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">'Profile'</span>;
+}
+
+<span class="cmt">// Parameterized decorator — returns a decorator</span>
+<span class="kw">function</span> <span class="fn">ComponentWithOptions</span>(<span class="var">options</span>: { <span class="prop">selector</span>: <span class="type">string</span> }) {
+  <span class="kw">return</span> (<span class="var">constructor</span>: <span class="type">Function</span>) <span class="op">=></span> {
+    constructor.<span class="prop">prototype</span>.<span class="prop">selector</span> <span class="op">=</span> <span class="var">options</span>.<span class="prop">selector</span>;
+  };
+}
+
+<span class="dec">@ComponentWithOptions</span>({ <span class="prop">selector</span>: <span class="str">'app-profile'</span> })
+<span class="kw">class</span> <span class="cls">AppProfile</span> {}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Method, Property & Parameter Decorators</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Method Decorator</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Method decorator — wraps method with extra behavior</span>
+<span class="kw">function</span> <span class="fn">Log</span>(<span class="var">target</span>: <span class="type">any</span>, <span class="var">key</span>: <span class="type">string</span>, <span class="var">desc</span>: <span class="cls">PropertyDescriptor</span>) {
+  <span class="kw">const</span> <span class="var">original</span> <span class="op">=</span> <span class="var">desc</span>.<span class="prop">value</span>;
+  <span class="var">desc</span>.<span class="prop">value</span> <span class="op">=</span> <span class="kw">function</span>(<span class="op">...</span><span class="var">args</span>: <span class="type">any</span>[]) {
+    console.<span class="fn">log</span>(<span class="str">`Calling ${key} with`</span>, <span class="var">args</span>);
+    <span class="kw">const</span> <span class="var">result</span> <span class="op">=</span> <span class="var">original</span>.<span class="fn">apply</span>(<span class="kw">this</span>, <span class="var">args</span>);
+    console.<span class="fn">log</span>(<span class="str">`${key} returned`</span>, <span class="var">result</span>);
+    <span class="kw">return</span> <span class="var">result</span>;
+  };
+}
+
+<span class="kw">class</span> <span class="cls">Calculator</span> {
+  <span class="dec">@Log</span>
+  <span class="fn">add</span>(<span class="var">a</span>: <span class="type">number</span>, <span class="var">b</span>: <span class="type">number</span>): <span class="type">number</span> { <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>; }
+}
+<span class="kw">new</span> <span class="cls">Calculator</span>().<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);
+<span class="cmt">// Calling add with [2, 3]</span>
+<span class="cmt">// add returned 5</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Property Decorator</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Property decorator — metadata or validation</span>
+<span class="kw">function</span> <span class="fn">MinLength</span>(<span class="var">min</span>: <span class="type">number</span>) {
+  <span class="kw">return</span> (<span class="var">target</span>: <span class="type">any</span>, <span class="var">key</span>: <span class="type">string</span>) <span class="op">=></span> {
+    <span class="kw">let</span> <span class="var">value</span>: <span class="type">string</span>;
+    Object.<span class="fn">defineProperty</span>(<span class="var">target</span>, <span class="var">key</span>, {
+      <span class="kw">get</span>: () <span class="op">=></span> <span class="var">value</span>,
+      <span class="kw">set</span>: (<span class="var">v</span>: <span class="type">string</span>) <span class="op">=></span> {
+        <span class="kw">if</span> (<span class="var">v</span>.<span class="prop">length</span> <span class="op"><</span> <span class="var">min</span>) <span class="kw">throw</span> <span class="kw">new</span> <span class="cls">Error</span>(<span class="str">`Min length is ${min}`</span>);
+        <span class="var">value</span> <span class="op">=</span> <span class="var">v</span>;
+      }
+    });
+  };
+}
+
+<span class="kw">class</span> <span class="cls">User</span> {
+  <span class="dec">@MinLength</span>(<span class="num">3</span>)
+  <span class="prop">username</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">''</span>;
+}</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 6 Exercises — Decorators</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Write a <code>@Sealed</code> class decorator that calls <code>Object.seal()</code> on the constructor and its prototype, preventing new properties from being added.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create a <code>@Throttle(ms)</code> method decorator that prevents a method from being called more than once within the given milliseconds. Apply it to a <code>search()</code> method and test it with rapid calls.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Build a <code>@Validate</code> class decorator that reads validation metadata set by <code>@Required</code> property decorators, and adds a <code>validate()</code> method to the class that checks all marked fields are non-empty. Use <code>Reflect.metadata</code> for storage.</p>
+          <div class="hint">💡 Hint: You'll need <code>"emitDecoratorMetadata": true</code> and <code>reflect-metadata</code> package</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 7: MODULES
+     ============================================================ -->
+<div class="chapter theme-pink" id="modules">
+  <div class="section-header">
+    <div class="section-icon">📦</div>
+    <div>
+      <span class="section-num">Chapter 7 · Advanced TypeScript</span>
+      <h2>Modules</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Exporting & Importing
+      <span class="tag pill" style="background:var(--c-pink-dim);color:var(--c-pink);">ES Modules</span>
+    </div>
+    <p>Modules let you split code into reusable files. TypeScript uses the same ES Module syntax as modern JavaScript. Each file is its own scope by default.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">shapes.ts — Exporting</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Named exports</span>
+<span class="kw">export type</span> <span class="cls">Point</span> <span class="op">=</span> { <span class="prop">x</span>: <span class="type">number</span>; <span class="prop">y</span>: <span class="type">number</span> };
+
+<span class="kw">export function</span> <span class="fn">distance</span>(<span class="var">a</span>: <span class="cls">Point</span>, <span class="var">b</span>: <span class="cls">Point</span>): <span class="type">number</span> {
+  <span class="kw">return</span> Math.<span class="fn">sqrt</span>((<span class="var">b</span>.<span class="prop">x</span> <span class="op">-</span> <span class="var">a</span>.<span class="prop">x</span>) <span class="op">**</span> <span class="num">2</span> <span class="op">+</span> (<span class="var">b</span>.<span class="prop">y</span> <span class="op">-</span> <span class="var">a</span>.<span class="prop">y</span>) <span class="op">**</span> <span class="num">2</span>);
+}
+
+<span class="cmt">// Default export — one per file</span>
+<span class="kw">export default class</span> <span class="cls">Circle</span> {
+  <span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">radius</span>: <span class="type">number</span>) {}
+  <span class="fn">area</span>(): <span class="type">number</span> { <span class="kw">return</span> Math.<span class="prop">PI</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>; }
+}</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">app.ts — Importing</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Import named exports</span>
+<span class="kw">import</span> { <span class="cls">Point</span>, <span class="fn">distance</span> } <span class="kw">from</span> <span class="str">'./shapes'</span>;
+
+<span class="cmt">// Import with alias</span>
+<span class="kw">import</span> { <span class="fn">distance</span> <span class="kw">as</span> <span class="fn">dist</span> } <span class="kw">from</span> <span class="str">'./shapes'</span>;
+
+<span class="cmt">// Import default</span>
+<span class="kw">import</span> <span class="cls">Circle</span> <span class="kw">from</span> <span class="str">'./shapes'</span>;
+
+<span class="cmt">// Import both</span>
+<span class="kw">import</span> <span class="cls">Circle</span>, { <span class="fn">distance</span> } <span class="kw">from</span> <span class="str">'./shapes'</span>;
+
+<span class="cmt">// Import all as namespace</span>
+<span class="kw">import</span> <span class="op">*</span> <span class="kw">as</span> <span class="var">Shapes</span> <span class="kw">from</span> <span class="str">'./shapes'</span>;
+<span class="kw">const</span> <span class="var">c</span> <span class="op">=</span> <span class="kw">new</span> <span class="var">Shapes</span>.<span class="kw">default</span>(<span class="num">5</span>);</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Re-exporting & Barrel Files</div>
+    <p>Re-exporting lets you create "barrel" <code>index.ts</code> files that group and re-export from many modules, giving consumers a single clean import path.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">index.ts — Barrel / Re-export</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Re-export everything from sub-modules</span>
+<span class="kw">export</span> { <span class="cls">Circle</span>, <span class="fn">distance</span> } <span class="kw">from</span> <span class="str">'./shapes'</span>;
+<span class="kw">export</span> { <span class="cls">Stack</span>, <span class="cls">Queue</span> }    <span class="kw">from</span> <span class="str">'./dataStructures'</span>;
+<span class="kw">export</span> <span class="op">*</span>                     <span class="kw">from</span> <span class="str">'./utils'</span>;
+
+<span class="cmt">// Consumers now import from one place</span>
+<span class="kw">import</span> { <span class="cls">Circle</span>, <span class="cls">Stack</span>, <span class="fn">distance</span> } <span class="kw">from</span> <span class="str">'./index'</span>;</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 7 Exercises — Modules</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a <code>mathUtils.ts</code> module that exports named functions: <code>add</code>, <code>subtract</code>, <code>multiply</code>, <code>divide</code>. Import them in <code>main.ts</code> and test each one. Also export a <code>PI</code> constant.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Organize a small project: <code>models/User.ts</code>, <code>services/UserService.ts</code>, <code>utils/validator.ts</code>. Create a barrel <code>index.ts</code> that re-exports all public APIs. Import everything from the barrel in <code>app.ts</code>.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Create a module that has both a default export (a class) and named exports (utility functions). Practice all three import styles: named, default, and namespace (<code>import * as</code>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 8: JAVASCRIPT INTEGRATION
+     ============================================================ -->
+<div class="chapter theme-orange" id="js-integration">
+  <div class="section-header">
+    <div class="section-icon">🔗</div>
+    <div>
+      <span class="section-num">Chapter 8 · Advanced TypeScript</span>
+      <h2>JavaScript Integration</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Including JS in TS Projects & Type Checking JS
+      <span class="tag pill" style="background:var(--c-orange-dim);color:var(--c-orange);">Migration</span>
+    </div>
+    <p>TypeScript can gradually type-check JavaScript files. Enable <code>allowJs</code> to include <code>.js</code> files in a TS project, and <code>checkJs</code> to report errors in them too.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">tsconfig.json — JS Integration</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre>{
+  <span class="str">"compilerOptions"</span>: {
+    <span class="str">"allowJs"</span>: <span class="bool">true</span>,    <span class="cmt">// Include .js files in compilation</span>
+    <span class="str">"checkJs"</span>: <span class="bool">true</span>,    <span class="cmt">// Type-check .js files</span>
+    <span class="str">"declaration"</span>: <span class="bool">true</span> <span class="cmt">// Generate .d.ts files</span>
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">JSDoc Type Annotations in JS files</div>
+    <p>Use JSDoc comments to annotate JavaScript files with types — TypeScript will read them without requiring you to rename files to <code>.ts</code>.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">JavaScript with JSDoc Types</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">/**
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */</span>
+<span class="kw">function</span> <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>) {
+  <span class="kw">return</span> <span class="var">a</span> <span class="op">+</span> <span class="var">b</span>;
+}
+
+<span class="cmt">/**
+ * @typedef {{ name: string; age: number }} Person
+ */</span>
+
+<span class="cmt">/**
+ * @param {Person} person
+ * @returns {string}
+ */</span>
+<span class="kw">function</span> <span class="fn">greet</span>(<span class="var">person</span>) {
+  <span class="kw">return</span> <span class="str">`Hello, ${person.name}!`</span>;
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Declaration Files (.d.ts) & DefinitelyTyped</div>
+    <p>Declaration files (<code>.d.ts</code>) describe the types of existing JavaScript libraries without modifying them. The community maintains declarations for thousands of packages at <strong>DefinitelyTyped</strong>.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Using DefinitelyTyped</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt"># Install a library + its type declarations</span>
+npm install lodash
+npm install <span class="op">--</span>save-dev @types/lodash
+
+<span class="cmt"># Now TypeScript knows the types</span>
+<span class="kw">import</span> <span class="op">*</span> <span class="kw">as</span> <span class="var">_</span> <span class="kw">from</span> <span class="str">'lodash'</span>;
+<span class="var">_</span>.<span class="fn">chunk</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>], <span class="num">2</span>); <span class="cmt">// [[1,2],[3,4]] — fully typed!</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">custom.d.ts — Custom Declaration File</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt">// Declare types for a plain JS module</span>
+<span class="kw">declare module</span> <span class="str">'./tax'</span> {
+  <span class="kw">export function</span> <span class="fn">calculateTax</span>(<span class="var">income</span>: <span class="type">number</span>): <span class="type">number</span>;
+  <span class="kw">export const</span> <span class="var">TAX_YEAR</span>: <span class="type">number</span>;
+}</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 8 Exercises — JS Integration</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Enable <code>allowJs</code> and <code>checkJs</code> in tsconfig. Create a plain <code>utils.js</code> file with a function. Add JSDoc type annotations and verify that TypeScript reports type errors if you call it incorrectly.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Install <code>lodash</code> and <code>@types/lodash</code>. Use at least 3 lodash methods (<code>_.groupBy</code>, <code>_.uniq</code>, <code>_.sortBy</code>) with proper TypeScript type checking. Verify autocomplete works in your editor.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Create a hand-written <code>payment.d.ts</code> declaration file for an imaginary <code>payment.js</code> library. It should describe a <code>ChargeResult</code> type, a <code>charge(amount, currency)</code> function, and a <code>PaymentProvider</code> class.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 9: REACT WITH TYPESCRIPT
+     ============================================================ -->
+<div class="chapter theme-blue" id="react-ts">
+  <div class="section-header">
+    <div class="section-icon">⚛️</div>
+    <div>
+      <span class="section-num">Chapter 9 · Advanced TypeScript</span>
+      <h2>React with TypeScript</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Setting Up a React + TypeScript Project
+      <span class="tag pill" style="background:var(--c-blue-dim);color:var(--c-blue);">Setup</span>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">Terminal — Create React App with TypeScript</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt"># Using Vite (recommended)</span>
+npm create vite@latest my-app <span class="op">--</span> <span class="op">--</span>template react-ts
+cd my-app
+npm install
+npm run dev
+
+<span class="cmt"># Project structure</span>
+src/
+  main.tsx
+  App.tsx
+  components/
+    Button.tsx     <span class="cmt">← .tsx for files with JSX</span>
+  types/
+    index.ts       <span class="cmt">← .ts for pure TS (no JSX)</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Typing Components & Props</div>
+    <p>Define a <code>type</code> or <code>interface</code> for component props. TypeScript will enforce correct usage wherever the component is used.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">Button.tsx — Typed Component</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">import</span> { <span class="cls">FC</span> } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">interface</span> <span class="iface">ButtonProps</span> {
+  <span class="prop">label</span>: <span class="type">string</span>;
+  <span class="prop">onClick</span>: () <span class="op">=></span> <span class="type">void</span>;
+  <span class="prop">variant</span>?: <span class="str">'primary'</span> <span class="op">|</span> <span class="str">'secondary'</span> <span class="op">|</span> <span class="str">'danger'</span>;
+  <span class="prop">disabled</span>?: <span class="type">boolean</span>;
+}
+
+<span class="kw">const</span> <span class="cls">Button</span>: <span class="cls">FC</span>&lt;<span class="iface">ButtonProps</span>&gt; <span class="op">=</span> ({
+  <span class="var">label</span>, <span class="var">onClick</span>, <span class="var">variant</span> <span class="op">=</span> <span class="str">'primary'</span>, <span class="var">disabled</span> <span class="op">=</span> <span class="bool">false</span>
+}) <span class="op">=></span> {
+  <span class="kw">return</span> (
+    &lt;<span class="cls">button</span>
+      <span class="prop">className</span><span class="op">=</span>{<span class="str">`btn btn-${variant}`</span>}
+      <span class="prop">onClick</span><span class="op">=</span>{<span class="var">onClick</span>}
+      <span class="prop">disabled</span><span class="op">=</span>{<span class="var">disabled</span>}
+    &gt;
+      {<span class="var">label</span>}
+    &lt;/<span class="cls">button</span>&gt;
+  );
+};
+
+<span class="kw">export default</span> <span class="cls">Button</span>;
+
+<span class="cmt">// Usage — TypeScript enforces correct props</span>
+&lt;<span class="cls">Button</span> <span class="prop">label</span><span class="op">=</span><span class="str">"Save"</span> <span class="prop">onClick</span><span class="op">=</span>{() <span class="op">=></span> <span class="fn">save</span>()} /&gt; <span class="cmt">// ✅</span>
+&lt;<span class="cls">Button</span> <span class="prop">label</span><span class="op">=</span><span class="str">"Delete"</span> <span class="prop">variant</span><span class="op">=</span><span class="str">"danger"</span> <span class="prop">onClick</span><span class="op">=</span>{<span class="fn">handleDelete</span>} /&gt;
+&lt;<span class="cls">Button</span> /&gt; <span class="cmt">// ❌ Error: label and onClick required</span></pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">useState & useEffect with Types</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Typed Hooks</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">import</span> { <span class="fn">useState</span>, <span class="fn">useEffect</span> } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">interface</span> <span class="iface">User</span> { <span class="prop">id</span>: <span class="type">number</span>; <span class="prop">name</span>: <span class="type">string</span>; <span class="prop">email</span>: <span class="type">string</span> }
+
+<span class="kw">function</span> <span class="fn">UserList</span>() {
+  <span class="cmt">// State with generic type — TypeScript infers User[]</span>
+  <span class="kw">const</span> [<span class="var">users</span>, <span class="fn">setUsers</span>] <span class="op">=</span> <span class="fn">useState</span>&lt;<span class="iface">User</span>[]&gt;([]);
+  <span class="kw">const</span> [<span class="var">loading</span>, <span class="fn">setLoading</span>] <span class="op">=</span> <span class="fn">useState</span>&lt;<span class="type">boolean</span>&gt;(<span class="bool">true</span>);
+  <span class="kw">const</span> [<span class="var">error</span>, <span class="fn">setError</span>] <span class="op">=</span> <span class="fn">useState</span>&lt;<span class="type">string</span> <span class="op">|</span> <span class="type">null</span>&gt;(<span class="bool">null</span>);
+
+  <span class="fn">useEffect</span>(() <span class="op">=></span> {
+    <span class="fn">fetch</span>(<span class="str">'/api/users'</span>)
+      .<span class="fn">then</span>(<span class="var">r</span> <span class="op">=></span> <span class="var">r</span>.<span class="fn">json</span>())
+      .<span class="fn">then</span>((<span class="var">data</span>: <span class="iface">User</span>[]) <span class="op">=></span> { <span class="fn">setUsers</span>(<span class="var">data</span>); <span class="fn">setLoading</span>(<span class="bool">false</span>); })
+      .<span class="fn">catch</span>((<span class="var">e</span>: <span class="cls">Error</span>) <span class="op">=></span> <span class="fn">setError</span>(<span class="var">e</span>.<span class="prop">message</span>));
+  }, []);
+
+  <span class="kw">if</span> (<span class="var">loading</span>) <span class="kw">return</span> &lt;<span class="cls">p</span>&gt;Loading...&lt;/<span class="cls">p</span>&gt;;
+  <span class="kw">if</span> (<span class="var">error</span>)   <span class="kw">return</span> &lt;<span class="cls">p</span>&gt;Error: {<span class="var">error</span>}&lt;/<span class="cls">p</span>&gt;;
+
+  <span class="kw">return</span> (
+    &lt;<span class="cls">ul</span>&gt;
+      {<span class="var">users</span>.<span class="fn">map</span>(<span class="var">u</span> <span class="op">=></span> &lt;<span class="cls">li</span> <span class="prop">key</span><span class="op">=</span>{<span class="var">u</span>.<span class="prop">id</span>}&gt;{<span class="var">u</span>.<span class="prop">name</span>}&lt;/<span class="cls">li</span>&gt;)}
+    &lt;/<span class="cls">ul</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Handling Events & Forms</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">TypeScript — Typed Events & Forms</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">import</span> { <span class="fn">useState</span> } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="fn">LoginForm</span>() {
+  <span class="kw">const</span> [<span class="var">email</span>, <span class="fn">setEmail</span>] <span class="op">=</span> <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> [<span class="var">password</span>, <span class="fn">setPassword</span>] <span class="op">=</span> <span class="fn">useState</span>(<span class="str">''</span>);
+
+  <span class="cmt">// React.ChangeEvent typed to the element type</span>
+  <span class="kw">const</span> <span class="fn">handleChange</span> <span class="op">=</span> (<span class="var">e</span>: <span class="cls">React</span>.<span class="cls">ChangeEvent</span>&lt;<span class="cls">HTMLInputElement</span>&gt;) <span class="op">=></span> {
+    <span class="kw">const</span> { <span class="var">name</span>, <span class="var">value</span> } <span class="op">=</span> <span class="var">e</span>.<span class="prop">target</span>;
+    <span class="kw">if</span> (<span class="var">name</span> <span class="op">===</span> <span class="str">'email'</span>) <span class="fn">setEmail</span>(<span class="var">value</span>);
+    <span class="kw">if</span> (<span class="var">name</span> <span class="op">===</span> <span class="str">'password'</span>) <span class="fn">setPassword</span>(<span class="var">value</span>);
+  };
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> <span class="op">=</span> (<span class="var">e</span>: <span class="cls">React</span>.<span class="cls">FormEvent</span>&lt;<span class="cls">HTMLFormElement</span>&gt;) <span class="op">=></span> {
+    <span class="var">e</span>.<span class="fn">preventDefault</span>();
+    console.<span class="fn">log</span>(<span class="str">'Login'</span>, { <span class="var">email</span>, <span class="var">password</span> });
+  };
+
+  <span class="kw">return</span> (
+    &lt;<span class="cls">form</span> <span class="prop">onSubmit</span><span class="op">=</span>{<span class="var">handleSubmit</span>}&gt;
+      &lt;<span class="cls">input</span> <span class="prop">name</span><span class="op">=</span><span class="str">"email"</span>    <span class="prop">value</span><span class="op">=</span>{<span class="var">email</span>}    <span class="prop">onChange</span><span class="op">=</span>{<span class="var">handleChange</span>} /&gt;
+      &lt;<span class="cls">input</span> <span class="prop">name</span><span class="op">=</span><span class="str">"password"</span> <span class="prop">value</span><span class="op">=</span>{<span class="var">password</span>} <span class="prop">onChange</span><span class="op">=</span>{<span class="var">handleChange</span>} /&gt;
+      &lt;<span class="cls">button</span> <span class="prop">type</span><span class="op">=</span><span class="str">"submit"</span>&gt;Login&lt;/<span class="cls">button</span>&gt;
+    &lt;/<span class="cls">form</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 9 Exercises — React with TypeScript</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Create a typed <code>Avatar</code> component with props: <code>name: string</code>, <code>imageUrl?: string</code>, <code>size?: 'sm' | 'md' | 'lg'</code>. It should show the image if provided, otherwise render initials from the name.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Build a <code>useFetch&lt;T&gt;</code> custom hook that accepts a URL string and returns <code>{ data: T | null, loading: boolean, error: string | null }</code>. Use <code>useEffect</code> internally and type the response generically.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Create a fully typed <code>TodoApp</code> with a <code>Todo</code> interface (<code>id</code>, <code>text</code>, <code>completed</code>). Implement add, toggle, and delete functionality. Type all event handlers, state, and the list component's props. Use <code>useReducer</code> with a typed action union instead of <code>useState</code>.</p>
+          <div class="hint">💡 Hint: Define type <code>Action = { type: 'ADD', text: string } | { type: 'TOGGLE', id: number } | ...</code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CHAPTER 10: NODE + EXPRESS WITH TYPESCRIPT
+     ============================================================ -->
+<div class="chapter theme-green" id="node-ts">
+  <div class="section-header">
+    <div class="section-icon">🟩</div>
+    <div>
+      <span class="section-num">Chapter 10 · Advanced TypeScript</span>
+      <h2>Node & Express with TypeScript</h2>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Executing TypeScript with Node
+      <span class="tag pill" style="background:var(--c-green-dim);color:var(--c-green);">Runtime</span>
+    </div>
+    <p>Node.js doesn't run TypeScript natively — you need to either compile first or use <code>ts-node</code> / <code>tsx</code> for direct execution during development.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">Terminal — Running TypeScript with Node</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="cmt"># Option 1: Compile then run</span>
+tsc
+node dist/index.js
+
+<span class="cmt"># Option 2: ts-node (dev only)</span>
+npm install <span class="op">--</span>save-dev ts-node
+npx ts-node src/index.ts
+
+<span class="cmt"># Option 3: tsx (faster, no config needed)</span>
+npm install <span class="op">--</span>save-dev tsx
+npx tsx src/index.ts
+
+<span class="cmt"># package.json scripts</span>
+{
+  <span class="str">"scripts"</span>: {
+    <span class="str">"dev"</span>: <span class="str">"tsx watch src/index.ts"</span>,
+    <span class="str">"build"</span>: <span class="str">"tsc"</span>,
+    <span class="str">"start"</span>: <span class="str">"node dist/index.js"</span>
+  }
+}</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Setting Up an Express Project</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">Terminal — Express + TypeScript Setup</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre>npm install express
+npm install <span class="op">--</span>save-dev @types/express @types/node typescript ts-node</pre>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">src/index.ts — Express Server</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">import</span> <span class="var">express</span>, { <span class="cls">Request</span>, <span class="cls">Response</span>, <span class="cls">NextFunction</span> } <span class="kw">from</span> <span class="str">'express'</span>;
+
+<span class="kw">const</span> <span class="var">app</span> <span class="op">=</span> <span class="fn">express</span>();
+<span class="var">app</span>.<span class="fn">use</span>(<span class="var">express</span>.<span class="fn">json</span>());
+
+<span class="cmt">// Typed route handler</span>
+<span class="var">app</span>.<span class="fn">get</span>(<span class="str">'/'</span>, (<span class="var">req</span>: <span class="cls">Request</span>, <span class="var">res</span>: <span class="cls">Response</span>) <span class="op">=></span> {
+  <span class="var">res</span>.<span class="fn">json</span>({ <span class="prop">message</span>: <span class="str">'Hello TypeScript!'</span> });
+});
+
+<span class="var">app</span>.<span class="fn">listen</span>(<span class="num">3000</span>, () <span class="op">=></span> console.<span class="fn">log</span>(<span class="str">'Server on port 3000'</span>));</pre>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-title">Building a Typed REST API</div>
+    <p>Use Router to split routes into files. Type request params, query, and body for fully safe route handlers.</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">routes/users.ts — Typed Router</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+      <pre><span class="kw">import</span> { <span class="cls">Router</span>, <span class="cls">Request</span>, <span class="cls">Response</span> } <span class="kw">from</span> <span class="str">'express'</span>;
+
+<span class="kw">interface</span> <span class="iface">User</span> { <span class="prop">id</span>: <span class="type">number</span>; <span class="prop">name</span>: <span class="type">string</span>; <span class="prop">email</span>: <span class="type">string</span> }
+
+<span class="kw">const</span> <span class="var">router</span> <span class="op">=</span> <span class="fn">Router</span>();
+<span class="kw">let</span> <span class="var">users</span>: <span class="iface">User</span>[] <span class="op">=</span> [{ <span class="prop">id</span>: <span class="num">1</span>, <span class="prop">name</span>: <span class="str">'Alice'</span>, <span class="prop">email</span>: <span class="str">'alice@example.com'</span> }];
+
+<span class="cmt">// GET /users — typed response</span>
+<span class="var">router</span>.<span class="fn">get</span>(<span class="str">'/'</span>, (<span class="var">req</span>: <span class="cls">Request</span>, <span class="var">res</span>: <span class="cls">Response</span>&lt;<span class="iface">User</span>[]&gt;) <span class="op">=></span> {
+  <span class="var">res</span>.<span class="fn">json</span>(<span class="var">users</span>);
+});
+
+<span class="cmt">// GET /users/:id — typed params</span>
+<span class="var">router</span>.<span class="fn">get</span>(<span class="str">'/:id'</span>, (<span class="var">req</span>: <span class="cls">Request</span>&lt;{ <span class="prop">id</span>: <span class="type">string</span> }&gt;, <span class="var">res</span>: <span class="cls">Response</span>) <span class="op">=></span> {
+  <span class="kw">const</span> <span class="var">user</span> <span class="op">=</span> <span class="var">users</span>.<span class="fn">find</span>(<span class="var">u</span> <span class="op">=></span> <span class="var">u</span>.<span class="prop">id</span> <span class="op">===</span> <span class="fn">parseInt</span>(<span class="var">req</span>.<span class="prop">params</span>.<span class="prop">id</span>));
+  <span class="kw">if</span> (<span class="op">!</span><span class="var">user</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">404</span>).<span class="fn">json</span>({ <span class="prop">error</span>: <span class="str">'Not found'</span> });
+  <span class="var">res</span>.<span class="fn">json</span>(<span class="var">user</span>);
+});
+
+<span class="cmt">// POST /users — typed request body</span>
+<span class="var">router</span>.<span class="fn">post</span>(<span class="str">'/'</span>, (<span class="var">req</span>: <span class="cls">Request</span>&lt;{}, {}, <span class="type">Omit</span>&lt;<span class="iface">User</span>, <span class="str">'id'</span>&gt;&gt;, <span class="var">res</span>: <span class="cls">Response</span>) <span class="op">=></span> {
+  <span class="kw">const</span> <span class="var">newUser</span>: <span class="iface">User</span> <span class="op">=</span> { <span class="prop">id</span>: <span class="var">users</span>.<span class="prop">length</span> <span class="op">+</span> <span class="num">1</span>, <span class="op">...</span><span class="var">req</span>.<span class="prop">body</span> };
+  <span class="var">users</span>.<span class="fn">push</span>(<span class="var">newUser</span>);
+  <span class="var">res</span>.<span class="fn">status</span>(<span class="num">201</span>).<span class="fn">json</span>(<span class="var">newUser</span>);
+});
+
+<span class="kw">export default</span> <span class="var">router</span>;</pre>
+    </div>
+  </div>
+
+  <!-- EXERCISES -->
+  <div class="exercise-block">
+    <div class="exercise-header">
+      <span class="exercise-badge">Exercises</span>
+      <span class="exercise-title-text">Chapter 10 Exercises — Node & Express with TypeScript</span>
+    </div>
+    <div class="exercise-body">
+      <div class="exercise-item">
+        <div class="exercise-num">1</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-easy">Easy</span>
+          <p>Set up a minimal Express + TypeScript server. Add routes: <code>GET /</code> returns a health check, <code>GET /time</code> returns the current ISO timestamp. Run it using <code>tsx</code> in watch mode.</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">2</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-medium">Medium</span>
+          <p>Build a typed <code>POST /echo</code> endpoint that expects a body of shape <code>{ message: string; times?: number }</code>. Type the request body using <code>Request&lt;{}, {}, EchoBody&gt;</code>. Return the message repeated <code>times</code> (default 1).</p>
+        </div>
+      </div>
+      <div class="exercise-item">
+        <div class="exercise-num">3</div>
+        <div class="exercise-content">
+          <span class="diff-badge diff-hard">Hard</span>
+          <p>Build a complete CRUD REST API for a <code>Product</code> resource (<code>id</code>, <code>name</code>, <code>price</code>, <code>category</code>). Use a Router, type all request params/body/response. Add a middleware function that validates required fields in POST/PUT requests.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:12px;">
+  <p>TypeScript Complete Notes · Fundamentals to React & Node · All examples compile with TypeScript 5+</p>
+</div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // Progress bar
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = Math.round((scrolled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+    document.getElementById('scrollTop').style.display = scrolled > 400 ? 'flex' : 'none';
+  }
+
+  // Active nav
+  function updateNav() {
+    const chapters = document.querySelectorAll('.chapter');
+    const navItems = document.querySelectorAll('.nav-item');
+    let current = '';
+    chapters.forEach(chapter => {
+      if (window.scrollY >= chapter.offsetTop - 120) current = chapter.id;
+    });
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+  }
+
+  window.addEventListener('scroll', () => { updateProgress(); updateNav(); });
+
+  // Smooth scroll for nav
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>

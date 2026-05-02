@@ -1,0 +1,2677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Java — Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    /* Topic colors */
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+
+    .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-yellow);
+    letter-spacing: 0.03em;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 0.5rem 0;
+  }
+
+  .nav-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    padding: 0.5rem 1.25rem 0.25rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-yellow); border-left-color: var(--c-yellow); background: var(--c-yellow-dim); }
+
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ===== MAIN ===== */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  .top-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    z-index: 50;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breadcrumb span { color: var(--text); }
+
+  .progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-yellow), var(--c-orange));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.3s;
+  }
+
+  /* ===== CONTENT ===== */
+  .content {
+    padding: 3rem 3rem 5rem;
+    max-width: 920px;
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-header .section-num {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ===== TOPIC CARD ===== */
+  .topic {
+    margin-bottom: 2.5rem;
+  }
+
+  .topic-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topic-title .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .topic p {
+    color: #c4cad8;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-header .lang {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .code-header .dots {
+    display: flex; gap: 5px;
+  }
+
+  .code-header .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a;
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+  }
+
+  /* Syntax highlighting */
+  .kw { color: #c792ea; }         /* keywords: let, const, function */
+  .fn { color: #82aaff; }         /* function names */
+  .str { color: #c3e88d; }        /* strings */
+  .num { color: #f78c6c; }        /* numbers */
+  .cmt { color: #546e7a; font-style: italic; } /* comments */
+  .var { color: #eeffff; }        /* variables */
+  .op { color: #89ddff; }         /* operators */
+  .cls { color: #ffcb6b; }        /* class names */
+  .prop { color: #f07178; }       /* properties */
+  .bool { color: #ff5572; }       /* booleans */
+  .type { color: #ffcb6b; }       /* types */
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    border-left: 3px solid;
+    display: flex;
+    gap: 10px;
+  }
+
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-icon::after { content: "💡"; }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-icon::after { content: "⚠️"; }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-icon::after { content: "✅"; }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-icon::after { content: "🚫"; }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ===== REFERENCE TABLE ===== */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1rem 0;
+  }
+
+  .ref-table th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ref-table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--bg3);
+    vertical-align: top;
+  }
+
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg2); }
+
+  .ref-table code {
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== INLINE HIGHLIGHT ===== */
+  code {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    background: var(--bg4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--c-teal);
+  }
+
+  /* ===== EXAMPLE LABEL ===== */
+  .ex-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ===== PILL BADGES ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== CHAPTER DIVIDER ===== */
+  .chapter {
+    margin-top: 4rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .chapter:first-child { margin-top: 0; }
+
+  /* ===== OUTPUT BOX ===== */
+  .output-box {
+    background: var(--bg);
+    border: 1px dashed var(--dim);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--c-green);
+    margin-top: -1px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--c-yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span { color: var(--c-yellow); }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 560px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stat .val {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .hero-stat .lbl {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Color theming per section */
+  .theme-yellow .section-icon { background: var(--c-yellow-dim); color: var(--c-yellow); }
+  .theme-yellow .section-header h2 { color: var(--c-yellow); }
+
+  .theme-blue .section-icon { background: var(--c-blue-dim); color: var(--c-blue); }
+  .theme-blue .section-header h2 { color: var(--c-blue); }
+
+  .theme-green .section-icon { background: var(--c-green-dim); color: var(--c-green); }
+  .theme-green .section-header h2 { color: var(--c-green); }
+
+  .theme-purple .section-icon { background: var(--c-purple-dim); color: var(--c-purple); }
+  .theme-purple .section-header h2 { color: var(--c-purple); }
+
+  .theme-coral .section-icon { background: var(--c-coral-dim); color: var(--c-coral); }
+  .theme-coral .section-header h2 { color: var(--c-coral); }
+
+  .theme-teal .section-icon { background: var(--c-teal-dim); color: var(--c-teal); }
+  .theme-teal .section-header h2 { color: var(--c-teal); }
+
+  .theme-pink .section-icon { background: var(--c-pink-dim); color: var(--c-pink); }
+  .theme-pink .section-header h2 { color: var(--c-pink); }
+
+  .theme-orange .section-icon { background: var(--c-orange-dim); color: var(--c-orange); }
+  .theme-orange .section-header h2 { color: var(--c-orange); }
+
+  .nav-y { background: var(--c-yellow); }
+  .nav-b { background: var(--c-blue); }
+  .nav-g { background: var(--c-green); }
+  .nav-p { background: var(--c-purple); }
+  .nav-r { background: var(--c-coral); }
+  .nav-t { background: var(--c-teal); }
+  .nav-k { background: var(--c-pink); }
+  .nav-o { background: var(--c-orange); }
+
+  /* Subtle separator */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* Multi-example grid */
+  .example-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media (max-width: 700px) { .example-row { grid-template-columns: 1fr; } }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 5px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== REACT-TS SPECIFIC ===== */
+
+  /* Sidebar structure override (react-ts uses #sidebar not .sidebar) */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--c-yellow); letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  #main { margin-left: 270px; min-height: 100vh; }
+
+  .progress-text { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; white-space: nowrap; }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-bottom: 4rem; scroll-margin-top: 5rem; }
+
+  .section-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--c-yellow);
+    background: var(--c-yellow-dim);
+    border: 1px solid var(--c-yellow-mid);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; color: var(--c-yellow); }
+
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .subsection h3::before {
+    content: '';
+    display: block;
+    width: 4px; height: 18px;
+    background: var(--c-orange);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .subsection h4 { font-size: 13px; font-weight: 600; color: var(--c-teal); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  p { color: #c4cad8; margin-bottom: 1rem; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* ===== CONCEPT GRID ===== */
+  .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1rem 0; }
+  .concept-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .concept-card-title { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-yellow); font-weight: 600; margin-bottom: 8px; }
+  .concept-card p { font-size: 13px; margin-bottom: 0; color: var(--muted); }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .feature-list li { color: #c4cad8; padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-yellow); font-size: 11px; top: 6px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13.5px; }
+  .compare-table th { background: var(--bg3); color: var(--muted); font-weight: 600; padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .compare-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--bg3); color: #c4cad8; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .compare-table code { font-family: 'Fira Code', monospace; font-size: 12.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal); }
+
+  /* ===== HERO ===== */
+  .hero-badge { display: none; } /* replaced by hero-eyebrow */
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+  .tag-blue   { background: var(--c-blue-dim);   color: var(--c-blue);   border: 1px solid var(--c-blue-mid);   font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-purple { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-green  { background: var(--c-green-dim);  color: var(--c-green);  border: 1px solid var(--c-green-mid);  font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-orange { background: var(--c-orange-dim); color: var(--c-orange); border: 1px solid var(--c-orange-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+
+  /* ===== CALLOUTS (react-ts uses callout-info/err not note/danger) ===== */
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-title { font-size: 13px; font-weight: 600; display: block; margin-bottom: 3px; }
+  .callout-body p { margin-bottom: 0; font-size: 13.5px; }
+
+  .callout-info { background: var(--c-blue-dim); border-left: 3px solid var(--c-blue); border-radius: 8px; }
+  .callout-info .callout-title { color: var(--c-blue); }
+  .callout-info .callout-body { color: #9ecfff; }
+
+  .callout-tip { background: var(--c-green-dim); border-left: 3px solid var(--c-green); border-radius: 8px; }
+  .callout-tip .callout-title { color: var(--c-green); }
+  .callout-tip .callout-body { color: #8de8b8; }
+
+  .callout-warn { background: var(--c-yellow-dim); border-left: 3px solid var(--c-yellow); border-radius: 8px; }
+  .callout-warn .callout-title { color: var(--c-yellow); }
+  .callout-warn .callout-body { color: #f0dc8a; }
+
+  .callout-err { background: var(--c-coral-dim); border-left: 3px solid var(--c-coral); border-radius: 8px; }
+  .callout-err .callout-title { color: var(--c-coral); }
+  .callout-err .callout-body { color: #ffaa9e; }
+
+  /* ===== EXERCISE BLOCKS ===== */
+  .exercise {
+    background: linear-gradient(135deg, var(--c-yellow-dim), var(--c-orange-dim));
+    border: 1px solid var(--c-yellow-mid);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.75rem 0;
+  }
+  .exercise-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .exercise-badge { background: var(--c-yellow); color: #0f1117; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 3px 10px; border-radius: 99px; }
+  .exercise-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .exercise ol { padding-left: 1.25rem; }
+  .exercise li { color: #c4cad8; margin-bottom: 6px; font-size: 14px; }
+  .exercise li strong { color: var(--text); }
+  .exercise-hint { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--c-yellow-mid); font-size: 13px; color: var(--muted); }
+  .exercise-hint span { color: var(--c-yellow); font-weight: 600; }
+
+  /* ===== TOPIC DIVIDER ===== */
+  .topic-divider { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ===== SCROLL TOP ===== */
+  #scrollTop {
+    position: fixed; bottom: 32px; right: 32px;
+    background: var(--c-yellow); color: #0f1117;
+    border: none; width: 40px; height: 40px; border-radius: 50%;
+    font-size: 16px; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 200;
+    font-weight: 700;
+  }
+  #scrollTop:hover { background: var(--c-orange); }
+
+  /* ===== SYNTAX: extra tokens not in js-notes ===== */
+  .cm   { color: #546e7a; font-style: italic; }
+  .tp   { color: #ffcb6b; }
+  .jsx  { color: #4dd0e1; }
+  .attr { color: #ffcb6b; }
+  .code-filename { font-family: 'Fira Code', monospace; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-header">
+    <span class="sidebar-logo">Ultimate Java</span>
+    <span class="sidebar-sub">OOP &amp; Advanced Topics</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">OOP — Part 2</div>
+    <a href="#s1" class="nav-item active"><span class="num">01</span>Programming Paradigms</a>
+    <a href="#s2" class="nav-item"><span class="num">02</span>Classes &amp; Objects</a>
+    <a href="#s3" class="nav-item"><span class="num">03</span>Encapsulation</a>
+    <a href="#s4" class="nav-item"><span class="num">04</span>Abstraction &amp; Coupling</a>
+    <a href="#s5" class="nav-item"><span class="num">05</span>Constructors &amp; Overloading</a>
+    <a href="#s6" class="nav-item"><span class="num">06</span>Static Members</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Refactoring</div>
+    <a href="#s7" class="nav-item"><span class="num">07</span>OO Refactoring</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Inheritance</div>
+    <a href="#s8" class="nav-item"><span class="num">08</span>Inheritance Basics</a>
+    <a href="#s9" class="nav-item"><span class="num">09</span>Method Overriding</a>
+    <a href="#s10" class="nav-item"><span class="num">10</span>Polymorphism</a>
+    <a href="#s11" class="nav-item"><span class="num">11</span>Abstract &amp; Final</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Interfaces</div>
+    <a href="#s12" class="nav-item"><span class="num">12</span>Interfaces</a>
+    <a href="#s13" class="nav-item"><span class="num">13</span>Dependency Injection</a>
+    <a href="#s14" class="nav-item"><span class="num">14</span>Interface Segregation</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced — Part 3</div>
+    <a href="#s15" class="nav-item"><span class="num">15</span>Exceptions</a>
+    <a href="#s16" class="nav-item"><span class="num">16</span>Generics</a>
+    <a href="#s17" class="nav-item"><span class="num">17</span>Collections</a>
+    <a href="#s18" class="nav-item"><span class="num">18</span>Lambda &amp; Functional</a>
+    <a href="#s19" class="nav-item"><span class="num">19</span>Streams</a>
+    <a href="#s20" class="nav-item"><span class="num">20</span>Concurrency</a>
+    <a href="#s21" class="nav-item"><span class="num">21</span>Optionals</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="top-bar">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">📘 Complete Course Notes</div>
+    <h1>Ultimate <span>Java</span><br>OOP &amp; Advanced Topics</h1>
+    <p>From object-oriented design to concurrency — every topic covered with detailed explanations, real Java examples, and hands-on exercises. Covers Parts 2 &amp; 3 of the Ultimate Java series.</p>
+    <div class="hero-tags">
+      <span class="tag-blue">OOP</span>
+      <span class="tag-purple">Generics</span>
+      <span class="tag-green">Collections</span>
+      <span class="tag-orange">Streams</span>
+      <span class="tag-blue">Lambdas</span>
+      <span class="tag-purple">Concurrency</span>
+      <span class="tag-green">Exceptions</span>
+      <span class="tag-orange">Optionals</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 1: Programming Paradigms -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s1">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>Programming Paradigms &amp; OOP Benefits</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is a Programming Paradigm?</h3>
+        <p>A <strong>paradigm</strong> is a style or approach to programming. Different paradigms give you different tools for structuring your code. Java primarily supports two major paradigms.</p>
+
+        <div class="concept-grid">
+          <div class="concept-card">
+            <div class="concept-card-title">📜 Procedural Programming</div>
+            <p>Code is a sequence of instructions. Data and functions are separate. Good for simple scripts, but becomes hard to manage as programs grow.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">🧩 Object-Oriented Programming</div>
+            <p>Code is organized around objects — entities that bundle data (fields) and behavior (methods) together. Scales well to large systems.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">⚡ Functional Programming</div>
+            <p>Code is built from pure functions with no side effects. Java 8+ introduced streams and lambdas to support this style.</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-card-title">🎯 Event-Driven</div>
+            <p>Code runs in response to events (user clicks, messages). Common in GUI and server programming. Often layered on top of OOP.</p>
+          </div>
+        </div>
+
+        <h3>The 4 Pillars of OOP</h3>
+        <table class="compare-table">
+          <thead><tr><th>Pillar</th><th>Meaning</th><th>Java Keyword / Tool</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Encapsulation</strong></td><td>Bundle data + methods; hide internals</td><td><code>private</code>, getters/setters</td></tr>
+            <tr><td><strong>Abstraction</strong></td><td>Expose only what's needed; hide complexity</td><td><code>abstract</code>, interfaces</td></tr>
+            <tr><td><strong>Inheritance</strong></td><td>A class can reuse another class's behavior</td><td><code>extends</code></td></tr>
+            <tr><td><strong>Polymorphism</strong></td><td>One interface, many implementations</td><td>Method overriding, interfaces</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 01</span>
+          <span class="exercise-title">Identify the Paradigm</span>
+        </div>
+        <ol>
+          <li>Write a <strong>procedural</strong> Java method that calculates the area of a rectangle using two parameters <code>width</code> and <code>height</code>.</li>
+          <li>Now convert it to an <strong>OOP</strong> version: create a <code>Rectangle</code> class with those two fields and an <code>area()</code> method.</li>
+          <li>List 3 real-world objects (e.g. Car, BankAccount, Student) and for each, write down 3 fields and 2 behaviors.</li>
+          <li>Bonus: Which of the 4 OOP pillars does a <code>private</code> field with a public getter represent?</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Encapsulation hides the field; abstraction hides the implementation behind a simple method name.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 2: Classes & Objects -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s2">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>Classes &amp; Objects</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is a Class?</h3>
+        <p>A <strong>class</strong> is a blueprint or template. It defines what data (fields) and what actions (methods) every object of that type will have. An <strong>object</strong> is a concrete instance created from that blueprint.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <span class="callout-title">Class vs Object</span>
+            <p>Think of a class as a cookie cutter and objects as the cookies. The cutter defines the shape; you can make many cookies from one cutter, each independent.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Person.java — Defining a Class</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Person</span> {
+    <span class="cm">// Fields (instance variables) — each object has its own copy</span>
+    <span class="kw">private</span> <span class="tp">String</span> name;
+    <span class="kw">private</span> <span class="tp">int</span> age;
+
+    <span class="cm">// Constructor — called when object is created with 'new'</span>
+    <span class="kw">public</span> <span class="fn">Person</span>(<span class="tp">String</span> name, <span class="tp">int</span> age) {
+        <span class="kw">this</span>.name = name;
+        <span class="kw">this</span>.age = age;
+    }
+
+    <span class="cm">// Method — defines behavior</span>
+    <span class="kw">public void</span> <span class="fn">greet</span>() {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Hi, I am "</span> + name + <span class="str">" and I am "</span> + age + <span class="str">" years old."</span>);
+    }
+}</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Main.java — Creating Objects</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Main</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="tp">String</span>[] args) {
+        <span class="cm">// Create two independent Person objects</span>
+        <span class="cls">Person</span> alice = <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">"Alice"</span>, <span class="num">30</span>);
+        <span class="cls">Person</span> bob   = <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">"Bob"</span>,   <span class="num">25</span>);
+
+        alice.<span class="fn">greet</span>(); <span class="cm">// Hi, I am Alice and I am 30 years old.</span>
+        bob.<span class="fn">greet</span>();   <span class="cm">// Hi, I am Bob and I am 25 years old.</span>
+    }
+}</pre>
+        </div>
+
+        <h3>Memory Allocation</h3>
+        <p>When you call <code>new Person(...)</code>, Java allocates memory on the <strong>heap</strong> for the object. The variable (<code>alice</code>) holds a <strong>reference</strong> (pointer) to that memory, stored on the <strong>stack</strong>.</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <span class="callout-title">Reference vs Value</span>
+            <p>Primitive types (<code>int</code>, <code>boolean</code>, etc.) are stored directly on the stack. Objects store a reference. Assigning <code>Person b = a</code> makes both variables point to the <em>same</em> object — not a copy!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 02</span>
+          <span class="exercise-title">Build a BankAccount Class</span>
+        </div>
+        <ol>
+          <li>Create a <code>BankAccount</code> class with fields: <code>owner</code> (String), <code>balance</code> (double).</li>
+          <li>Add a constructor that takes both values.</li>
+          <li>Add methods: <code>deposit(double amount)</code>, <code>withdraw(double amount)</code>, <code>printBalance()</code>.</li>
+          <li>In <code>main</code>, create 2 accounts. Deposit to one, withdraw from another, then print both balances.</li>
+          <li>Bonus: What happens if you assign <code>BankAccount b = a</code> and then call <code>b.deposit(100)</code>? What does <code>a.balance</code> show?</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Both <code>a</code> and <code>b</code> point to the same object on the heap — so <code>a.balance</code> also changes!</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 3: Encapsulation -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s3">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>Encapsulation — Getters &amp; Setters</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Why Encapsulate?</h3>
+        <p>Without encapsulation, any code anywhere can change your object's data directly — making bugs hard to trace. Encapsulation means making fields <code>private</code> and exposing controlled access via <strong>getters</strong> and <strong>setters</strong>.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Employee.java — Encapsulation in Practice</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Employee</span> {
+    <span class="kw">private</span> <span class="tp">String</span> name;
+    <span class="kw">private</span> <span class="tp">double</span> salary;
+
+    <span class="kw">public</span> <span class="fn">Employee</span>(<span class="tp">String</span> name, <span class="tp">double</span> salary) {
+        <span class="kw">this</span>.name = name;
+        <span class="fn">setSalary</span>(salary); <span class="cm">// use setter for validation</span>
+    }
+
+    <span class="cm">// Getter — read-only access</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">getName</span>()   { <span class="kw">return</span> name; }
+    <span class="kw">public</span> <span class="tp">double</span> <span class="fn">getSalary</span>() { <span class="kw">return</span> salary; }
+
+    <span class="cm">// Setter — controlled write with validation</span>
+    <span class="kw">public void</span> <span class="fn">setSalary</span>(<span class="tp">double</span> salary) {
+        <span class="kw">if</span> (salary &lt; <span class="num">0</span>)
+            <span class="kw">throw new</span> <span class="cls">IllegalArgumentException</span>(<span class="str">"Salary cannot be negative"</span>);
+        <span class="kw">this</span>.salary = salary;
+    }
+}
+
+<span class="cm">// Usage:</span>
+<span class="cls">Employee</span> emp = <span class="kw">new</span> <span class="cls">Employee</span>(<span class="str">"Alice"</span>, <span class="num">50000</span>);
+emp.<span class="fn">setSalary</span>(-<span class="num">1000</span>); <span class="cm">// ❌ throws IllegalArgumentException</span>
+emp.<span class="fn">setSalary</span>(<span class="num">60000</span>);  <span class="cm">// ✅ valid</span></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-icon">✅</div>
+          <div class="callout-body">
+            <span class="callout-title">Key Rule</span>
+            <p>Always make fields <code>private</code>. Only expose what callers need. Validation in setters protects your object's <strong>invariants</strong> — rules that must always hold true (e.g., salary ≥ 0).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 03</span>
+          <span class="exercise-title">Encapsulate a Student Class</span>
+        </div>
+        <ol>
+          <li>Create a <code>Student</code> class with <strong>private</strong> fields: <code>name</code>, <code>gpa</code> (double), <code>enrolled</code> (boolean).</li>
+          <li>Add a constructor. Add getters for all fields.</li>
+          <li>Add a setter for <code>gpa</code> that rejects values outside 0.0–4.0.</li>
+          <li>Add a setter for <code>name</code> that rejects null or blank strings.</li>
+          <li>Test both valid and invalid inputs in <code>main</code> and observe the exceptions.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>if (name == null || name.isBlank())</code> to check invalid names.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 4: Abstraction & Coupling -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s4">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>Abstraction &amp; Coupling</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Abstraction</h3>
+        <p><strong>Abstraction</strong> means showing only the essential details and hiding the complexity. Like driving a car — you use the steering wheel and pedals without knowing how the engine works internally.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 MailService.java — Abstraction Example</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">MailService</span> {
+    <span class="cm">// Public method — the abstraction. Callers only see this.</span>
+    <span class="kw">public void</span> <span class="fn">sendEmail</span>(<span class="tp">String</span> to, <span class="tp">String</span> subject, <span class="tp">String</span> body) {
+        <span class="fn">connect</span>();
+        <span class="fn">authenticate</span>();
+        <span class="fn">transmit</span>(to, subject, body);
+        <span class="fn">disconnect</span>();
+    }
+
+    <span class="cm">// Private helpers — hidden complexity</span>
+    <span class="kw">private void</span> <span class="fn">connect</span>()     { <span class="cm">/* open socket */</span> }
+    <span class="kw">private void</span> <span class="fn">authenticate</span>(){ <span class="cm">/* login to SMTP server */</span> }
+    <span class="kw">private void</span> <span class="fn">transmit</span>(<span class="tp">String</span> to, <span class="tp">String</span> subject, <span class="tp">String</span> body) { <span class="cm">/* send */</span> }
+    <span class="kw">private void</span> <span class="fn">disconnect</span>() { <span class="cm">/* close socket */</span> }
+}</pre>
+        </div>
+
+        <h3>Coupling</h3>
+        <p><strong>Coupling</strong> is how much one class depends on the internals of another. <strong>High coupling</strong> means changing one class forces changes in others — fragile code. Aim for <strong>low coupling</strong>.</p>
+
+        <div class="example-row">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-filename">❌ High Coupling</span>
+              <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+            </div>
+            <pre><span class="cm">// Order depends on SqlDatabase internals</span>
+<span class="kw">class</span> <span class="cls">Order</span> {
+  <span class="cls">SqlDatabase</span> db = <span class="kw">new</span> <span class="cls">SqlDatabase</span>();
+  <span class="kw">void</span> <span class="fn">save</span>() {
+    db.<span class="fn">openConnection</span>();
+    db.<span class="fn">executeSql</span>(...);
+    db.<span class="fn">closeConnection</span>();
+  }
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-filename">✅ Low Coupling</span>
+              <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+            </div>
+            <pre><span class="cm">// Order depends only on an interface</span>
+<span class="kw">class</span> <span class="cls">Order</span> {
+  <span class="iface">Repository</span> repo;
+  <span class="cls">Order</span>(<span class="iface">Repository</span> r) { repo = r; }
+  <span class="kw">void</span> <span class="fn">save</span>() {
+    repo.<span class="fn">save</span>(<span class="kw">this</span>);
+  }
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 04</span>
+          <span class="exercise-title">Reduce Coupling</span>
+        </div>
+        <ol>
+          <li>Write a tightly-coupled <code>OrderProcessor</code> that creates and directly calls a <code>SmsNotifier</code> class to send notifications.</li>
+          <li>Identify the coupling: what happens if you want to switch to email instead of SMS?</li>
+          <li>Create a <code>Notifier</code> interface with a <code>send(String message)</code> method.</li>
+          <li>Make <code>SmsNotifier</code> and <code>EmailNotifier</code> implement <code>Notifier</code>.</li>
+          <li>Refactor <code>OrderProcessor</code> to accept a <code>Notifier</code> via its constructor — now you can swap notifiers without touching <code>OrderProcessor</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> This is the Dependency Inversion Principle — depend on abstractions, not concrete classes.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 5: Constructors & Overloading -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s5">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2>Constructors &amp; Method Overloading</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Constructors</h3>
+        <p>A <strong>constructor</strong> is a special method called when an object is created. It initializes the object's fields. Constructors have the same name as the class and no return type.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Product.java — Constructor Overloading</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Product</span> {
+    <span class="kw">private</span> <span class="tp">String</span> name;
+    <span class="kw">private</span> <span class="tp">double</span> price;
+    <span class="kw">private</span> <span class="tp">int</span> stock;
+
+    <span class="cm">// Default constructor</span>
+    <span class="kw">public</span> <span class="fn">Product</span>() {
+        <span class="kw">this</span>(<span class="str">"Unknown"</span>, <span class="num">0.0</span>, <span class="num">0</span>); <span class="cm">// calls the 3-param constructor</span>
+    }
+
+    <span class="cm">// 2-param constructor</span>
+    <span class="kw">public</span> <span class="fn">Product</span>(<span class="tp">String</span> name, <span class="tp">double</span> price) {
+        <span class="kw">this</span>(name, price, <span class="num">0</span>); <span class="cm">// calls the 3-param constructor</span>
+    }
+
+    <span class="cm">// Full constructor — do the real work here</span>
+    <span class="kw">public</span> <span class="fn">Product</span>(<span class="tp">String</span> name, <span class="tp">double</span> price, <span class="tp">int</span> stock) {
+        <span class="kw">this</span>.name  = name;
+        <span class="kw">this</span>.price = price;
+        <span class="kw">this</span>.stock = stock;
+    }
+}
+
+<span class="cm">// All valid:</span>
+<span class="cls">Product</span> p1 = <span class="kw">new</span> <span class="cls">Product</span>();
+<span class="cls">Product</span> p2 = <span class="kw">new</span> <span class="cls">Product</span>(<span class="str">"Laptop"</span>, <span class="num">999.99</span>);
+<span class="cls">Product</span> p3 = <span class="kw">new</span> <span class="cls">Product</span>(<span class="str">"Phone"</span>, <span class="num">699.0</span>, <span class="num">50</span>);</pre>
+        </div>
+
+        <h3>Method Overloading</h3>
+        <p><strong>Overloading</strong> means having multiple methods with the <em>same name</em> but different parameter lists. Java picks the right one at compile time based on the arguments you pass.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Calculator.java — Method Overloading</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Calculator</span> {
+    <span class="kw">public int</span>    <span class="fn">add</span>(<span class="tp">int</span> a, <span class="tp">int</span> b)          { <span class="kw">return</span> a + b; }
+    <span class="kw">public double</span> <span class="fn">add</span>(<span class="tp">double</span> a, <span class="tp">double</span> b)  { <span class="kw">return</span> a + b; }
+    <span class="kw">public int</span>    <span class="fn">add</span>(<span class="tp">int</span> a, <span class="tp">int</span> b, <span class="tp">int</span> c) { <span class="kw">return</span> a + b + c; }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">add</span>(<span class="tp">String</span> a, <span class="tp">String</span> b)  { <span class="kw">return</span> a + b; }
+}
+
+<span class="cls">Calculator</span> calc = <span class="kw">new</span> <span class="cls">Calculator</span>();
+calc.<span class="fn">add</span>(<span class="num">2</span>, <span class="num">3</span>);             <span class="cm">// → 5 (int version)</span>
+calc.<span class="fn">add</span>(<span class="num">2.5</span>, <span class="num">3.1</span>);        <span class="cm">// → 5.6 (double version)</span>
+calc.<span class="fn">add</span>(<span class="str">"Hello, "</span>, <span class="str">"World"</span>); <span class="cm">// → "Hello, World"</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 05</span>
+          <span class="exercise-title">Overloaded Logger</span>
+        </div>
+        <ol>
+          <li>Create a <code>Logger</code> class with a <code>log(String message)</code> method that prints <code>[INFO] message</code>.</li>
+          <li>Overload it: <code>log(String message, String level)</code> that prints <code>[LEVEL] message</code>.</li>
+          <li>Overload again: <code>log(Exception e)</code> that prints the exception message with <code>[ERROR]</code> prefix.</li>
+          <li>Add 3 constructors to <code>Logger</code>: no-arg (sets name to "Default"), one taking a name, one taking name + output file path.</li>
+          <li>Test all combinations in <code>main</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>this(...)</code> in constructors to avoid duplicating initialization logic.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 6: Static Members -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s6">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <h2>Static Members</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Static Fields &amp; Methods</h3>
+        <p>A <strong>static</strong> member belongs to the <em>class</em>, not to any individual object. All instances share the same static field. Static methods can be called without creating an object.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Counter.java — Static Field</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Counter</span> {
+    <span class="kw">private static int</span> count = <span class="num">0</span>; <span class="cm">// shared across ALL instances</span>
+    <span class="kw">private int</span> id;
+
+    <span class="kw">public</span> <span class="fn">Counter</span>() {
+        count++;          <span class="cm">// increment shared counter</span>
+        id = count;       <span class="cm">// give this instance a unique id</span>
+    }
+
+    <span class="kw">public static int</span> <span class="fn">getCount</span>() { <span class="kw">return</span> count; }
+    <span class="kw">public int</span> <span class="fn">getId</span>() { <span class="kw">return</span> id; }
+}
+
+<span class="cls">Counter</span> c1 = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cm">// count = 1, c1.id = 1</span>
+<span class="cls">Counter</span> c2 = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cm">// count = 2, c2.id = 2</span>
+<span class="cls">Counter</span> c3 = <span class="kw">new</span> <span class="cls">Counter</span>(); <span class="cm">// count = 3, c3.id = 3</span>
+
+<span class="cls">System</span>.out.<span class="fn">println</span>(<span class="cls">Counter</span>.<span class="fn">getCount</span>()); <span class="cm">// 3</span></pre>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <span class="callout-title">Static Methods Cannot Access Instance Members</span>
+            <p>Inside a static method, <code>this</code> doesn't exist. You can only access other static members. Use static for utility methods (like <code>Math.abs()</code>) or factory methods.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 MathUtils.java — Static Utility Methods</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">MathUtils</span> {
+    <span class="cm">// No need to instantiate — all methods are static</span>
+    <span class="kw">public static int</span>    <span class="fn">max</span>(<span class="tp">int</span> a, <span class="tp">int</span> b) { <span class="kw">return</span> a &gt; b ? a : b; }
+    <span class="kw">public static double</span> <span class="fn">circle</span>(<span class="tp">double</span> r) { <span class="kw">return</span> <span class="cls">Math</span>.PI * r * r; }
+    <span class="kw">public static boolean</span> <span class="fn">isEven</span>(<span class="tp">int</span> n)  { <span class="kw">return</span> n % <span class="num">2</span> == <span class="num">0</span>; }
+}
+
+<span class="cls">System</span>.out.<span class="fn">println</span>(<span class="cls">MathUtils</span>.<span class="fn">max</span>(<span class="num">10</span>, <span class="num">20</span>));    <span class="cm">// 20</span>
+<span class="cls">System</span>.out.<span class="fn">println</span>(<span class="cls">MathUtils</span>.<span class="fn">circle</span>(<span class="num">5</span>));    <span class="cm">// 78.53...</span>
+<span class="cls">System</span>.out.<span class="fn">println</span>(<span class="cls">MathUtils</span>.<span class="fn">isEven</span>(<span class="num">7</span>));   <span class="cm">// false</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 06</span>
+          <span class="exercise-title">Singleton Pattern with Static</span>
+        </div>
+        <ol>
+          <li>Create a <code>Config</code> class that uses a static field to store a single instance (Singleton pattern).</li>
+          <li>Make the constructor <code>private</code> so no one can call <code>new Config()</code>.</li>
+          <li>Add a static method <code>getInstance()</code> that returns the single instance (creates it if null).</li>
+          <li>Add fields like <code>appName</code>, <code>version</code> and getters for them.</li>
+          <li>In <code>main</code>, call <code>Config.getInstance()</code> twice and verify both references point to the same object using <code>==</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>if (instance == null) instance = new Config();</code> — this is the core of Singleton.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 7: OO Refactoring -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s7">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <h2>Refactoring Towards OO Design</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Refactoring Process</h3>
+        <p>Refactoring means <strong>restructuring existing code without changing its behavior</strong>. The goal is to improve readability, reduce coupling, and make the code easier to extend. The key steps are:</p>
+
+        <ul class="feature-list">
+          <li>Identify responsibilities — what distinct jobs does your code perform?</li>
+          <li>Extract each responsibility into its own class</li>
+          <li>Move static members to the class that owns them</li>
+          <li>Replace duplicated logic with shared helper methods</li>
+          <li>Wire classes together via constructors (dependency injection)</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Before — God Class (everything in main)</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Main</span> {
+    <span class="kw">static double</span> rate = <span class="num">0.05</span>;
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(<span class="tp">String</span>[] args) {
+        <span class="tp">double</span> principal = <span class="num">100000</span>;
+        <span class="tp">int</span> years = <span class="num">30</span>;
+        <span class="tp">double</span> payment = <span class="fn">calcPayment</span>(principal, rate, years);
+        <span class="cls">System</span>.out.<span class="fn">printf</span>(<span class="str">"Monthly: $%.2f%n"</span>, payment);
+    }
+
+    <span class="kw">static double</span> <span class="fn">calcPayment</span>(<span class="tp">double</span> p, <span class="tp">double</span> r, <span class="tp">int</span> y) {
+        <span class="tp">double</span> n = y * <span class="num">12</span>;
+        <span class="tp">double</span> mr = r / <span class="num">12</span>;
+        <span class="kw">return</span> p * mr / (<span class="num">1</span> - <span class="cls">Math</span>.<span class="fn">pow</span>(<span class="num">1</span> + mr, -n));
+    }
+}</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 After — Proper OO Design</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// MortgageCalculator.java</span>
+<span class="kw">public class</span> <span class="cls">MortgageCalculator</span> {
+    <span class="kw">private final double</span> principal;
+    <span class="kw">private final double</span> annualRate;
+    <span class="kw">private final int</span> years;
+
+    <span class="kw">public</span> <span class="fn">MortgageCalculator</span>(<span class="tp">double</span> p, <span class="tp">double</span> r, <span class="tp">int</span> y) {
+        principal = p; annualRate = r; years = y;
+    }
+
+    <span class="kw">public double</span> <span class="fn">calculateMonthlyPayment</span>() {
+        <span class="tp">double</span> n  = years * <span class="num">12</span>;
+        <span class="tp">double</span> mr = annualRate / <span class="num">12</span>;
+        <span class="kw">return</span> principal * mr / (<span class="num">1</span> - <span class="cls">Math</span>.<span class="fn">pow</span>(<span class="num">1</span> + mr, -n));
+    }
+}
+
+<span class="cm">// MortgageReport.java</span>
+<span class="kw">public class</span> <span class="cls">MortgageReport</span> {
+    <span class="kw">private final</span> <span class="cls">MortgageCalculator</span> calculator;
+
+    <span class="kw">public</span> <span class="fn">MortgageReport</span>(<span class="cls">MortgageCalculator</span> calc) {
+        <span class="kw">this</span>.calculator = calc;
+    }
+
+    <span class="kw">public void</span> <span class="fn">print</span>() {
+        <span class="cls">System</span>.out.<span class="fn">printf</span>(<span class="str">"Monthly Payment: $%.2f%n"</span>,
+            calculator.<span class="fn">calculateMonthlyPayment</span>());
+    }
+}
+
+<span class="cm">// Main.java</span>
+<span class="cls">MortgageCalculator</span> calc = <span class="kw">new</span> <span class="cls">MortgageCalculator</span>(<span class="num">100000</span>, <span class="num">0.05</span>, <span class="num">30</span>);
+<span class="kw">new</span> <span class="cls">MortgageReport</span>(calc).<span class="fn">print</span>();</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 07</span>
+          <span class="exercise-title">Refactor a Shopping Cart</span>
+        </div>
+        <ol>
+          <li>Start with a single <code>Main</code> class that has static arrays of products, static methods for adding/removing items, and a static method to compute total price including tax (8%).</li>
+          <li>Identify 3 distinct responsibilities in that code.</li>
+          <li>Extract a <code>Product</code> class, a <code>ShoppingCart</code> class, and a <code>Receipt</code> class.</li>
+          <li>Move static fields into their proper classes as instance fields.</li>
+          <li>Wire them together in <code>Main</code> using constructors.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>ShoppingCart</code> manages items. <code>Receipt</code> handles printing/formatting. <code>Product</code> holds data.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 8: Inheritance Basics -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s8">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <h2>Inheritance</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is Inheritance?</h3>
+        <p><strong>Inheritance</strong> allows a class (child/subclass) to inherit fields and methods from another class (parent/superclass) using the <code>extends</code> keyword. This promotes code reuse.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Animal hierarchy</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Parent class</span>
+<span class="kw">public class</span> <span class="cls">Animal</span> {
+    <span class="kw">private</span> <span class="tp">String</span> name;
+
+    <span class="kw">public</span> <span class="fn">Animal</span>(<span class="tp">String</span> name) { <span class="kw">this</span>.name = name; }
+
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">getName</span>() { <span class="kw">return</span> name; }
+
+    <span class="kw">public void</span> <span class="fn">eat</span>() {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(name + <span class="str">" is eating."</span>);
+    }
+}
+
+<span class="cm">// Child class inherits from Animal</span>
+<span class="kw">public class</span> <span class="cls">Dog</span> <span class="kw">extends</span> <span class="cls">Animal</span> {
+    <span class="kw">private</span> <span class="tp">String</span> breed;
+
+    <span class="kw">public</span> <span class="fn">Dog</span>(<span class="tp">String</span> name, <span class="tp">String</span> breed) {
+        <span class="kw">super</span>(name); <span class="cm">// call parent constructor</span>
+        <span class="kw">this</span>.breed = breed;
+    }
+
+    <span class="kw">public void</span> <span class="fn">bark</span>() {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="fn">getName</span>() + <span class="str">" says: Woof!"</span>);
+    }
+}
+
+<span class="cls">Dog</span> dog = <span class="kw">new</span> <span class="cls">Dog</span>(<span class="str">"Rex"</span>, <span class="str">"Labrador"</span>);
+dog.<span class="fn">eat</span>();  <span class="cm">// inherited: Rex is eating.</span>
+dog.<span class="fn">bark</span>(); <span class="cm">// own: Rex says: Woof!</span></pre>
+        </div>
+
+        <h3>The Object Class</h3>
+        <p>Every class in Java implicitly extends <code>Object</code>. This gives all objects methods like <code>toString()</code>, <code>equals()</code>, and <code>hashCode()</code>. You can override these to customize behavior.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Overriding toString() and equals()</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Point</span> {
+    <span class="kw">private int</span> x, y;
+
+    <span class="kw">public</span> <span class="fn">Point</span>(<span class="tp">int</span> x, <span class="tp">int</span> y) { <span class="kw">this</span>.x = x; <span class="kw">this</span>.y = y; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">toString</span>() {
+        <span class="kw">return</span> <span class="str">"("</span> + x + <span class="str">", "</span> + y + <span class="str">")"</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public boolean</span> <span class="fn">equals</span>(<span class="tp">Object</span> obj) {
+        <span class="kw">if</span> (<span class="kw">this</span> == obj) <span class="kw">return true</span>;
+        <span class="kw">if</span> (!(obj <span class="kw">instanceof</span> <span class="cls">Point</span>)) <span class="kw">return false</span>;
+        <span class="cls">Point</span> other = (<span class="cls">Point</span>) obj;
+        <span class="kw">return this</span>.x == other.x &amp;&amp; <span class="kw">this</span>.y == other.y;
+    }
+}
+
+<span class="cls">Point</span> p1 = <span class="kw">new</span> <span class="cls">Point</span>(<span class="num">3</span>, <span class="num">4</span>);
+<span class="cls">Point</span> p2 = <span class="kw">new</span> <span class="cls">Point</span>(<span class="num">3</span>, <span class="num">4</span>);
+<span class="cls">System</span>.out.<span class="fn">println</span>(p1);            <span class="cm">// (3, 4)</span>
+<span class="cls">System</span>.out.<span class="fn">println</span>(p1.<span class="fn">equals</span>(p2)); <span class="cm">// true</span></pre>
+        </div>
+
+        <h3>Upcasting &amp; Downcasting</h3>
+        <p><strong>Upcasting</strong> (treating a Dog as an Animal) is always safe and automatic. <strong>Downcasting</strong> (treating an Animal as a Dog) requires a cast and can throw <code>ClassCastException</code> — use <code>instanceof</code> first.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Casting</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cls">Animal</span> a = <span class="kw">new</span> <span class="cls">Dog</span>(<span class="str">"Rex"</span>, <span class="str">"Lab"</span>); <span class="cm">// upcast — safe, automatic</span>
+a.<span class="fn">eat</span>();                            <span class="cm">// ✅ works</span>
+
+<span class="cm">// Downcast — must check first</span>
+<span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cls">Dog</span> dog) {         <span class="cm">// Java 16+ pattern matching</span>
+    dog.<span class="fn">bark</span>();                      <span class="cm">// ✅ safe</span>
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 08</span>
+          <span class="exercise-title">Vehicle Hierarchy</span>
+        </div>
+        <ol>
+          <li>Create a <code>Vehicle</code> class with fields <code>make</code>, <code>model</code>, <code>year</code> and a <code>startEngine()</code> method.</li>
+          <li>Create <code>Car</code> (adds <code>numDoors</code>) and <code>Truck</code> (adds <code>payloadTons</code>) extending <code>Vehicle</code>.</li>
+          <li>Override <code>toString()</code> in all three classes.</li>
+          <li>Create a <code>Vehicle[]</code> array holding both Car and Truck objects. Loop through and print each.</li>
+          <li>Use <code>instanceof</code> to detect Trucks and print their payload separately.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Call <code>super(make, model, year)</code> in Car/Truck constructors.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 9: Method Overriding -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s9">
+      <div class="section-header">
+        <span class="section-num">09</span>
+        <h2>Method Overriding &amp; Access Modifiers</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Overriding vs Overloading</h3>
+        <table class="compare-table">
+          <thead><tr><th></th><th>Overloading</th><th>Overriding</th></tr></thead>
+          <tbody>
+            <tr><td>Where</td><td>Same class</td><td>Subclass overrides parent</td></tr>
+            <tr><td>Signature</td><td>Different parameters</td><td>Same signature</td></tr>
+            <tr><td>Resolved at</td><td>Compile time</td><td>Runtime</td></tr>
+            <tr><td>Annotation</td><td>None needed</td><td><code>@Override</code></td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Method Overriding</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Shape</span> {
+    <span class="kw">public double</span> <span class="fn">area</span>() { <span class="kw">return</span> <span class="num">0</span>; }
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">toString</span>() { <span class="kw">return</span> <span class="str">"Shape with area "</span> + <span class="fn">area</span>(); }
+}
+
+<span class="kw">public class</span> <span class="cls">Circle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+    <span class="kw">private double</span> radius;
+    <span class="kw">public</span> <span class="fn">Circle</span>(<span class="tp">double</span> r) { radius = r; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public double</span> <span class="fn">area</span>() { <span class="kw">return</span> <span class="cls">Math</span>.PI * radius * radius; }
+}
+
+<span class="kw">public class</span> <span class="cls">Rectangle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+    <span class="kw">private double</span> w, h;
+    <span class="kw">public</span> <span class="fn">Rectangle</span>(<span class="tp">double</span> w, <span class="tp">double</span> h) { <span class="kw">this</span>.w = w; <span class="kw">this</span>.h = h; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public double</span> <span class="fn">area</span>() { <span class="kw">return</span> w * h; }
+}</pre>
+        </div>
+
+        <h3>Access Modifiers</h3>
+        <table class="compare-table">
+          <thead><tr><th>Modifier</th><th>Same Class</th><th>Same Package</th><th>Subclass</th><th>Anywhere</th></tr></thead>
+          <tbody>
+            <tr><td><code>private</code></td><td>✅</td><td>❌</td><td>❌</td><td>❌</td></tr>
+            <tr><td>(default)</td><td>✅</td><td>✅</td><td>❌</td><td>❌</td></tr>
+            <tr><td><code>protected</code></td><td>✅</td><td>✅</td><td>✅</td><td>❌</td></tr>
+            <tr><td><code>public</code></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 09</span>
+          <span class="exercise-title">Shape Hierarchy</span>
+        </div>
+        <ol>
+          <li>Expand the Shape example: add <code>Triangle</code> with base and height.</li>
+          <li>Override <code>area()</code> and <code>toString()</code> in all subclasses.</li>
+          <li>Create a <code>Shape[]</code> array with a mix of shapes. Compute total area with a loop.</li>
+          <li>Add a <code>protected</code> field <code>color</code> in <code>Shape</code>. Access it directly in subclasses (no getter needed).</li>
+          <li>Try making <code>area()</code> in <code>Shape</code> return <code>-1</code> and observe what happens if you forget <code>@Override</code> and misspell the method name in a subclass.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Always use <code>@Override</code> — it makes the compiler catch typos in method names.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 10: Polymorphism -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s10">
+      <div class="section-header">
+        <span class="section-num">10</span>
+        <h2>Polymorphism</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is Polymorphism?</h3>
+        <p><strong>Polymorphism</strong> means "many forms." In Java, the same method call can do different things depending on the actual object type at runtime. This enables writing code that works with any subclass — past, present, or future.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Runtime Polymorphism</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">UIControl</span> {
+    <span class="kw">public void</span> <span class="fn">draw</span>() { <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Drawing a control"</span>); }
+}
+
+<span class="kw">public class</span> <span class="cls">Button</span> <span class="kw">extends</span> <span class="cls">UIControl</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">draw</span>() { <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Drawing a Button"</span>); }
+}
+
+<span class="kw">public class</span> <span class="cls">TextBox</span> <span class="kw">extends</span> <span class="cls">UIControl</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">draw</span>() { <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Drawing a TextBox"</span>); }
+}
+
+<span class="cm">// Polymorphic code — works for any UIControl subclass</span>
+<span class="kw">public static void</span> <span class="fn">drawAll</span>(<span class="cls">UIControl</span>[] controls) {
+    <span class="kw">for</span> (<span class="cls">UIControl</span> c : controls)
+        c.<span class="fn">draw</span>(); <span class="cm">// calls correct version at RUNTIME</span>
+}
+
+<span class="cls">UIControl</span>[] controls = {
+    <span class="kw">new</span> <span class="cls">Button</span>(),
+    <span class="kw">new</span> <span class="cls">TextBox</span>(),
+    <span class="kw">new</span> <span class="cls">Button</span>()
+};
+<span class="fn">drawAll</span>(controls);
+<span class="cm">// Drawing a Button</span>
+<span class="cm">// Drawing a TextBox</span>
+<span class="cm">// Drawing a Button</span></pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-icon">✅</div>
+          <div class="callout-body">
+            <span class="callout-title">Why Polymorphism is Powerful</span>
+            <p>You can add a new <code>CheckBox extends UIControl</code> tomorrow and pass it to <code>drawAll</code> — <strong>no changes to existing code</strong>. This is the Open/Closed Principle: open for extension, closed for modification.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 10</span>
+          <span class="exercise-title">Payment System</span>
+        </div>
+        <ol>
+          <li>Create a <code>Payment</code> base class with a method <code>process(double amount)</code>.</li>
+          <li>Create subclasses: <code>CreditCardPayment</code>, <code>PayPalPayment</code>, <code>CryptoPayment</code>.</li>
+          <li>Each override <code>process()</code> to print a unique message (e.g., "Charging card ending in 4242...").</li>
+          <li>Write a <code>Checkout</code> class with a method <code>complete(Payment payment, double amount)</code> that just calls <code>payment.process(amount)</code>.</li>
+          <li>In <code>main</code>, create a list of payments and process each. Notice you never change <code>Checkout</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>Checkout</code> depends on the <code>Payment</code> abstraction — it doesn't know (or care) which type it gets.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 11: Abstract & Final -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s11">
+      <div class="section-header">
+        <span class="section-num">11</span>
+        <h2>Abstract Classes &amp; Final</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Abstract Classes</h3>
+        <p>An <strong>abstract class</strong> cannot be instantiated — it's a template. It can have both concrete (implemented) and <code>abstract</code> (unimplemented) methods. Subclasses <em>must</em> implement all abstract methods.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Abstract Class Example</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public abstract class</span> <span class="cls">Shape</span> {
+    <span class="kw">private</span> <span class="tp">String</span> color;
+
+    <span class="kw">public</span> <span class="fn">Shape</span>(<span class="tp">String</span> color) { <span class="kw">this</span>.color = color; }
+
+    <span class="cm">// Abstract — subclass MUST implement</span>
+    <span class="kw">public abstract double</span> <span class="fn">area</span>();
+
+    <span class="cm">// Concrete — subclass inherits this for free</span>
+    <span class="kw">public void</span> <span class="fn">printInfo</span>() {
+        <span class="cls">System</span>.out.<span class="fn">printf</span>(<span class="str">"%s %s — area: %.2f%n"</span>, color, <span class="fn">getClass</span>().<span class="fn">getSimpleName</span>(), <span class="fn">area</span>());
+    }
+}
+
+<span class="kw">public class</span> <span class="cls">Circle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+    <span class="kw">private double</span> radius;
+    <span class="kw">public</span> <span class="fn">Circle</span>(<span class="tp">String</span> color, <span class="tp">double</span> r) { <span class="kw">super</span>(color); radius = r; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public double</span> <span class="fn">area</span>() { <span class="kw">return</span> <span class="cls">Math</span>.PI * radius * radius; }
+}
+
+<span class="cm">// Shape s = new Shape(...); ❌ Cannot instantiate abstract class!</span>
+<span class="cls">Shape</span> c = <span class="kw">new</span> <span class="cls">Circle</span>(<span class="str">"Red"</span>, <span class="num">5</span>);
+c.<span class="fn">printInfo</span>(); <span class="cm">// Red Circle — area: 78.54</span></pre>
+        </div>
+
+        <h3>Final Classes &amp; Methods</h3>
+        <p>The <code>final</code> keyword prevents inheritance or overriding. A <code>final</code> class cannot be extended. A <code>final</code> method cannot be overridden. A <code>final</code> variable is a constant.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Final Usage</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public final class</span> <span class="cls">String</span> { <span class="cm">/* immutable — cannot be extended */</span> }
+
+<span class="kw">public class</span> <span class="cls">Base</span> {
+    <span class="kw">public final void</span> <span class="fn">criticalMethod</span>() {
+        <span class="cm">// cannot be overridden in subclasses</span>
+    }
+}
+
+<span class="kw">public class</span> <span class="cls">Constants</span> {
+    <span class="kw">public static final double</span> PI = <span class="num">3.14159</span>; <span class="cm">// compile-time constant</span>
+    <span class="kw">public static final int</span> MAX_USERS = <span class="num">1000</span>;
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 11</span>
+          <span class="exercise-title">Tax Calculator Hierarchy</span>
+        </div>
+        <ol>
+          <li>Create an <code>abstract class TaxCalculator</code> with a <code>double income</code> field and abstract method <code>calculateTax()</code>.</li>
+          <li>Add a concrete <code>printTax()</code> method that calls <code>calculateTax()</code> and prints the result.</li>
+          <li>Create <code>USATaxCalculator</code> (21% flat rate) and <code>UKTaxCalculator</code> (20% under £50k, 40% above).</li>
+          <li>Mark <code>printTax()</code> as <code>final</code> so subclasses can't mess with the formatting.</li>
+          <li>Create a <code>TaxCalculator[]</code> array and call <code>printTax()</code> on each — observe polymorphism.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Abstract classes are ideal when subclasses share common state (income) but differ in behavior (tax formula).</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 12: Interfaces -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s12">
+      <div class="section-header">
+        <span class="section-num">12</span>
+        <h2>Interfaces</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is an Interface?</h3>
+        <p>An <strong>interface</strong> is a contract — a list of method signatures that implementing classes <em>must</em> provide. Unlike abstract classes, interfaces define <strong>what</strong> a class can do, not what it <em>is</em>. A class can implement multiple interfaces.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Printable.java &amp; Resizable.java</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public interface</span> <span class="iface">Printable</span> {
+    <span class="kw">void</span> <span class="fn">print</span>(); <span class="cm">// implicitly public abstract</span>
+}
+
+<span class="kw">public interface</span> <span class="iface">Resizable</span> {
+    <span class="kw">void</span> <span class="fn">resize</span>(<span class="tp">double</span> factor);
+}
+
+<span class="cm">// Implementing MULTIPLE interfaces</span>
+<span class="kw">public class</span> <span class="cls">Image</span> <span class="kw">implements</span> <span class="iface">Printable</span>, <span class="iface">Resizable</span> {
+    <span class="kw">private</span> <span class="tp">String</span> filename;
+    <span class="kw">private double</span> width, height;
+
+    <span class="kw">public</span> <span class="fn">Image</span>(<span class="tp">String</span> f, <span class="tp">double</span> w, <span class="tp">double</span> h) {
+        filename = f; width = w; height = h;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">print</span>() {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Printing "</span> + filename + <span class="str">" ["</span> + width + <span class="str">"x"</span> + height + <span class="str">"]"</span>);
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">resize</span>(<span class="tp">double</span> factor) {
+        width *= factor; height *= factor;
+    }
+}</pre>
+        </div>
+
+        <h3>Default &amp; Static Interface Methods (Java 8+)</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Interface with default and static methods</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public interface</span> <span class="iface">Logger</span> {
+    <span class="kw">void</span> <span class="fn">log</span>(<span class="tp">String</span> message);
+
+    <span class="cm">// Default — all implementors get this for free</span>
+    <span class="kw">default void</span> <span class="fn">logError</span>(<span class="tp">String</span> msg) {
+        <span class="fn">log</span>(<span class="str">"[ERROR] "</span> + msg);
+    }
+
+    <span class="cm">// Static — called on the interface itself</span>
+    <span class="kw">static</span> <span class="iface">Logger</span> <span class="fn">console</span>() {
+        <span class="kw">return</span> msg -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(msg);
+    }
+}
+
+<span class="iface">Logger</span> log = <span class="iface">Logger</span>.<span class="fn">console</span>(); <span class="cm">// static factory</span>
+log.<span class="fn">log</span>(<span class="str">"App started"</span>);
+log.<span class="fn">logError</span>(<span class="str">"Something broke"</span>); <span class="cm">// default method</span></pre>
+        </div>
+
+        <h3>Abstract Class vs Interface</h3>
+        <table class="compare-table">
+          <thead><tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr></thead>
+          <tbody>
+            <tr><td>Can have constructors</td><td>✅ Yes</td><td>❌ No</td></tr>
+            <tr><td>Can have instance fields</td><td>✅ Yes</td><td>❌ (constants only)</td></tr>
+            <tr><td>Multiple inheritance</td><td>❌ One parent</td><td>✅ Many interfaces</td></tr>
+            <tr><td>Method implementations</td><td>✅ Yes</td><td>✅ default/static only</td></tr>
+            <tr><td>Use when</td><td>Shared state + behavior</td><td>Shared contract/capability</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 12</span>
+          <span class="exercise-title">Video Platform</span>
+        </div>
+        <ol>
+          <li>Create interfaces: <code>Playable</code> (play, pause, stop), <code>Downloadable</code> (download), <code>Shareable</code> (share).</li>
+          <li>Create a <code>Video</code> class that implements all three.</li>
+          <li>Create a <code>LiveStream</code> class that implements <code>Playable</code> and <code>Shareable</code> but NOT <code>Downloadable</code>.</li>
+          <li>Add a default method <code>replay()</code> to <code>Playable</code> that calls <code>stop()</code> then <code>play()</code>.</li>
+          <li>Write a method that accepts any <code>Playable</code> and plays it — test with both Video and LiveStream.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> This models the Interface Segregation Principle — don't force classes to implement methods they don't need.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 13: Dependency Injection -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s13">
+      <div class="section-header">
+        <span class="section-num">13</span>
+        <h2>Dependency Injection</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is DI?</h3>
+        <p><strong>Dependency Injection</strong> means providing a class's dependencies from outside, rather than the class creating them itself. This decouples classes and makes them testable. There are 3 types:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Three Types of DI</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public interface</span> <span class="iface">TaxCalculator</span> {
+    <span class="tp">double</span> <span class="fn">calculateTax</span>(<span class="tp">double</span> income);
+}
+
+<span class="kw">public class</span> <span class="cls">TaxReport</span> {
+    <span class="kw">private</span> <span class="iface">TaxCalculator</span> calculator;
+
+    <span class="cm">// 1. Constructor Injection — preferred</span>
+    <span class="kw">public</span> <span class="fn">TaxReport</span>(<span class="iface">TaxCalculator</span> calc) {
+        <span class="kw">this</span>.calculator = calc;
+    }
+
+    <span class="cm">// 2. Setter Injection — use if dependency is optional</span>
+    <span class="kw">public void</span> <span class="fn">setCalculator</span>(<span class="iface">TaxCalculator</span> calc) {
+        <span class="kw">this</span>.calculator = calc;
+    }
+
+    <span class="cm">// 3. Method Injection — pass dependency to individual method</span>
+    <span class="kw">public void</span> <span class="fn">show</span>(<span class="iface">TaxCalculator</span> calc, <span class="tp">double</span> income) {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Tax: $"</span> + calc.<span class="fn">calculateTax</span>(income));
+    }
+
+    <span class="kw">public void</span> <span class="fn">show</span>(<span class="tp">double</span> income) {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Tax: $"</span> + calculator.<span class="fn">calculateTax</span>(income));
+    }
+}
+
+<span class="cm">// Wire it up:</span>
+<span class="iface">TaxCalculator</span> flat = income -&gt; income * <span class="num">0.3</span>;
+<span class="cls">TaxReport</span> report = <span class="kw">new</span> <span class="cls">TaxReport</span>(flat);
+report.<span class="fn">show</span>(<span class="num">75000</span>); <span class="cm">// Tax: $22500.0</span>
+
+<span class="cm">// Swap the calculator — no change to TaxReport!</span>
+report.<span class="fn">setCalculator</span>(income -&gt; income * <span class="num">0.2</span>);
+report.<span class="fn">show</span>(<span class="num">75000</span>); <span class="cm">// Tax: $15000.0</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 13</span>
+          <span class="exercise-title">Notification Service</span>
+        </div>
+        <ol>
+          <li>Create a <code>MessageSender</code> interface with <code>send(String to, String message)</code>.</li>
+          <li>Implement <code>SmsSender</code>, <code>EmailSender</code>, <code>PushNotificationSender</code>.</li>
+          <li>Create <code>UserService</code> that takes a <code>MessageSender</code> via constructor injection.</li>
+          <li>Add a <code>register(String email)</code> method that welcomes the new user via the injected sender.</li>
+          <li>In <code>main</code>, create <code>UserService</code> three times with different senders. Call <code>register</code> each time.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Constructor injection is best — it makes the dependency visible and required.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 14: Interface Segregation -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s14">
+      <div class="section-header">
+        <span class="section-num">14</span>
+        <h2>Interface Segregation Principle</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Problem with Fat Interfaces</h3>
+        <p>The <strong>Interface Segregation Principle (ISP)</strong> says: don't force a class to implement methods it doesn't need. Split large ("fat") interfaces into smaller, focused ones.</p>
+
+        <div class="example-row">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-filename">❌ Fat Interface</span>
+              <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+            </div>
+            <pre><span class="kw">interface</span> <span class="iface">UIWidget</span> {
+  <span class="kw">void</span> <span class="fn">drag</span>();
+  <span class="kw">void</span> <span class="fn">resize</span>();
+  <span class="kw">void</span> <span class="fn">render</span>();
+  <span class="kw">void</span> <span class="fn">click</span>();
+}
+<span class="cm">// Checkbox must implement drag() even if it
+// doesn't support dragging — bad!</span></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-filename">✅ Segregated Interfaces</span>
+              <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+            </div>
+            <pre><span class="kw">interface</span> <span class="iface">Draggable</span> { <span class="kw">void</span> <span class="fn">drag</span>(); }
+<span class="kw">interface</span> <span class="iface">Resizable</span>  { <span class="kw">void</span> <span class="fn">resize</span>(); }
+<span class="kw">interface</span> <span class="iface">Renderable</span> { <span class="kw">void</span> <span class="fn">render</span>(); }
+<span class="kw">interface</span> <span class="iface">Clickable</span>  { <span class="kw">void</span> <span class="fn">click</span>(); }
+<span class="cm">// Checkbox implements only what it needs:
+// Renderable + Clickable</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 14</span>
+          <span class="exercise-title">Cloud Storage ISP</span>
+        </div>
+        <ol>
+          <li>Start with a <code>CloudStorage</code> interface with: <code>store()</code>, <code>retrieve()</code>, <code>delete()</code>, <code>shareLink()</code>, <code>enableEncryption()</code>.</li>
+          <li>Identify which methods don't belong together (some providers don't support sharing or encryption).</li>
+          <li>Split into: <code>Storable</code>, <code>Shareable</code>, <code>Encryptable</code>.</li>
+          <li>Implement <code>DropboxStorage</code> (all three), <code>BasicStorage</code> (only Storable).</li>
+          <li>Write a method that accepts <code>Encryptable</code> — it works with DropboxStorage but not BasicStorage.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> If a class needs to throw <code>UnsupportedOperationException</code> for an interface method, that's a sign the interface is too fat.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 15: Exceptions -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s15">
+      <div class="section-header">
+        <span class="section-num">15</span>
+        <h2>Exceptions</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Exception Hierarchy</h3>
+        <p>In Java, all exceptions inherit from <code>Throwable</code>. The two main branches are <strong>checked</strong> (must be handled) and <strong>unchecked</strong> (runtime, optional to handle).</p>
+
+        <div class="output-box">
+          <div class="output-label">Hierarchy</div>
+          Throwable → Error (JVM crashes: OutOfMemoryError)<br>
+          Throwable → Exception → checked (IOException, SQLException)<br>
+          Throwable → Exception → RuntimeException → unchecked (NullPointerException, IllegalArgumentException)
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Catching Exceptions</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">import</span> java.io.*;
+<span class="kw">import</span> java.util.*;
+
+<span class="kw">public class</span> <span class="cls">FileReader</span> {
+    <span class="kw">public static void</span> <span class="fn">read</span>(<span class="tp">String</span> path) {
+        <span class="cm">// try-with-resources — auto closes the reader</span>
+        <span class="kw">try</span> (<span class="tp">Scanner</span> sc = <span class="kw">new</span> <span class="cls">Scanner</span>(<span class="kw">new</span> <span class="cls">File</span>(path))) {
+            <span class="kw">while</span> (sc.<span class="fn">hasNextLine</span>())
+                <span class="cls">System</span>.out.<span class="fn">println</span>(sc.<span class="fn">nextLine</span>());
+        } <span class="kw">catch</span> (<span class="cls">FileNotFoundException</span> e) {
+            <span class="cls">System</span>.err.<span class="fn">println</span>(<span class="str">"File not found: "</span> + path);
+        } <span class="kw">catch</span> (<span class="cls">IOException</span> e) {
+            <span class="cls">System</span>.err.<span class="fn">println</span>(<span class="str">"IO error: "</span> + e.<span class="fn">getMessage</span>());
+        } <span class="kw">finally</span> {
+            <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Done reading."</span>); <span class="cm">// always runs</span>
+        }
+    }
+}</pre>
+        </div>
+
+        <h3>Custom Exceptions</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Custom Exception + Chaining</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Custom checked exception</span>
+<span class="kw">public class</span> <span class="cls">InsufficientFundsException</span> <span class="kw">extends</span> <span class="cls">Exception</span> {
+    <span class="kw">public</span> <span class="fn">InsufficientFundsException</span>(<span class="tp">double</span> amount) {
+        <span class="kw">super</span>(<span class="str">"Insufficient funds. Needed: $"</span> + amount);
+    }
+}
+
+<span class="kw">public class</span> <span class="cls">BankAccount</span> {
+    <span class="kw">private double</span> balance = <span class="num">100</span>;
+
+    <span class="kw">public void</span> <span class="fn">withdraw</span>(<span class="tp">double</span> amount) <span class="kw">throws</span> <span class="cls">InsufficientFundsException</span> {
+        <span class="kw">if</span> (amount &gt; balance)
+            <span class="kw">throw new</span> <span class="cls">InsufficientFundsException</span>(amount);
+        balance -= amount;
+    }
+}
+
+<span class="cm">// Usage with exception chaining:</span>
+<span class="kw">try</span> {
+    account.<span class="fn">withdraw</span>(<span class="num">500</span>);
+} <span class="kw">catch</span> (<span class="cls">InsufficientFundsException</span> e) {
+    <span class="kw">throw new</span> <span class="cls">RuntimeException</span>(<span class="str">"Transaction failed"</span>, e); <span class="cm">// chain it</span>
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 15</span>
+          <span class="exercise-title">Exception-Safe File Parser</span>
+        </div>
+        <ol>
+          <li>Create a custom exception <code>InvalidDataException</code> (checked) with a message and line number.</li>
+          <li>Write a <code>CsvParser</code> class that reads a CSV file line by line using try-with-resources.</li>
+          <li>Catch <code>FileNotFoundException</code> and re-throw as a descriptive <code>RuntimeException</code> with chaining.</li>
+          <li>For each line, if it doesn't have exactly 3 columns, throw <code>InvalidDataException</code>.</li>
+          <li>In <code>main</code>, catch all exceptions and print friendly error messages — never let the app crash silently.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>line.split(",")</code> to split CSV. Check <code>parts.length != 3</code> before processing.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 16: Generics -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s16">
+      <div class="section-header">
+        <span class="section-num">16</span>
+        <h2>Generics</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Why Generics?</h3>
+        <p>Generics let you write classes and methods that work with <strong>any type</strong> while maintaining type safety at compile time. Without generics you'd need casting everywhere and risk <code>ClassCastException</code> at runtime.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Generic Class</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Generic stack — works with any type</span>
+<span class="kw">public class</span> <span class="cls">Stack</span>&lt;<span class="tp">T</span>&gt; {
+    <span class="kw">private</span> <span class="cls">ArrayList</span>&lt;<span class="tp">T</span>&gt; items = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+
+    <span class="kw">public void</span> <span class="fn">push</span>(<span class="tp">T</span> item) { items.<span class="fn">add</span>(item); }
+
+    <span class="kw">public</span> <span class="tp">T</span> <span class="fn">pop</span>() {
+        <span class="kw">if</span> (items.<span class="fn">isEmpty</span>())
+            <span class="kw">throw new</span> <span class="cls">EmptyStackException</span>();
+        <span class="kw">return</span> items.<span class="fn">remove</span>(items.<span class="fn">size</span>() - <span class="num">1</span>);
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">isEmpty</span>() { <span class="kw">return</span> items.<span class="fn">isEmpty</span>(); }
+    <span class="kw">public int</span>     <span class="fn">size</span>()    { <span class="kw">return</span> items.<span class="fn">size</span>(); }
+}
+
+<span class="cls">Stack</span>&lt;<span class="tp">Integer</span>&gt; intStack = <span class="kw">new</span> <span class="cls">Stack</span>&lt;&gt;();
+intStack.<span class="fn">push</span>(<span class="num">10</span>);
+intStack.<span class="fn">push</span>(<span class="num">20</span>);
+<span class="tp">int</span> top = intStack.<span class="fn">pop</span>(); <span class="cm">// 20 — no cast needed!</span>
+
+<span class="cls">Stack</span>&lt;<span class="tp">String</span>&gt; strStack = <span class="kw">new</span> <span class="cls">Stack</span>&lt;&gt;();
+strStack.<span class="fn">push</span>(<span class="str">"hello"</span>);
+<span class="tp">String</span> s = strStack.<span class="fn">pop</span>(); <span class="cm">// "hello" — type safe</span></pre>
+        </div>
+
+        <h3>Constraints (Bounded Type Parameters)</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Upper Bounded &amp; Generic Methods</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// T must implement Comparable</span>
+<span class="kw">public class</span> <span class="cls">Sorter</span>&lt;<span class="tp">T</span> <span class="kw">extends</span> <span class="cls">Comparable</span>&lt;<span class="tp">T</span>&gt;&gt; {
+    <span class="kw">public</span> <span class="tp">T</span> <span class="fn">max</span>(<span class="cls">List</span>&lt;<span class="tp">T</span>&gt; list) {
+        <span class="tp">T</span> result = list.<span class="fn">get</span>(<span class="num">0</span>);
+        <span class="kw">for</span> (<span class="tp">T</span> item : list)
+            <span class="kw">if</span> (item.<span class="fn">compareTo</span>(result) &gt; <span class="num">0</span>)
+                result = item;
+        <span class="kw">return</span> result;
+    }
+}
+
+<span class="cm">// Generic static method</span>
+<span class="kw">public static</span> &lt;<span class="tp">T</span>&gt; <span class="kw">void</span> <span class="fn">swap</span>(<span class="tp">T</span>[] arr, <span class="tp">int</span> i, <span class="tp">int</span> j) {
+    <span class="tp">T</span> temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+<span class="cm">// Wildcard — accept List of any subtype of Number</span>
+<span class="kw">public static double</span> <span class="fn">sum</span>(<span class="cls">List</span>&lt;? <span class="kw">extends</span> <span class="cls">Number</span>&gt; list) {
+    <span class="tp">double</span> total = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="cls">Number</span> n : list) total += n.<span class="fn">doubleValue</span>();
+    <span class="kw">return</span> total;
+}</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 16</span>
+          <span class="exercise-title">Generic Pair &amp; Cache</span>
+        </div>
+        <ol>
+          <li>Create a generic <code>Pair&lt;A, B&gt;</code> class with two fields and getters. Add a <code>swap()</code> method that returns a new <code>Pair&lt;B, A&gt;</code>.</li>
+          <li>Create a generic <code>Cache&lt;K, V&gt;</code> class backed by a <code>HashMap</code>. Add <code>put(K, V)</code>, <code>get(K)</code>, <code>contains(K)</code>.</li>
+          <li>Write a generic static method <code>filter&lt;T&gt;(List&lt;T&gt; list, Predicate&lt;T&gt; condition)</code> that returns matching items.</li>
+          <li>Use <code>filter</code> to get all strings longer than 5 characters from a list.</li>
+          <li>Add an upper bound: create a <code>NumberUtils</code> class with <code>average(List&lt;? extends Number&gt; list)</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>Predicate&lt;T&gt;</code> is a functional interface in <code>java.util.function</code> — it has a single <code>test(T t)</code> method.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 17: Collections -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s17">
+      <div class="section-header">
+        <span class="section-num">17</span>
+        <h2>Collections Framework</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Main Interfaces</h3>
+        <table class="compare-table">
+          <thead><tr><th>Interface</th><th>Ordered</th><th>Duplicates</th><th>Key-Value</th><th>Common Impl</th></tr></thead>
+          <tbody>
+            <tr><td><code>List</code></td><td>✅</td><td>✅</td><td>❌</td><td>ArrayList, LinkedList</td></tr>
+            <tr><td><code>Set</code></td><td>❌*</td><td>❌</td><td>❌</td><td>HashSet, TreeSet</td></tr>
+            <tr><td><code>Queue</code></td><td>✅ FIFO</td><td>✅</td><td>❌</td><td>ArrayDeque, LinkedList</td></tr>
+            <tr><td><code>Map</code></td><td>❌*</td><td>keys:❌</td><td>✅</td><td>HashMap, TreeMap</td></tr>
+          </tbody>
+        </table>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 List, Set, Map in Action</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// List — ordered, duplicates allowed</span>
+<span class="cls">List</span>&lt;<span class="tp">String</span>&gt; names = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;(<span class="cls">List</span>.<span class="fn">of</span>(<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Alice"</span>));
+names.<span class="fn">sort</span>(<span class="cls">Comparator</span>.<span class="fn">naturalOrder</span>());
+<span class="cls">System</span>.out.<span class="fn">println</span>(names); <span class="cm">// [Alice, Alice, Bob]</span>
+
+<span class="cm">// Set — no duplicates</span>
+<span class="cls">Set</span>&lt;<span class="tp">String</span>&gt; unique = <span class="kw">new</span> <span class="cls">HashSet</span>&lt;&gt;(names);
+<span class="cls">System</span>.out.<span class="fn">println</span>(unique); <span class="cm">// [Alice, Bob]</span>
+
+<span class="cm">// Map — key → value</span>
+<span class="cls">Map</span>&lt;<span class="tp">String</span>, <span class="tp">Integer</span>&gt; scores = <span class="kw">new</span> <span class="cls">HashMap</span>&lt;&gt;();
+scores.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">95</span>);
+scores.<span class="fn">put</span>(<span class="str">"Bob"</span>, <span class="num">82</span>);
+scores.<span class="fn">put</span>(<span class="str">"Alice"</span>, <span class="num">98</span>); <span class="cm">// overwrites 95</span>
+scores.<span class="fn">getOrDefault</span>(<span class="str">"Charlie"</span>, <span class="num">0</span>); <span class="cm">// → 0 (safe)</span>
+
+<span class="kw">for</span> (<span class="kw">var</span> entry : scores.<span class="fn">entrySet</span>())
+    <span class="cls">System</span>.out.<span class="fn">println</span>(entry.<span class="fn">getKey</span>() + <span class="str">": "</span> + entry.<span class="fn">getValue</span>());
+
+<span class="cm">// Queue (FIFO)</span>
+<span class="cls">Queue</span>&lt;<span class="tp">String</span>&gt; queue = <span class="kw">new</span> <span class="cls">ArrayDeque</span>&lt;&gt;();
+queue.<span class="fn">offer</span>(<span class="str">"task1"</span>);
+queue.<span class="fn">offer</span>(<span class="str">"task2"</span>);
+<span class="cls">System</span>.out.<span class="fn">println</span>(queue.<span class="fn">poll</span>()); <span class="cm">// task1</span></pre>
+        </div>
+
+        <h3>Sorting with Comparable &amp; Comparator</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Custom Sorting</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">public class</span> <span class="cls">Student</span> <span class="kw">implements</span> <span class="iface">Comparable</span>&lt;<span class="cls">Student</span>&gt; {
+    <span class="kw">public</span> <span class="tp">String</span> name;
+    <span class="kw">public double</span> gpa;
+
+    <span class="ann">@Override</span>
+    <span class="kw">public int</span> <span class="fn">compareTo</span>(<span class="cls">Student</span> other) {
+        <span class="kw">return</span> <span class="cls">Double</span>.<span class="fn">compare</span>(<span class="kw">this</span>.gpa, other.gpa); <span class="cm">// natural order: ascending GPA</span>
+    }
+}
+
+<span class="cls">List</span>&lt;<span class="cls">Student</span>&gt; students = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+<span class="cm">// Sort by name using Comparator (doesn't change natural order)</span>
+students.<span class="fn">sort</span>(<span class="cls">Comparator</span>.<span class="fn">comparing</span>(s -&gt; s.name));
+<span class="cm">// Sort by GPA descending then name ascending</span>
+students.<span class="fn">sort</span>(<span class="cls">Comparator</span>.<span class="fn">comparingDouble</span>((Student s) -&gt; s.gpa)
+    .<span class="fn">reversed</span>()
+    .<span class="fn">thenComparing</span>(s -&gt; s.name));</pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 17</span>
+          <span class="exercise-title">Word Frequency Counter</span>
+        </div>
+        <ol>
+          <li>Write a program that reads a <code>String</code> of text and splits it into words.</li>
+          <li>Use a <code>Map&lt;String, Integer&gt;</code> to count the frequency of each word.</li>
+          <li>Use <code>map.merge(word, 1, Integer::sum)</code> to increment counts elegantly.</li>
+          <li>Store the entries in a <code>List</code> and sort by frequency descending.</li>
+          <li>Print the top 5 most frequent words.</li>
+          <li>Bonus: Use a <code>TreeMap</code> instead — how does the output change?</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>text.toLowerCase().split("\\W+")</code> splits on non-word characters and ignores case.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 18: Lambdas & Functional Interfaces -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s18">
+      <div class="section-header">
+        <span class="section-num">18</span>
+        <h2>Lambda Expressions &amp; Functional Interfaces</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What is a Lambda?</h3>
+        <p>A <strong>lambda expression</strong> is a concise way to implement a <strong>functional interface</strong> (an interface with exactly one abstract method). Instead of an anonymous class, you write an arrow function.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Lambda Syntax Evolution</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Old way — anonymous inner class</span>
+<span class="cls">Comparator</span>&lt;<span class="tp">String</span>&gt; cmp = <span class="kw">new</span> <span class="cls">Comparator</span>&lt;<span class="tp">String</span>&gt;() {
+    <span class="kw">public int</span> <span class="fn">compare</span>(<span class="tp">String</span> a, <span class="tp">String</span> b) {
+        <span class="kw">return</span> a.<span class="fn">compareTo</span>(b);
+    }
+};
+
+<span class="cm">// Lambda — much cleaner</span>
+<span class="cls">Comparator</span>&lt;<span class="tp">String</span>&gt; cmpLambda = (a, b) -&gt; a.<span class="fn">compareTo</span>(b);
+
+<span class="cm">// Method reference — even shorter</span>
+<span class="cls">Comparator</span>&lt;<span class="tp">String</span>&gt; cmpRef = <span class="cls">String</span>::compareTo;</pre>
+        </div>
+
+        <h3>Built-in Functional Interfaces</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Consumer, Supplier, Function, Predicate</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">import</span> java.util.function.*;
+
+<span class="cm">// Consumer&lt;T&gt; — takes T, returns nothing</span>
+<span class="cls">Consumer</span>&lt;<span class="tp">String</span>&gt; print = msg -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(msg);
+<span class="cls">Consumer</span>&lt;<span class="tp">String</span>&gt; shout = msg -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(msg.<span class="fn">toUpperCase</span>());
+print.<span class="fn">andThen</span>(shout).<span class="fn">accept</span>(<span class="str">"hello"</span>); <span class="cm">// hello \n HELLO</span>
+
+<span class="cm">// Supplier&lt;T&gt; — takes nothing, returns T</span>
+<span class="cls">Supplier</span>&lt;<span class="tp">String</span>&gt; greeting = () -&gt; <span class="str">"Good morning!"</span>;
+<span class="cls">System</span>.out.<span class="fn">println</span>(greeting.<span class="fn">get</span>()); <span class="cm">// Good morning!</span>
+
+<span class="cm">// Function&lt;T, R&gt; — takes T, returns R</span>
+<span class="cls">Function</span>&lt;<span class="tp">String</span>, <span class="tp">Integer</span>&gt; length = String::length;
+<span class="cls">Function</span>&lt;<span class="tp">Integer</span>, <span class="tp">Boolean</span>&gt; isLong = n -&gt; n &gt; <span class="num">5</span>;
+<span class="cls">Function</span>&lt;<span class="tp">String</span>, <span class="tp">Boolean</span>&gt; isLongWord = length.<span class="fn">andThen</span>(isLong);
+isLongWord.<span class="fn">apply</span>(<span class="str">"hello"</span>);   <span class="cm">// false (5 chars)</span>
+isLongWord.<span class="fn">apply</span>(<span class="str">"programming"</span>); <span class="cm">// true</span>
+
+<span class="cm">// Predicate&lt;T&gt; — takes T, returns boolean</span>
+<span class="cls">Predicate</span>&lt;<span class="tp">Integer</span>&gt; isEven = n -&gt; n % <span class="num">2</span> == <span class="num">0</span>;
+<span class="cls">Predicate</span>&lt;<span class="tp">Integer</span>&gt; isPos  = n -&gt; n &gt; <span class="num">0</span>;
+<span class="cls">Predicate</span>&lt;<span class="tp">Integer</span>&gt; isEvenAndPos = isEven.<span class="fn">and</span>(isPos);
+isEvenAndPos.<span class="fn">test</span>(<span class="num">4</span>);  <span class="cm">// true</span>
+isEvenAndPos.<span class="fn">test</span>(-<span class="num">2</span>); <span class="cm">// false</span>
+
+<span class="cm">// BinaryOperator&lt;T&gt; — takes two T, returns T</span>
+<span class="cls">BinaryOperator</span>&lt;<span class="tp">Integer</span>&gt; add = (a, b) -&gt; a + b;
+<span class="cls">System</span>.out.<span class="fn">println</span>(add.<span class="fn">apply</span>(<span class="num">10</span>, <span class="num">20</span>)); <span class="cm">// 30</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 18</span>
+          <span class="exercise-title">Functional Pipeline</span>
+        </div>
+        <ol>
+          <li>Create a list of product names. Use a <code>Predicate</code> to filter those starting with "A".</li>
+          <li>Use a <code>Function&lt;String, String&gt;</code> to transform each name to uppercase.</li>
+          <li>Chain them: filter → transform → print using <code>Consumer</code>.</li>
+          <li>Create a <code>BinaryOperator&lt;Double&gt;</code> for compound interest calculation: <code>(principal, rate) → principal * Math.pow(1 + rate, 10)</code>.</li>
+          <li>Write a method <code>applyTwice(UnaryOperator&lt;Integer&gt; op, int value)</code> that applies the operator twice. Test with <code>n → n * 2</code>.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>UnaryOperator&lt;T&gt;</code> extends <code>Function&lt;T, T&gt;</code> — same input and output type.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 19: Streams -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s19">
+      <div class="section-header">
+        <span class="section-num">19</span>
+        <h2>Streams</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>What are Streams?</h3>
+        <p>A <strong>Stream</strong> is a sequence of elements that you can process in a functional, declarative style. Streams don't store data — they process it lazily. A stream pipeline has: source → intermediate operations → terminal operation.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Stream Pipeline Examples</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">import</span> java.util.stream.*;
+<span class="kw">import</span> java.util.*;
+
+<span class="cls">List</span>&lt;<span class="tp">Integer</span>&gt; numbers = <span class="cls">List</span>.<span class="fn">of</span>(<span class="num">5</span>, <span class="num">3</span>, <span class="num">8</span>, <span class="num">1</span>, <span class="num">9</span>, <span class="num">2</span>, <span class="num">7</span>, <span class="num">4</span>, <span class="num">6</span>);
+
+<span class="cm">// Filter → Map → Sorted → Collect</span>
+<span class="cls">List</span>&lt;<span class="tp">String</span>&gt; result = numbers.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n -&gt; n % <span class="num">2</span> == <span class="num">0</span>)       <span class="cm">// keep even: 8,2,4,6</span>
+    .<span class="fn">sorted</span>()                       <span class="cm">// 2,4,6,8</span>
+    .<span class="fn">map</span>(n -&gt; <span class="str">"#"</span> + n)              <span class="cm">// "#2","#4","#6","#8"</span>
+    .<span class="fn">collect</span>(<span class="cls">Collectors</span>.<span class="fn">toList</span>()); <span class="cm">// collect to List</span>
+
+<span class="cm">// Reduce</span>
+<span class="kw">int</span> sum = numbers.<span class="fn">stream</span>()
+    .<span class="fn">reduce</span>(<span class="num">0</span>, Integer::sum); <span class="cm">// 45</span>
+
+<span class="cm">// Simple reducers</span>
+<span class="kw">int</span> max = numbers.<span class="fn">stream</span>().<span class="fn">max</span>(<span class="cls">Integer</span>::compare).<span class="fn">get</span>(); <span class="cm">// 9</span>
+<span class="kw">long</span> count = numbers.<span class="fn">stream</span>().<span class="fn">filter</span>(n -&gt; n &gt; <span class="num">5</span>).<span class="fn">count</span>(); <span class="cm">// 4</span>
+
+<span class="cm">// Grouping</span>
+<span class="cls">Map</span>&lt;<span class="tp">Boolean</span>, <span class="cls">List</span>&lt;<span class="tp">Integer</span>&gt;&gt; partitioned = numbers.<span class="fn">stream</span>()
+    .<span class="fn">collect</span>(<span class="cls">Collectors</span>.<span class="fn">partitioningBy</span>(n -&gt; n % <span class="num">2</span> == <span class="num">0</span>));
+<span class="cm">// {false=[5,3,1,9,7], true=[8,2,4,6]}</span>
+
+<span class="cls">List</span>&lt;<span class="tp">String</span>&gt; words = <span class="cls">List</span>.<span class="fn">of</span>(<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"avocado"</span>, <span class="str">"blueberry"</span>);
+<span class="cls">Map</span>&lt;<span class="cls">Character</span>, <span class="cls">List</span>&lt;<span class="tp">String</span>&gt;&gt; grouped = words.<span class="fn">stream</span>()
+    .<span class="fn">collect</span>(<span class="cls">Collectors</span>.<span class="fn">groupingBy</span>(w -&gt; w.<span class="fn">charAt</span>(<span class="num">0</span>)));
+<span class="cm">// {a=[apple, avocado], b=[banana, blueberry]}</span></pre>
+        </div>
+
+        <h3>Creating Streams</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Stream Sources</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cls">Stream</span>.<span class="fn">of</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>);              <span class="cm">// from values</span>
+list.<span class="fn">stream</span>();                    <span class="cm">// from collection</span>
+<span class="cls">Arrays</span>.<span class="fn">stream</span>(arr);               <span class="cm">// from array</span>
+<span class="cls">IntStream</span>.<span class="fn">range</span>(<span class="num">0</span>, <span class="num">10</span>);          <span class="cm">// 0..9 (primitive stream)</span>
+<span class="cls">IntStream</span>.<span class="fn">rangeClosed</span>(<span class="num">1</span>, <span class="num">10</span>);    <span class="cm">// 1..10</span>
+<span class="cls">Stream</span>.<span class="fn">generate</span>(() -&gt; <span class="str">"hello"</span>);  <span class="cm">// infinite — use limit()</span>
+<span class="cls">Stream</span>.<span class="fn">iterate</span>(<span class="num">1</span>, n -&gt; n * <span class="num">2</span>);   <span class="cm">// infinite: 1,2,4,8... — use limit()</span>
+
+<span class="cm">// Slicing</span>
+numbers.<span class="fn">stream</span>().<span class="fn">limit</span>(<span class="num">3</span>);       <span class="cm">// first 3</span>
+numbers.<span class="fn">stream</span>().<span class="fn">skip</span>(<span class="num">2</span>);        <span class="cm">// skip first 2</span>
+numbers.<span class="fn">stream</span>().<span class="fn">distinct</span>();     <span class="cm">// unique only</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 19</span>
+          <span class="exercise-title">Student Analytics</span>
+        </div>
+        <ol>
+          <li>Create a <code>Student</code> record/class with <code>name</code>, <code>gpa</code>, and <code>major</code>. Create a list of 10 students.</li>
+          <li>Using streams: find all CS students with GPA &gt; 3.5 and print their names sorted.</li>
+          <li>Compute the average GPA across all students.</li>
+          <li>Group students by major using <code>Collectors.groupingBy</code>.</li>
+          <li>Find the top 3 students by GPA using <code>sorted</code> + <code>limit</code>.</li>
+          <li>Bonus: Use <code>Collectors.joining(", ")</code> to produce a comma-separated string of all student names.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> <code>stream().mapToDouble(Student::getGpa).average().getAsDouble()</code> for average GPA.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 20: Concurrency -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s20">
+      <div class="section-header">
+        <span class="section-num">20</span>
+        <h2>Concurrency &amp; Multi-threading</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>Processes &amp; Threads</h3>
+        <p>A <strong>process</strong> is a running program with its own memory space. A <strong>thread</strong> is a lightweight unit of execution within a process — threads share memory. Java apps start with one thread: the <em>main thread</em>.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Creating & Running Threads</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Method 1: Extend Thread</span>
+<span class="kw">class</span> <span class="cls">DownloadThread</span> <span class="kw">extends</span> <span class="cls">Thread</span> {
+    <span class="kw">private</span> <span class="tp">String</span> file;
+    <span class="cls">DownloadThread</span>(<span class="tp">String</span> f) { file = f; }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> <span class="fn">run</span>() {
+        <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Downloading: "</span> + file);
+    }
+}
+
+<span class="cm">// Method 2: Implement Runnable (preferred — allows extending other classes)</span>
+<span class="cls">Thread</span> t1 = <span class="kw">new</span> <span class="cls">Thread</span>(() -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Task 1 running"</span>));
+<span class="cls">Thread</span> t2 = <span class="kw">new</span> <span class="cls">Thread</span>(() -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"Task 2 running"</span>));
+
+t1.<span class="fn">start</span>(); <span class="cm">// start — runs run() on a new thread</span>
+t2.<span class="fn">start</span>();
+t1.<span class="fn">join</span>();  <span class="cm">// wait for t1 to finish before continuing</span>
+
+<span class="cls">System</span>.out.<span class="fn">println</span>(<span class="str">"All threads done"</span>);</pre>
+        </div>
+
+        <h3>Race Conditions &amp; Thread Safety</h3>
+        <p>A <strong>race condition</strong> occurs when two threads access shared data simultaneously and the result depends on timing. Solutions: synchronization, atomic variables, concurrent collections.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Race Condition & Fix</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// ❌ Race condition — counter may not reach 10,000</span>
+<span class="kw">class</span> <span class="cls">Counter</span> {
+    <span class="kw">private int</span> count = <span class="num">0</span>;
+    <span class="kw">public void</span> <span class="fn">increment</span>() { count++; } <span class="cm">// NOT atomic!</span>
+}
+
+<span class="cm">// ✅ Fix 1: synchronized method</span>
+<span class="kw">public synchronized void</span> <span class="fn">increment</span>() { count++; }
+
+<span class="cm">// ✅ Fix 2: AtomicInteger (fastest for single operations)</span>
+<span class="kw">import</span> java.util.concurrent.atomic.*;
+<span class="cls">AtomicInteger</span> counter = <span class="kw">new</span> <span class="cls">AtomicInteger</span>(<span class="num">0</span>);
+counter.<span class="fn">incrementAndGet</span>();
+counter.<span class="fn">addAndGet</span>(<span class="num">5</span>);
+
+<span class="cm">// ✅ Fix 3: LongAdder (best for high-contention counters)</span>
+<span class="kw">import</span> java.util.concurrent.atomic.*;
+<span class="cls">LongAdder</span> adder = <span class="kw">new</span> <span class="cls">LongAdder</span>();
+adder.<span class="fn">increment</span>();
+<span class="kw">long</span> total = adder.<span class="fn">sum</span>();
+
+<span class="cm">// ✅ Concurrent collections (thread-safe)</span>
+<span class="kw">import</span> java.util.concurrent.*;
+<span class="cls">ConcurrentHashMap</span>&lt;<span class="tp">String</span>, <span class="tp">Integer</span>&gt; map = <span class="kw">new</span> <span class="cls">ConcurrentHashMap</span>&lt;&gt;();
+<span class="cls">CopyOnWriteArrayList</span>&lt;<span class="tp">String</span>&gt; list = <span class="kw">new</span> <span class="cls">CopyOnWriteArrayList</span>&lt;&gt;();</pre>
+        </div>
+
+        <h3>Thread Safety Strategies</h3>
+        <table class="compare-table">
+          <thead><tr><th>Strategy</th><th>How</th><th>Best for</th></tr></thead>
+          <tbody>
+            <tr><td>Confinement</td><td>Data used by only one thread</td><td>Local variables, ThreadLocal</td></tr>
+            <tr><td>Immutability</td><td>Objects never change after creation</td><td>Final fields, records</td></tr>
+            <tr><td>Synchronization</td><td><code>synchronized</code>, <code>Lock</code></td><td>Complex shared state</td></tr>
+            <tr><td>Atomic classes</td><td>AtomicInteger, AtomicReference</td><td>Simple counters, flags</td></tr>
+            <tr><td>Concurrent collections</td><td>ConcurrentHashMap, etc.</td><td>Shared data structures</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 20</span>
+          <span class="exercise-title">Concurrent Download Simulator</span>
+        </div>
+        <ol>
+          <li>Create a list of 5 "file names" to download. Simulate each download with <code>Thread.sleep(random 500-2000ms)</code>.</li>
+          <li>Run each download on its own thread using lambdas. Join all threads before printing "All downloads complete".</li>
+          <li>Use an <code>AtomicInteger</code> to track how many downloads have completed. Print progress after each.</li>
+          <li>Use a <code>ConcurrentHashMap</code> to record each filename and its "download speed" (random int).</li>
+          <li>After all finish, stream the map to find the filename with the highest speed.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Store threads in a <code>List&lt;Thread&gt;</code>, start all, then loop again calling <code>join()</code> on each.</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SECTION 21: Optionals -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section" id="s21">
+      <div class="section-header">
+        <span class="section-num">21</span>
+        <h2>Optionals</h2>
+      </div>
+
+      <div class="subsection">
+        <h3>The Null Problem</h3>
+        <p><code>null</code> is the most common source of bugs in Java — <code>NullPointerException</code> is infamous. <strong>Optional&lt;T&gt;</strong> is a container that either holds a value or is empty, making the possibility of "no value" explicit in the type system.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Creating and Using Optionals</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="kw">import</span> java.util.*;
+
+<span class="cm">// Creating Optionals</span>
+<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; full  = <span class="cls">Optional</span>.<span class="fn">of</span>(<span class="str">"hello"</span>);      <span class="cm">// throws NPE if null</span>
+<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; safe  = <span class="cls">Optional</span>.<span class="fn">ofNullable</span>(mayBeNull); <span class="cm">// safe</span>
+<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; empty = <span class="cls">Optional</span>.<span class="fn">empty</span>();          <span class="cm">// explicitly empty</span>
+
+<span class="cm">// Checking and extracting</span>
+<span class="kw">if</span> (full.<span class="fn">isPresent</span>()) <span class="cls">System</span>.out.<span class="fn">println</span>(full.<span class="fn">get</span>());
+full.<span class="fn">ifPresent</span>(v -&gt; <span class="cls">System</span>.out.<span class="fn">println</span>(v));   <span class="cm">// cleaner</span>
+
+<span class="cm">// Defaults</span>
+<span class="tp">String</span> val1 = empty.<span class="fn">orElse</span>(<span class="str">"default"</span>);          <span class="cm">// "default"</span>
+<span class="tp">String</span> val2 = empty.<span class="fn">orElseGet</span>(() -&gt; <span class="fn">computeDefault</span>()); <span class="cm">// lazy</span>
+<span class="tp">String</span> val3 = empty.<span class="fn">orElseThrow</span>(                  <span class="cm">// throw if empty</span>
+    () -&gt; <span class="kw">new</span> <span class="cls">NoSuchElementException</span>(<span class="str">"Value missing"</span>));</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Chaining Optionals (map, flatMap, filter)</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cm">// Real-world example: user → address → city</span>
+<span class="kw">public</span> <span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; <span class="fn">getCity</span>(<span class="cls">User</span> user) {
+    <span class="kw">return</span> <span class="cls">Optional</span>.<span class="fn">ofNullable</span>(user)
+        .<span class="fn">map</span>(<span class="cls">User</span>::getAddress)         <span class="cm">// Optional&lt;Address&gt;</span>
+        .<span class="fn">map</span>(<span class="cls">Address</span>::getCity)          <span class="cm">// Optional&lt;String&gt;</span>
+        .<span class="fn">filter</span>(city -&gt; !city.<span class="fn">isEmpty</span>()) <span class="cm">// discard empty string</span>
+        .<span class="fn">map</span>(<span class="cls">String</span>::toUpperCase);      <span class="cm">// Optional&lt;String&gt;</span>
+}
+
+<span class="cm">// vs the old way (null-check hell):</span>
+<span class="tp">String</span> city = <span class="kw">null</span>;
+<span class="kw">if</span> (user != <span class="kw">null</span> &amp;&amp; user.<span class="fn">getAddress</span>() != <span class="kw">null</span> &amp;&amp;
+    user.<span class="fn">getAddress</span>().<span class="fn">getCity</span>() != <span class="kw">null</span> &amp;&amp;
+    !user.<span class="fn">getAddress</span>().<span class="fn">getCity</span>().<span class="fn">isEmpty</span>()) {
+    city = user.<span class="fn">getAddress</span>().<span class="fn">getCity</span>().<span class="fn">toUpperCase</span>();
+}</pre>
+        </div>
+
+        <div class="callout callout-err">
+          <div class="callout-icon">🚫</div>
+          <div class="callout-body">
+            <span class="callout-title">Optional Anti-patterns</span>
+            <p>Never use Optional as a method parameter or field. Don't call <code>get()</code> without checking <code>isPresent()</code> first. Don't use Optional to replace every null check — only use it as a return type when a value may genuinely be absent.</p>
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-filename">📄 Optional with Streams</span>
+            <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          </div>
+          <pre><span class="cls">List</span>&lt;<span class="tp">String</span>&gt; names = <span class="cls">List</span>.<span class="fn">of</span>(<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>);
+
+<span class="cm">// findFirst / findAny return Optional</span>
+<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; first = names.<span class="fn">stream</span>()
+    .<span class="fn">filter</span>(n -&gt; n.<span class="fn">startsWith</span>(<span class="str">"C"</span>))
+    .<span class="fn">findFirst</span>(); <span class="cm">// Optional[Charlie]</span>
+
+first.<span class="fn">ifPresent</span>(<span class="cls">System</span>.out::println); <span class="cm">// Charlie</span>
+
+<span class="cm">// min / max return Optional</span>
+<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt; shortest = names.<span class="fn">stream</span>()
+    .<span class="fn">min</span>(<span class="cls">Comparator</span>.<span class="fn">comparingInt</span>(<span class="tp">String</span>::length)); <span class="cm">// Optional[Bob]</span>
+
+<span class="cm">// Stream of Optionals → Stream of values (Java 9+)</span>
+<span class="cls">List</span>&lt;<span class="cls">Optional</span>&lt;<span class="tp">String</span>&gt;&gt; optionals = <span class="cls">List</span>.<span class="fn">of</span>(
+    <span class="cls">Optional</span>.<span class="fn">of</span>(<span class="str">"hello"</span>),
+    <span class="cls">Optional</span>.<span class="fn">empty</span>(),
+    <span class="cls">Optional</span>.<span class="fn">of</span>(<span class="str">"world"</span>)
+);
+
+<span class="cls">List</span>&lt;<span class="tp">String</span>&gt; present = optionals.<span class="fn">stream</span>()
+    .<span class="fn">flatMap</span>(<span class="cls">Optional</span>::stream) <span class="cm">// unwrap present values</span>
+    .<span class="fn">collect</span>(<span class="cls">Collectors</span>.<span class="fn">toList</span>()); <span class="cm">// ["hello", "world"]</span></pre>
+        </div>
+      </div>
+
+      <div class="exercise">
+        <div class="exercise-header">
+          <span class="exercise-badge">Exercise 21 — Final Project</span>
+          <span class="exercise-title">User Profile System with Optionals</span>
+        </div>
+        <ol>
+          <li>Create classes: <code>User</code> (id, name, Optional&lt;Address&gt; address), <code>Address</code> (street, city, Optional&lt;String&gt; zipCode).</li>
+          <li>Write a method <code>getZipCode(User user)</code> that safely traverses user → address → zipCode using <code>flatMap</code>.</li>
+          <li>Write a <code>UserRepository</code> with a <code>findById(int id)</code> method that returns <code>Optional&lt;User&gt;</code>.</li>
+          <li>In a service method, use the repository to find a user. If absent, throw a custom <code>UserNotFoundException</code>. If present, return their city (or "Unknown" if missing).</li>
+          <li>Write a stream pipeline over a list of users: filter those with a zip code present, extract the zip codes, collect to a sorted list.</li>
+          <li>Bonus: Compare the Optional version vs a null-check version — measure which has fewer lines of code.</li>
+        </ol>
+        <div class="exercise-hint"><span>💡 Hint:</span> Use <code>Optional.flatMap</code> when the mapping function itself returns an Optional — otherwise you'd get <code>Optional&lt;Optional&lt;String&gt;&gt;</code>.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="padding: 48px 0 24px; border-top: 1px solid var(--border); margin-top: 40px;">
+      <p style="color: var(--muted); font-size: 13px; text-align: center;">
+        Ultimate Java — Complete Notes · OOP &amp; Advanced Topics · All examples use pure <strong style="color: var(--c-yellow)">Java</strong>
+      </p>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- #main -->
+
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function updateProgress() {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct = Math.round((scrolled / total) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+    document.getElementById('scrollTop').style.display = scrolled > 400 ? 'flex' : 'none';
+  }
+
+  function updateNav() {
+    const sections = document.querySelectorAll('.section');
+    const navItems = document.querySelectorAll('.nav-item');
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 120) current = section.id;
+    });
+    navItems.forEach(item => {
+      item.classList.remove('active');
+      if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    });
+  }
+
+  window.addEventListener('scroll', () => { updateProgress(); updateNav(); });
+
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+</body>
+</html>
