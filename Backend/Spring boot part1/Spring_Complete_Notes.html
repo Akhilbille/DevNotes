@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring Framework & Spring Boot — Complete Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Sora:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2535;
+    --bg4: #252d40;
+    --card: #1a2035;
+    --border: #2a3350;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+
+    --c-yellow: #f5c842;
+    --c-yellow-dim: #3d3010;
+    --c-yellow-mid: #8a6e12;
+
+    --c-blue: #4da6ff;
+    --c-blue-dim: #0d2640;
+    --c-blue-mid: #1a4a80;
+
+    --c-green: #4dbb8a;
+    --c-green-dim: #0d2e1e;
+    --c-green-mid: #1a5c3a;
+
+    --c-purple: #a78bfa;
+    --c-purple-dim: #1e1440;
+    --c-purple-mid: #3d2880;
+
+    --c-coral: #ff7c6e;
+    --c-coral-dim: #2e1410;
+    --c-coral-mid: #6b2d24;
+
+    --c-teal: #36d9c8;
+    --c-teal-dim: #0a2826;
+    --c-teal-mid: #155550;
+
+    --c-pink: #f472b6;
+    --c-pink-dim: #2d1025;
+    --c-pink-mid: #6b2050;
+
+    --c-orange: #fb923c;
+    --c-orange-dim: #2d1a0a;
+    --c-orange-mid: #6b3a10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== SIDEBAR ===== */
+
+    .home-btn {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.home-btn:hover {
+  color: var(--c-yellow);
+}
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 270px;
+    height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+  #sidebar::-webkit-scrollbar { width: 5px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .sidebar-header {
+    padding: 1.5rem 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--c-green); letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .nav-section { padding: 0.5rem 0; }
+  .nav-section-title {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--dim); padding: 0.5rem 1.25rem 0.25rem;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.4rem 1.25rem;
+    font-size: 13px; color: var(--muted);
+    cursor: pointer; border-left: 2px solid transparent;
+    transition: all 0.15s; text-decoration: none;
+    line-height: 1.4;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--c-green); border-left-color: var(--c-green); background: var(--c-green-dim); }
+  .nav-item span.num {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--dim);
+    min-width: 22px;
+    flex-shrink: 0;
+  }
+  .nav-item.active span.num { color: var(--c-green); }
+
+  /* ===== MAIN ===== */
+  #main { margin-left: 270px; min-height: 100vh; }
+
+  .top-bar {
+    position: sticky; top: 0;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center; gap: 1rem; z-index: 50;
+  }
+  .progress-bar { flex: 1; height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--c-green), var(--c-teal)); border-radius: 2px; width: 0%; transition: width 0.3s; }
+  .progress-text { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; white-space: nowrap; }
+
+  /* ===== CONTENT ===== */
+  .content { padding: 3rem 3rem 5rem; max-width: 920px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600;
+    color: var(--c-green); text-transform: uppercase;
+    letter-spacing: 0.12em; margin-bottom: 0.5rem;
+  }
+  .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: var(--c-green); }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 560px; margin-bottom: 1.5rem; }
+  .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .hero-stat { display: flex; flex-direction: column; }
+  .hero-stat .val { font-size: 22px; font-weight: 700; color: var(--text); }
+  .hero-stat .lbl { font-size: 12px; color: var(--muted); }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
+
+  /* ===== SECTIONS ===== */
+  .section { margin-bottom: 4rem; scroll-margin-top: 5rem; }
+  .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .section-num {
+    font-family: 'Fira Code', monospace; font-size: 12px;
+    color: var(--c-green); background: var(--c-green-dim);
+    border: 1px solid var(--c-green-mid); padding: 4px 10px; border-radius: 6px; white-space: nowrap;
+  }
+  .section h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+
+  .subsection { margin-bottom: 2.5rem; }
+  .subsection h3 {
+    font-size: 17px; font-weight: 600; color: var(--text);
+    margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px;
+  }
+  .subsection h3::before {
+    content: ''; display: block; width: 4px; height: 18px;
+    background: var(--c-orange); border-radius: 2px; flex-shrink: 0;
+  }
+  .subsection h4 { font-size: 13px; font-weight: 600; color: var(--c-teal); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  p { color: #c4cad8; margin-bottom: 1rem; line-height: 1.8; }
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block { border-radius: 10px; overflow: hidden; margin: 1rem 0; border: 1px solid var(--border); }
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1rem; background: var(--bg3); border-bottom: 1px solid var(--border);
+  }
+  .code-filename { font-size: 12px; color: var(--muted); font-family: 'Fira Code', monospace; }
+  .dots { display: flex; gap: 5px; }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28c840; }
+
+  pre {
+    background: #0d111a; padding: 1.25rem;
+    overflow-x: auto; font-family: 'Fira Code', monospace;
+    font-size: 13.5px; line-height: 1.75;
+  }
+
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cmt { color: #546e7a; font-style: italic; }
+  .var { color: #eeffff; }
+  .op { color: #89ddff; }
+  .cls { color: #ffcb6b; }
+  .prop { color: #f07178; }
+  .ann { color: #f5c842; }
+  .tp { color: #ffcb6b; }
+
+  /* ===== CALLOUTS ===== */
+  .callout {
+    border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0;
+    border-left: 3px solid; display: flex; gap: 10px;
+  }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { font-weight: 600; display: block; margin-bottom: 3px; }
+
+  .callout-note { background: var(--c-blue-dim); border-color: var(--c-blue); }
+  .callout-note .callout-body { color: #9ecfff; }
+  .callout-note .callout-body strong { color: var(--c-blue); }
+
+  .callout-warn { background: var(--c-yellow-dim); border-color: var(--c-yellow); }
+  .callout-warn .callout-body { color: #f0dc8a; }
+  .callout-warn .callout-body strong { color: var(--c-yellow); }
+
+  .callout-tip { background: var(--c-green-dim); border-color: var(--c-green); }
+  .callout-tip .callout-body { color: #8de8b8; }
+  .callout-tip .callout-body strong { color: var(--c-green); }
+
+  .callout-danger { background: var(--c-coral-dim); border-color: var(--c-coral); }
+  .callout-danger .callout-body { color: #ffaa9e; }
+  .callout-danger .callout-body strong { color: var(--c-coral); }
+
+  /* ===== CONCEPT GRID ===== */
+  .concept-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 1rem 0; }
+  .concept-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .concept-card-title { font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-green); font-weight: 600; margin-bottom: 8px; }
+  .concept-card p { font-size: 13px; margin-bottom: 0; color: var(--muted); }
+
+  /* ===== FEATURE LIST ===== */
+  .feature-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .feature-list li { color: #c4cad8; padding: 4px 0 4px 20px; position: relative; font-size: 14px; }
+  .feature-list li::before { content: '▸'; position: absolute; left: 0; color: var(--c-green); font-size: 11px; top: 6px; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 13.5px; }
+  .compare-table th { background: var(--bg3); color: var(--muted); font-weight: 600; padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .compare-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--bg3); color: #c4cad8; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .compare-table code { font-family: 'Fira Code', monospace; font-size: 12.5px; background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal); }
+
+  /* ===== INLINE CODE ===== */
+  code {
+    font-family: 'Fira Code', monospace; font-size: 13px;
+    background: var(--bg4); padding: 2px 6px; border-radius: 4px; color: var(--c-teal);
+  }
+
+  /* ===== TAGS ===== */
+  .tag-blue { background: var(--c-blue-dim); color: var(--c-blue); border: 1px solid var(--c-blue-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-purple { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-green { background: var(--c-green-dim); color: var(--c-green); border: 1px solid var(--c-green-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-orange { background: var(--c-orange-dim); color: var(--c-orange); border: 1px solid var(--c-orange-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-teal { background: var(--c-teal-dim); color: var(--c-teal); border: 1px solid var(--c-teal-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+  .tag-coral { background: var(--c-coral-dim); color: var(--c-coral); border: 1px solid var(--c-coral-mid); font-size: 12px; padding: 3px 10px; border-radius: 99px; font-family: 'Fira Code', monospace; }
+
+  /* ===== SEPARATOR ===== */
+  .sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  /* ===== SVG DIAGRAMS ===== */
+  .diagram-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin: 1.25rem 0; overflow-x: auto; }
+  .diagram-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+  svg text { font-family: 'Sora', sans-serif; }
+
+  /* ===== ANNOTATION BADGE ===== */
+  .ann-badge {
+    display: inline-block; font-family: 'Fira Code', monospace;
+    font-size: 11px; font-weight: 600;
+    background: var(--c-yellow-dim); color: var(--c-yellow);
+    border: 1px solid var(--c-yellow-mid);
+    padding: 2px 8px; border-radius: 4px; margin: 2px 2px;
+  }
+
+  /* ===== SCOPE TABLE ===== */
+  .scope-row { display: grid; grid-template-columns: 140px 1fr; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 0.75rem 0; }
+  .scope-key { background: var(--bg3); padding: 0.6rem 1rem; font-family: 'Fira Code', monospace; font-size: 13px; color: var(--c-teal); border-right: 1px solid var(--border); }
+  .scope-val { padding: 0.6rem 1rem; color: #c4cad8; font-size: 13.5px; }
+
+  /* ===== EXERCISE ===== */
+  .exercise {
+    background: var(--bg2); border: 1px solid var(--c-purple-mid);
+    border-radius: 10px; padding: 1.25rem 1.5rem; margin-top: 2rem;
+  }
+  .exercise-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .exercise-badge { background: var(--c-purple-dim); color: var(--c-purple); border: 1px solid var(--c-purple-mid); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .exercise-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .exercise ol { padding-left: 1.25rem; color: #c4cad8; font-size: 14px; }
+  .exercise ol li { padding: 4px 0; }
+  .exercise-hint { margin-top: 0.75rem; font-size: 13px; color: var(--muted); background: var(--bg3); padding: 0.6rem 1rem; border-radius: 6px; }
+  .exercise-hint span { color: var(--c-yellow); font-weight: 600; }
+
+  /* ===== SECTION COLOR THEMES ===== */
+  .theme-green .section h2 { color: var(--c-green); }
+  .theme-blue .section h2 { color: var(--c-blue); }
+  .theme-orange .section h2 { color: var(--c-orange); }
+  .theme-purple .section h2 { color: var(--c-purple); }
+  .theme-teal .section h2 { color: var(--c-teal); }
+  .theme-coral .section h2 { color: var(--c-coral); }
+  .theme-pink .section h2 { color: var(--c-pink); }
+  .theme-yellow .section h2 { color: var(--c-yellow); }
+
+  /* Default section header color per section */
+  #s1 h2, #s2 h2 { color: var(--c-green); }
+  #s3 h2 { color: var(--c-blue); }
+  #s4 h2 { color: var(--c-orange); }
+  #s5 h2 { color: var(--c-purple); }
+  #s6 h2 { color: var(--c-teal); }
+  #s7 h2 { color: var(--c-coral); }
+  #s8 h2 { color: var(--c-pink); }
+  #s9 h2 { color: var(--c-yellow); }
+  #s10 h2 { color: var(--c-green); }
+
+  #s1 .section-num { color: var(--c-green); background: var(--c-green-dim); border-color: var(--c-green-mid); }
+  #s2 .section-num { color: var(--c-green); background: var(--c-green-dim); border-color: var(--c-green-mid); }
+  #s3 .section-num { color: var(--c-blue); background: var(--c-blue-dim); border-color: var(--c-blue-mid); }
+  #s4 .section-num { color: var(--c-orange); background: var(--c-orange-dim); border-color: var(--c-orange-mid); }
+  #s5 .section-num { color: var(--c-purple); background: var(--c-purple-dim); border-color: var(--c-purple-mid); }
+  #s6 .section-num { color: var(--c-teal); background: var(--c-teal-dim); border-color: var(--c-teal-mid); }
+  #s7 .section-num { color: var(--c-coral); background: var(--c-coral-dim); border-color: var(--c-coral-mid); }
+  #s8 .section-num { color: var(--c-pink); background: var(--c-pink-dim); border-color: var(--c-pink-mid); }
+  #s9 .section-num { color: var(--c-yellow); background: var(--c-yellow-dim); border-color: var(--c-yellow-mid); }
+  #s10 .section-num { color: var(--c-green); background: var(--c-green-dim); border-color: var(--c-green-mid); }
+
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<nav id="sidebar">
+   <a href="/" class="home-btn">Home 🏠</a> 
+  <div class="sidebar-header">
+    <span class="sidebar-logo">Spring Framework Basics</span>
+    <span class="sidebar-sub">Complete Notes</span>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Foundation</div>
+    <a href="#s1" class="nav-item active"><span class="num">01</span> Spring Framework Overview</a>
+    <a href="#s2" class="nav-item"><span class="num">02</span> Spring Boot & Project Setup</a>
+    <a href="#s3" class="nav-item"><span class="num">03</span> Project Structure & MVC</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Dependency Injection</div>
+    <a href="#s4" class="nav-item"><span class="num">04</span> DI, IOC & Beans</a>
+    <a href="#s5" class="nav-item"><span class="num">05</span> Bean Config & Scopes</a>
+    <a href="#s6" class="nav-item"><span class="num">06</span> Bean Lifecycle & YAML</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Database Integration</div>
+    <a href="#s7" class="nav-item"><span class="num">07</span> JDBC, JPA & Hibernate</a>
+    <a href="#s8" class="nav-item"><span class="num">08</span> Entities, Lombok & Relations</a>
+    <a href="#s9" class="nav-item"><span class="num">09</span> Repositories & Transactions</a>
+    <a href="#s10" class="nav-item"><span class="num">10</span> Custom Queries & Dynamic Queries</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div id="main">
+  <div class="top-bar">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">📘 Complete Course Notes</div>
+    <h1>Spring Framework &amp; <span>Spring Boot</span><br>The Full Picture</h1>
+    <p>From zero to database-driven Spring apps — every topic covered with full examples, real code patterns, diagrams, and exercises. Covers DI, JPA, Hibernate, and advanced queries.</p>
+    <div class="hero-tags">
+      <span class="tag-green">Spring Boot 3.4</span>
+      <span class="tag-blue">Spring MVC</span>
+      <span class="tag-orange">Spring Data JPA</span>
+      <span class="tag-teal">Hibernate ORM</span>
+      <span class="tag-purple">Flyway</span>
+      <span class="tag-coral">Lombok</span>
+    </div>
+    <div class="hero-stats" style="margin-top:1.5rem;">
+      <div class="hero-stat"><span class="val">10</span><span class="lbl">Sections</span></div>
+      <div class="hero-stat"><span class="val">50+</span><span class="lbl">Code Examples</span></div>
+      <div class="hero-stat"><span class="val">12</span><span class="lbl">Diagrams</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 1: Spring Framework Overview -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2>Spring Framework Overview</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>What is Spring?</h3>
+      <p>Spring is the most popular framework for building <strong>Java applications</strong>. It is <strong>modular</strong> — you only pick the modules you need. Spring handles boilerplate infrastructure so you can focus on business logic.</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">🌐 WEB Module</div>
+          <p>For building web applications and RESTful APIs. Provides Spring MVC, controllers, request mappings.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🗄️ DATA Module</div>
+          <p>For working with databases. Integrates JPA, Hibernate, Spring Data JPA repositories.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">⚙️ CORE Module</div>
+          <p>The heart of Spring — handles <strong>Dependency Injection (DI)</strong> and manages all objects (Beans) in the IOC Container.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🔒 AOP Module</div>
+          <p>Aspect-Oriented Programming. Handles cross-cutting concerns like logging and security without cluttering main code.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🧪 TEST Module</div>
+          <p>For testing Spring components in isolation. Works with JUnit and Mockito.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🔐 SECURITY Module</div>
+          <p>Authentication & Authorization for web apps. Supports OAuth2, JWT, session management.</p>
+        </div>
+      </div>
+
+      <!-- Spring Ecosystem Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Spring Ecosystem Diagram</div>
+        <svg viewBox="0 0 760 320" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Spring Boot center -->
+          <rect x="290" y="10" width="180" height="52" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="380" y="33" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="700">Spring Boot</text>
+          <text x="380" y="52" text-anchor="middle" fill="#8892a4" font-size="11">Built on top of Spring Framework</text>
+
+          <!-- Spring Framework -->
+          <rect x="290" y="100" width="180" height="44" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="380" y="127" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="600">Spring Framework</text>
+
+          <!-- Arrow Boot -> Framework -->
+          <line x1="380" y1="62" x2="380" y2="100" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+          <!-- Modules -->
+          <!-- WEB -->
+          <rect x="30" y="200" width="110" height="44" rx="8" fill="#0d2640" stroke="#4da6ff" stroke-width="1.5"/>
+          <text x="85" y="225" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="600">WEB</text>
+          <text x="85" y="240" text-anchor="middle" fill="#8892a4" font-size="10">MVC, REST</text>
+
+          <!-- DATA -->
+          <rect x="155" y="200" width="110" height="44" rx="8" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="210" y="225" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="600">DATA</text>
+          <text x="210" y="240" text-anchor="middle" fill="#8892a4" font-size="10">JPA, Repositories</text>
+
+          <!-- CORE -->
+          <rect x="290" y="200" width="110" height="44" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="345" y="225" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">CORE</text>
+          <text x="345" y="240" text-anchor="middle" fill="#8892a4" font-size="10">DI, IOC</text>
+
+          <!-- SECURITY -->
+          <rect x="415" y="200" width="110" height="44" rx="8" fill="#1e1440" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="470" y="225" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="600">SECURITY</text>
+          <text x="470" y="240" text-anchor="middle" fill="#8892a4" font-size="10">Auth, OAuth2</text>
+
+          <!-- CLOUD -->
+          <rect x="540" y="200" width="100" height="44" rx="8" fill="#2e1410" stroke="#ff7c6e" stroke-width="1.5"/>
+          <text x="590" y="225" text-anchor="middle" fill="#ff7c6e" font-size="12" font-weight="600">CLOUD</text>
+          <text x="590" y="240" text-anchor="middle" fill="#8892a4" font-size="10">Microservices</text>
+
+          <!-- AOP -->
+          <rect x="655" y="200" width="90" height="44" rx="8" fill="#0a2826" stroke="#36d9c8" stroke-width="1.5"/>
+          <text x="700" y="225" text-anchor="middle" fill="#36d9c8" font-size="12" font-weight="600">AOP</text>
+          <text x="700" y="240" text-anchor="middle" fill="#8892a4" font-size="10">Logging, XC</text>
+
+          <!-- Lines from Framework to modules -->
+          <line x1="310" y1="144" x2="85" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+          <line x1="330" y1="144" x2="210" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+          <line x1="370" y1="144" x2="345" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+          <line x1="400" y1="144" x2="470" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+          <line x1="430" y1="144" x2="590" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+          <line x1="450" y1="144" x2="700" y2="200" stroke="#2a3350" stroke-width="1.5"/>
+
+          <!-- Arrow marker -->
+          <defs>
+            <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4dbb8a"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>The Problem Spring Solves</h3>
+      <p>Without Spring Boot, setting up a Java web app requires manual effort:</p>
+      <ul class="feature-list">
+        <li>Set up a web server (Tomcat, Jetty)</li>
+        <li>Configure routing manually</li>
+        <li>Manage all dependencies yourself</li>
+        <li>Write boilerplate code for every component</li>
+      </ul>
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>✅ Spring Boot to the Rescue</strong>
+          Spring Boot is built on top of Spring Framework and takes care of all tedious setup automatically — embedded server, auto-configuration, sensible defaults. You focus purely on business logic.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 1</span>
+        <span class="exercise-title">Spring Framework Orientation</span>
+      </div>
+      <ol>
+        <li>Name all 6 Spring modules covered in this section and describe what each one handles.</li>
+        <li>What is the difference between <strong>Spring Framework</strong> and <strong>Spring Boot</strong>? Why is Spring Boot preferred for new projects?</li>
+        <li>Without Spring Boot, what 4 things would you need to do manually to set up a Java web application?</li>
+        <li>Which Spring module handles Dependency Injection? Which handles database access? Which handles web requests?</li>
+        <li>What does "auto-configuration" mean in the context of Spring Boot?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> The Spring CORE module powers DI and IOC. Spring DATA handles DB access. Spring WEB handles HTTP and REST. Spring Boot auto-configures all of these based on your classpath dependencies.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 2: Spring Boot & Setup -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2>Spring Boot & Project Setup</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Creating a Spring Project</h3>
+      <p>The fastest way to start is <strong>start.spring.io</strong> — the official Spring Initializr. You configure the project and download a ready-to-use ZIP.</p>
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">🛠️ Spring Initializr Settings</div>
+        <table class="compare-table">
+          <thead><tr><th>Setting</th><th>Value</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Build Tool</td><td><code>Maven</code></td><td>Industry standard, uses pom.xml</td></tr>
+            <tr><td>Language</td><td><code>Java</code></td><td>Use latest LTS version</td></tr>
+            <tr><td>Spring Boot</td><td><code>3.4.1</code></td><td>Latest stable — leave version empty in deps</td></tr>
+            <tr><td>Group</td><td><code>com.learning</code></td><td>Reverse domain name convention</td></tr>
+            <tr><td>Artifact</td><td><code>store</code></td><td>Project / module name</td></tr>
+            <tr><td>Packaging</td><td><code>Jar</code></td><td>Standard runnable JAR</td></tr>
+            <tr><td>Java Version</td><td><code>17</code></td><td>LTS — recommended</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>Version Tip</strong>
+          Leave the version tag empty in dependency XML. The Spring Boot parent (BOM) in pom.xml automatically manages compatible versions for all dependencies.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Dependency Management</h3>
+      <p>Dependencies are third-party libraries your project needs. Instead of downloading individual JARs, Spring Boot provides <strong>Starters</strong> — curated bundles that pull in everything required for a feature.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 pom.xml — Adding the Web Starter</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="op">&lt;</span><span class="cls">dependency</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">groupId</span><span class="op">&gt;</span><span class="str">org.springframework.boot</span><span class="op">&lt;/</span><span class="cls">groupId</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">artifactId</span><span class="op">&gt;</span><span class="str">spring-boot-starter-web</span><span class="op">&lt;/</span><span class="cls">artifactId</span><span class="op">&gt;</span>
+    <span class="cmt">&lt;!-- No version — parent BOM manages it --&gt;</span>
+<span class="op">&lt;/</span><span class="cls">dependency</span><span class="op">&gt;</span></pre>
+      </div>
+
+      <p>The <code>spring-boot-starter-web</code> starter includes: <strong>Tomcat</strong> (embedded server), <strong>Spring MVC</strong>, <strong>Web</strong>, <strong>WebMVC</strong>, <strong>Jackson</strong> (JSON), and <strong>Logging</strong> — all with one line.</p>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Find Dependencies</strong>
+          Browse Maven Central at <strong>central.sonatype.com</strong>. Search for any starter like <code>spring-boot-starter-web</code> to find the exact coordinates.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 2</span>
+        <span class="exercise-title">Spring Boot & Project Setup</span>
+      </div>
+      <ol>
+        <li>Go to <strong>start.spring.io</strong> and create a new Spring Boot project with the Web and Spring Data JPA starters. Download and open it in your IDE.</li>
+        <li>What 5+ libraries are bundled inside <code>spring-boot-starter-web</code>? List them.</li>
+        <li>Add the <code>spring-boot-starter-actuator</code> dependency to your project. Start the app and visit <code>/actuator/health</code>.</li>
+        <li>What is the difference between <code>spring-boot-starter-web</code> and <code>spring-boot-starter-webflux</code>?</li>
+        <li>How does Spring Boot's embedded Tomcat work? Do you need to deploy a WAR file to an external server?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> Embedded Tomcat is packaged inside the JAR itself. Run with <code>java -jar your-app.jar</code> — no external server needed! This makes containerization and cloud deployment much simpler.</div>
+    </div>
+  </div>
+
+  <!-- Section 2 ends above; Section 3 below -->
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 3: Project Structure & MVC -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2>Project Structure & Spring MVC</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Project Structure</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📁 Maven Project Layout</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cls">store/</span>
+├── <span class="cls">.mvn/</span>              <span class="cmt"># Maven wrapper — mvnw.cmd (Windows) / mvnw (Mac/Linux)</span>
+├── <span class="fn">pom.xml</span>           <span class="cmt"># Project Object Model — heart of Maven project</span>
+│                    <span class="cmt"># Contains: configuration + all dependencies in XML</span>
+├── <span class="cls">src/</span>
+│   ├── <span class="cls">main/</span>
+│   │   ├── <span class="cls">java/</span>      <span class="cmt"># All Java source code goes here</span>
+│   │   └── <span class="cls">resources/</span>
+│   │       ├── <span class="fn">application.properties</span>  <span class="cmt"># Key-value pairs for config</span>
+│   │       └── <span class="cls">static/</span>               <span class="cmt"># Static files (HTML, CSS, JS)</span>
+│   └── <span class="cls">test/</span>          <span class="cmt"># Unit tests and integration tests</span>
+└── <span class="fn">StoreApplication.java</span>   <span class="cmt"># Entry point — contains main() method</span></pre>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">📄 pom.xml</div>
+          <p>Project Object Model. The "heart" of a Maven project — configures dependencies, plugins, and build settings in XML format.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">⚙️ application.properties</div>
+          <p>Key-value config file. Sets server port, database URL, custom app properties. Can also use <code>application.yaml</code>.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">☕ src/main/java</div>
+          <p>All Java source code lives here. Organized by package structure (controllers, services, repositories, entities).</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">📦 src/main/resources</div>
+          <p>All non-Java files: config files, HTML templates, CSS, JS, SQL migration scripts, etc.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 application.properties — Sample Config</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="prop">spring.application.name</span><span class="op">=</span><span class="str">store</span>
+<span class="prop">server.port</span><span class="op">=</span><span class="num">8081</span>
+
+<span class="cmt"># Custom properties</span>
+<span class="prop">app.page-size</span><span class="op">=</span><span class="num">10</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Spring MVC Architecture</h3>
+      <p>Spring uses the <strong>MVC (Model-View-Controller)</strong> architectural pattern to separate concerns cleanly.</p>
+
+      <!-- MVC Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Spring MVC Flow</div>
+        <svg viewBox="0 0 680 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4da6ff"/>
+            </marker>
+            <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#36d9c8"/>
+            </marker>
+          </defs>
+          <!-- User -->
+          <circle cx="50" cy="80" r="26" fill="#1e2535" stroke="#4da6ff" stroke-width="2"/>
+          <text x="50" y="75" text-anchor="middle" fill="#4da6ff" font-size="18">👤</text>
+          <text x="50" y="118" text-anchor="middle" fill="#8892a4" font-size="11">User</text>
+
+          <!-- Arrow User -> Controller -->
+          <line x1="78" y1="80" x2="158" y2="80" stroke="#4da6ff" stroke-width="2" marker-end="url(#arr2)"/>
+          <text x="118" y="72" text-anchor="middle" fill="#8892a4" font-size="10">Request</text>
+
+          <!-- Controller -->
+          <rect x="160" y="52" width="140" height="56" rx="10" fill="#2e1410" stroke="#ff7c6e" stroke-width="2"/>
+          <text x="230" y="78" text-anchor="middle" fill="#ff7c6e" font-size="13" font-weight="700">Controller</text>
+          <text x="230" y="97" text-anchor="middle" fill="#8892a4" font-size="10">Mediator / Handles requests</text>
+
+          <!-- Arrow Controller -> Model -->
+          <line x1="300" y1="80" x2="380" y2="80" stroke="#4da6ff" stroke-width="2" marker-end="url(#arr2)"/>
+
+          <!-- Model -->
+          <rect x="382" y="52" width="140" height="56" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="452" y="78" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="700">Model</text>
+          <text x="452" y="97" text-anchor="middle" fill="#8892a4" font-size="10">Data + Business Logic + DB</text>
+
+          <!-- Arrow View -> User -->
+          <line x1="230" y1="108" x2="230" y2="140" stroke="#36d9c8" stroke-width="1.5"/>
+          <line x1="230" y1="140" x2="50" y2="140" stroke="#36d9c8" stroke-width="1.5" marker-end="url(#arr3)"/>
+          <line x1="50" y1="140" x2="50" y2="106" stroke="#36d9c8" stroke-width="1.5"/>
+
+          <!-- View -->
+          <rect x="560" y="52" width="110" height="56" rx="10" fill="#0a2826" stroke="#36d9c8" stroke-width="2"/>
+          <text x="615" y="78" text-anchor="middle" fill="#36d9c8" font-size="13" font-weight="700">View</text>
+          <text x="615" y="97" text-anchor="middle" fill="#8892a4" font-size="10">HTML / CSS / JS</text>
+
+          <!-- Arrow Model -> View -->
+          <line x1="522" y1="80" x2="558" y2="80" stroke="#4da6ff" stroke-width="2" marker-end="url(#arr2)"/>
+          <text x="118" y="152" text-anchor="middle" fill="#36d9c8" font-size="10">Response</text>
+        </svg>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">🗃️ Model</div>
+          <p>Contains <strong>business logic</strong> and connects to the database. Stores and processes data.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🖥️ View</div>
+          <p>What the user sees — HTML, CSS, JS. In modern Spring apps this is often a React/Angular SPA or Thymeleaf template.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🎮 Controller</div>
+          <p>Handles requests from users, interacts with the Model, and tells the View what to display. Acts as a <strong>mediator</strong>.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">📍 @Value</div>
+          <p>Injects properties from <code>application.properties</code> at runtime: <code>@Value("${app.page-size}")</code></p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 HomeController.java</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Controller</span>
+<span class="kw">public class</span> <span class="cls">HomeController</span> {
+
+    <span class="ann">@Value</span>(<span class="str">"${spring.application.name}"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> appName; <span class="cmt">// Spring injects the value at runtime</span>
+
+    <span class="ann">@RequestMapping</span>(<span class="str">"/"</span>)
+    <span class="kw">public</span> <span class="tp">String</span> <span class="fn">index</span>() {
+        System.out.<span class="fn">println</span>(<span class="str">"appName: "</span> + appName);
+        <span class="kw">return</span> <span class="str">"index.html"</span>; <span class="cmt">// serves resources/static/index.html</span>
+    }
+}</pre>
+      </div>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>Static Files Location</strong>
+          Static files (HTML, CSS, JS) must be placed in <code>src/main/resources/static/</code>. Spring Boot automatically serves files from this folder.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 3</span>
+        <span class="exercise-title">Project Structure & MVC</span>
+      </div>
+      <ol>
+        <li>Draw the Spring MVC flow from a browser request to the response. Label each component (DispatcherServlet, Controller, Service, Repository, DB).</li>
+        <li>Create an <code>application.properties</code> that sets the server port to <code>9090</code>, a custom <code>app.name=MyStore</code>, and enables SQL logging.</li>
+        <li>Write a <code>StoreController</code> that injects the <code>app.name</code> property using <code>@Value</code> and returns it from a <code>/name</code> endpoint.</li>
+        <li>What is the difference between <code>@Controller</code> and <code>@RestController</code>? When would you use each?</li>
+        <li>Where must static files be placed for Spring Boot to serve them automatically?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> <code>@RestController</code> is shorthand for <code>@Controller + @ResponseBody</code>. It automatically serializes return values to JSON.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 4: DI, IOC & Beans -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2>Dependency Injection, IOC & Beans</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Core Concepts</h3>
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">🔄 IOC — Inversion of Control</div>
+          <p>Inverting (giving) control of <strong>object creation</strong> to the Spring Framework instead of creating objects manually with <code>new</code>.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">💉 DI — Dependency Injection</div>
+          <p>Injecting a <strong>dependent object</strong> into a target class. Spring creates and wires the dependency for you.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🫘 Bean</div>
+          <p>An object that is <strong>created and managed</strong> by the Spring IOC Container. All Spring-managed objects are beans.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">📦 IOC Container</div>
+          <p>Part of Spring CORE. Creates beans, manages their lifecycle, and injects dependencies automatically.</p>
+        </div>
+      </div>
+
+      <!-- DI Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Dependency Injection — E-Commerce Example</div>
+        <svg viewBox="0 0 660 220" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+            </marker>
+            <marker id="arrDash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4da6ff"/>
+            </marker>
+          </defs>
+
+          <!-- OrderService (Target) -->
+          <rect x="20" y="80" width="150" height="60" rx="8" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <text x="95" y="103" text-anchor="middle" fill="#8892a4" font-size="10">«target class»</text>
+          <text x="95" y="122" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700">OrderService</text>
+
+          <!-- PaymentService (Interface) -->
+          <rect x="250" y="50" width="160" height="50" rx="8" fill="#0d2640" stroke="#4da6ff" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="330" y="70" text-anchor="middle" fill="#8892a4" font-size="10">«interface»</text>
+          <text x="330" y="88" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="600">PaymentService</text>
+
+          <!-- Stripe impl -->
+          <rect x="210" y="150" width="120" height="44" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="270" y="170" text-anchor="middle" fill="#8892a4" font-size="10">«class»</text>
+          <text x="270" y="185" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">StripePayment</text>
+
+          <!-- PayPal impl -->
+          <rect x="350" y="150" width="120" height="44" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="410" y="170" text-anchor="middle" fill="#8892a4" font-size="10">«class»</text>
+          <text x="410" y="185" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">PaypalPayment</text>
+
+          <!-- DI label -->
+          <rect x="490" y="80" width="160" height="50" rx="8" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="570" y="100" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="600">Dependency</text>
+          <text x="570" y="118" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="600">Injection ↑</text>
+
+          <!-- Arrows -->
+          <line x1="170" y1="110" x2="248" y2="90" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr4)" stroke-dasharray="6,3"/>
+          <line x1="330" y1="100" x2="270" y2="150" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arrDash)"/>
+          <line x1="330" y1="100" x2="410" y2="150" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arrDash)"/>
+        </svg>
+      </div>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>IOC Container Initialization</strong>
+          When you call <code>SpringApplication.run(StoreApplication.class, args)</code> it returns an <strong>ApplicationContext</strong> — the IOC container with all beans already created and wired.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Constructor Injection</h3>
+      <p>The <strong>preferred</strong> way to inject mandatory dependencies. If there's only one constructor, <code>@Autowired</code> is optional. With multiple constructors it is required.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 OrderService.java — Constructor Injection</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span> {
+
+    <span class="kw">private</span> <span class="tp">PaymentService</span> paymentService;
+
+    <span class="cmt">// Constructor Injection — @Autowired optional for single constructor</span>
+    <span class="ann">@Autowired</span>
+    <span class="kw">public</span> <span class="fn">OrderService</span>(<span class="tp">PaymentService</span> paymentService) {
+        <span class="kw">this</span>.paymentService = paymentService;
+    }
+
+    <span class="kw">public void</span> <span class="fn">placeOrder</span>() {
+        paymentService.<span class="fn">processPayment</span>(<span class="num">100</span>);
+    }
+}</pre>
+      </div>
+
+      <h3>Setter Injection</h3>
+      <p>Used for <strong>optional</strong> dependencies. The bean is created first, then the setter is called by Spring to inject the dependency.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 OrderService.java — Setter Injection</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span> {
+
+    <span class="kw">private</span> <span class="tp">PaymentService</span> paymentService;
+
+    <span class="ann">@Autowired</span>
+    <span class="kw">public void</span> <span class="fn">setPaymentService</span>(<span class="tp">PaymentService</span> paymentService) {
+        <span class="kw">this</span>.paymentService = paymentService;
+    }
+}</pre>
+      </div>
+
+      <table class="compare-table">
+        <thead><tr><th>Type</th><th>Use When</th><th>Annotation</th></tr></thead>
+        <tbody>
+          <tr><td>Constructor Injection</td><td>Dependency is <strong>mandatory</strong></td><td><code>@Autowired</code> (optional if 1 constructor)</td></tr>
+          <tr><td>Setter Injection</td><td>Dependency is <strong>optional</strong></td><td><code>@Autowired</code> on setter method</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3>Stereotype Annotations</h3>
+      <p>Spring uses <strong>Stereotype Annotations</strong> to identify classes it should manage as beans. Place these at class level.</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">@Component</div>
+          <p>Generic annotation. Marks any class as a Spring-managed bean. Use for utility classes.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">@Service</div>
+          <p>Marks a class as a <strong>business logic</strong> service. Semantically clearer than @Component.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">@Repository</div>
+          <p>Marks a class for <strong>database interaction</strong>. Also enables exception translation.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">@Controller</div>
+          <p>Marks a class for handling <strong>web requests</strong>. Returns views or responses.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 OrderService.java — @Service Bean</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>   <span class="cmt">// Tells Spring to create and manage this bean</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span> {
+    <span class="cmt">// Spring will create ONE instance and manage it</span>
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Controlling Bean Selection — Multiple Implementations</h3>
+      <p>When multiple beans qualify for the same dependency, Spring throws an exception. Use <code>@Qualifier</code> or <code>@Primary</code> to resolve the conflict.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 StripePaymentService.java + PaypalPaymentService.java</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>(<span class="str">"stripe"</span>)
+<span class="kw">public class</span> <span class="cls">StripePaymentService</span> <span class="kw">implements</span> <span class="tp">PaymentService</span> { ... }
+
+<span class="ann">@Service</span>(<span class="str">"paypal"</span>)
+<span class="ann">@Primary</span>  <span class="cmt">// Default bean when no @Qualifier specified</span>
+<span class="kw">public class</span> <span class="cls">PaypalPaymentService</span> <span class="kw">implements</span> <span class="tp">PaymentService</span> { ... }</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 OrderService.java — Using @Qualifier</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span> {
+    <span class="kw">private</span> <span class="tp">PaymentService</span> paymentService;
+
+    <span class="ann">@Autowired</span>
+    <span class="kw">public</span> <span class="fn">OrderService</span>(<span class="ann">@Qualifier</span>(<span class="str">"stripe"</span>) <span class="tp">PaymentService</span> paymentService) {
+        <span class="kw">this</span>.paymentService = paymentService;
+    }
+}</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Priority Rule</strong>
+          If both <code>@Primary</code> and <code>@Qualifier</code> are used, <strong>@Qualifier always wins</strong>. It has higher priority.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 4</span>
+        <span class="exercise-title">Dependency Injection & IOC</span>
+      </div>
+      <ol>
+        <li>Create a <code>NotificationService</code> interface with a <code>sendNotification(String message)</code> method. Implement it twice: <code>EmailNotificationService</code> and <code>SmsNotificationService</code>.</li>
+        <li>Create an <code>AlertService</code> that uses <strong>constructor injection</strong> to receive a <code>NotificationService</code>.</li>
+        <li>Mark <code>EmailNotificationService</code> with <code>@Primary</code>. What happens when you autowire <code>NotificationService</code> without <code>@Qualifier</code>?</li>
+        <li>Now use <code>@Qualifier("sms")</code> in <code>AlertService</code> to force SMS injection. Which annotation wins — <code>@Primary</code> or <code>@Qualifier</code>?</li>
+        <li>What are the 3 types of injection? Which is preferred and why?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> Constructor injection is preferred because it makes dependencies explicit, supports immutability, and makes testing easier (no reflection needed for mocking).</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 5: Bean Config & Scopes -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2>Bean Configuration & Scopes</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Externalizing Configuration</h3>
+      <p>Never hardcode sensitive values like API keys in source code. Store them in <code>application.properties</code> or <code>application.yaml</code> and inject them with <code>@Value</code>.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 application.yaml — Stripe Config</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cls">stripe</span><span class="op">:</span>
+  <span class="prop">apiUrl</span><span class="op">:</span> <span class="str">https://api.stripe.com</span>
+  <span class="prop">timeout</span><span class="op">:</span> <span class="num">1000</span>
+  <span class="prop">enabled</span><span class="op">:</span> <span class="kw">true</span>
+  <span class="prop">supported-currencies</span><span class="op">:</span> <span class="str">USD, EUR, GBP</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 StripePaymentService.java — @Value Injection</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>(<span class="str">"stripe"</span>)
+<span class="kw">public class</span> <span class="cls">StripePaymentService</span> <span class="kw">implements</span> <span class="tp">PaymentService</span> {
+
+    <span class="ann">@Value</span>(<span class="str">"${stripe.apiUrl}"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> apiUrl;
+
+    <span class="ann">@Value</span>(<span class="str">"${stripe.supported-currencies}"</span>)
+    <span class="kw">private</span> <span class="tp">List</span>&lt;<span class="tp">String</span>&gt; currencies;
+
+    <span class="ann">@Value</span>(<span class="str">"${stripe.timeout:3000}"</span>)  <span class="cmt">// 3000 is the DEFAULT if not found</span>
+    <span class="kw">private int</span> timeout;
+
+    <span class="ann">@Value</span>(<span class="str">"${stripe.enabled}"</span>)
+    <span class="kw">private boolean</span> enabled;
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Configuring Beans Using Java Code (@Configuration)</h3>
+      <p>For third-party classes you can't annotate, use <code>@Configuration</code> + <code>@Bean</code> to create beans manually. This gives you full control over object creation.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 AppConfig.java — Java-Based Bean Config</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="cls">AppConfig</span> {
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="tp">PaymentService</span> <span class="fn">stripe</span>() {
+        <span class="kw">return new</span> <span class="cls">StripePaymentService</span>(); <span class="cmt">// manually create, Spring manages</span>
+    }
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="tp">OrderService</span> <span class="fn">orderService</span>() {
+        <span class="kw">return new</span> <span class="cls">OrderService</span>(<span class="fn">stripe</span>()); <span class="cmt">// wire the dependency manually</span>
+    }
+}</pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>When to use @Configuration</strong>
+          Use it when: (1) configuring third-party library objects, (2) creating beans conditionally, or (3) needing fine-grained control over initialization order.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Lazy Initialization</h3>
+      <p>By default, Spring uses <strong>Eager Loading</strong> — it creates all beans at startup. With <code>@Lazy</code>, Spring delays bean creation until the bean is first requested.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 HeavyService.java — @Lazy Bean</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="ann">@Lazy</span>  <span class="cmt">// Won't create until first requested by another bean</span>
+<span class="kw">public class</span> <span class="cls">HeavyLoadService</span> {
+
+    <span class="kw">public</span> <span class="fn">HeavyLoadService</span>() {
+        System.out.<span class="fn">println</span>(<span class="str">"HeavyLoadService created!"</span>);
+    }
+}</pre>
+      </div>
+
+      <table class="compare-table">
+        <thead><tr><th>Loading Type</th><th>When created</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td>Eager (Default)</td><td>At application startup</td><td>Most beans — fail fast on config errors</td></tr>
+          <tr><td>Lazy (<code>@Lazy</code>)</td><td>When first requested</td><td>Heavy, rarely-used services</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3>Bean Scopes</h3>
+      <p>Bean scope determines <strong>how many instances</strong> of a bean are created and <strong>how long</strong> they live.</p>
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Bean Scopes Overview</div>
+        <table class="compare-table">
+          <thead><tr><th>Scope</th><th>Instances</th><th>Lifetime</th><th>Use Case</th></tr></thead>
+          <tbody>
+            <tr><td><code>singleton</code> (Default)</td><td>ONE per container</td><td>Entire app lifetime</td><td>Most services & repos</td></tr>
+            <tr><td><code>prototype</code></td><td>NEW for every request</td><td>Until GC</td><td>Stateful, per-use beans</td></tr>
+            <tr><td><code>request</code></td><td>ONE per HTTP request</td><td>Duration of request</td><td>Request-specific data</td></tr>
+            <tr><td><code>session</code></td><td>ONE per HTTP session</td><td>User session</td><td>User session data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Prototype Scope Example</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="ann">@Scope</span>(<span class="str">"prototype"</span>)  <span class="cmt">// New instance every time this bean is requested</span>
+<span class="kw">public class</span> <span class="cls">Orders</span> {
+    <span class="cmt">// Each call to getBean(Orders.class) returns a fresh object</span>
+}</pre>
+      </div>
+
+      <!-- Bean Scopes Visual Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Bean Scopes — Visual Comparison</div>
+        <svg viewBox="0 0 680 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrS" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L7,3 z" fill="#4dbb8a"/>
+            </marker>
+          </defs>
+          <!-- Singleton -->
+          <rect x="10" y="30" width="145" height="130" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="82" y="50" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="700">Singleton</text>
+          <text x="82" y="66" text-anchor="middle" fill="#8892a4" font-size="10">1 instance for all</text>
+          <rect x="30" y="78" width="105" height="28" rx="6" fill="#155550" stroke="#36d9c8" stroke-width="1"/>
+          <text x="82" y="97" text-anchor="middle" fill="#36d9c8" font-size="11">ServiceBean</text>
+          <text x="35" y="125" fill="#8892a4" font-size="10">Request A ──┐</text>
+          <text x="35" y="140" fill="#8892a4" font-size="10">Request B ──┤→ same</text>
+          <text x="35" y="155" fill="#8892a4" font-size="10">Request C ──┘</text>
+
+          <!-- Prototype -->
+          <rect x="175" y="30" width="145" height="130" rx="10" fill="#2d1a0a" stroke="#fb923c" stroke-width="2"/>
+          <text x="247" y="50" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="700">Prototype</text>
+          <text x="247" y="66" text-anchor="middle" fill="#8892a4" font-size="10">New instance each time</text>
+          <rect x="195" y="78" width="105" height="22" rx="5" fill="#3d2010" stroke="#fb923c" stroke-width="1"/>
+          <text x="247" y="94" text-anchor="middle" fill="#fb923c" font-size="10">Bean A (req 1)</text>
+          <rect x="195" y="105" width="105" height="22" rx="5" fill="#3d2010" stroke="#fb923c" stroke-width="1"/>
+          <text x="247" y="121" text-anchor="middle" fill="#fb923c" font-size="10">Bean B (req 2)</text>
+          <rect x="195" y="132" width="105" height="22" rx="5" fill="#3d2010" stroke="#fb923c" stroke-width="1"/>
+          <text x="247" y="148" text-anchor="middle" fill="#fb923c" font-size="10">Bean C (req 3)</text>
+
+          <!-- Request -->
+          <rect x="340" y="30" width="145" height="130" rx="10" fill="#0d2640" stroke="#4da6ff" stroke-width="2"/>
+          <text x="412" y="50" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="700">Request</text>
+          <text x="412" y="66" text-anchor="middle" fill="#8892a4" font-size="10">1 per HTTP request</text>
+          <rect x="360" y="78" width="105" height="22" rx="5" fill="#0d2640" stroke="#4da6ff" stroke-width="1"/>
+          <text x="412" y="94" text-anchor="middle" fill="#4da6ff" font-size="10">GET /api/orders → B1</text>
+          <rect x="360" y="105" width="105" height="22" rx="5" fill="#0d2640" stroke="#4da6ff" stroke-width="1"/>
+          <text x="412" y="121" text-anchor="middle" fill="#4da6ff" font-size="10">POST /api/pay → B2</text>
+          <text x="360" y="145" fill="#8892a4" font-size="10">Each new request</text>
+          <text x="360" y="158" fill="#8892a4" font-size="10">= new bean</text>
+
+          <!-- Session -->
+          <rect x="505" y="30" width="165" height="130" rx="10" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <text x="587" y="50" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">Session</text>
+          <text x="587" y="66" text-anchor="middle" fill="#8892a4" font-size="10">1 per user session</text>
+          <rect x="525" y="78" width="125" height="22" rx="5" fill="#1e1440" stroke="#a78bfa" stroke-width="1"/>
+          <text x="587" y="94" text-anchor="middle" fill="#a78bfa" font-size="10">User A → SessionBean1</text>
+          <rect x="525" y="105" width="125" height="22" rx="5" fill="#1e1440" stroke="#a78bfa" stroke-width="1"/>
+          <text x="587" y="121" text-anchor="middle" fill="#a78bfa" font-size="10">User B → SessionBean2</text>
+          <text x="525" y="145" fill="#8892a4" font-size="10">Lives until session</text>
+          <text x="525" y="158" fill="#8892a4" font-size="10">expires / invalidated</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 5</span>
+        <span class="exercise-title">Bean Config & Scopes</span>
+      </div>
+      <ol>
+        <li>Create a <code>StripeConfig</code> class annotated with <code>@ConfigurationProperties(prefix = "stripe")</code> and bind <code>apiUrl</code>, <code>timeout</code>, and <code>enabled</code> from YAML.</li>
+        <li>Create a <code>@Configuration</code> class that defines two <code>@Bean</code> methods returning different implementations of a <code>Logger</code> interface.</li>
+        <li>Which scope creates a <strong>single shared instance</strong>? Which scope creates a <strong>new instance every injection</strong>?</li>
+        <li>Add <code>@Scope("prototype")</code> to a bean. Request it twice via <code>ApplicationContext.getBean()</code> and print <code>System.identityHashCode()</code> — are they the same?</li>
+        <li>What is the difference between <code>@Lazy</code> and <code>@Scope("prototype")</code>?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> <code>@Lazy</code> just delays creation until first use — still singleton. <code>@Scope("prototype")</code> creates a fresh instance every time it's injected.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 6: Bean Lifecycle & YAML -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2>Bean Lifecycle Hooks & YAML</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Bean Lifecycle</h3>
+      <p>Every Spring bean goes through a defined lifecycle. You can hook into this lifecycle using two key annotations.</p>
+
+      <!-- Lifecycle Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Bean Lifecycle Diagram</div>
+        <svg viewBox="0 0 680 110" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4dbb8a"/>
+            </marker>
+          </defs>
+          <rect x="10" y="30" width="130" height="50" rx="8" fill="#0d2640" stroke="#4da6ff" stroke-width="1.5"/>
+          <text x="75" y="52" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="600">1. Instantiate</text>
+          <text x="75" y="70" text-anchor="middle" fill="#8892a4" font-size="10">new Bean()</text>
+
+          <line x1="140" y1="55" x2="178" y2="55" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+          <rect x="180" y="30" width="140" height="50" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="250" y="52" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">2. Inject Deps</text>
+          <text x="250" y="70" text-anchor="middle" fill="#8892a4" font-size="10">@Autowired wired</text>
+
+          <line x1="320" y1="55" x2="358" y2="55" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+          <rect x="360" y="30" width="140" height="50" rx="8" fill="#3d3010" stroke="#f5c842" stroke-width="2"/>
+          <text x="430" y="50" text-anchor="middle" fill="#f5c842" font-size="12" font-weight="700">3. @PostConstruct</text>
+          <text x="430" y="68" text-anchor="middle" fill="#8892a4" font-size="10">init() — setup logic</text>
+
+          <line x1="500" y1="55" x2="538" y2="55" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+          <rect x="540" y="30" width="130" height="50" rx="8" fill="#2e1410" stroke="#ff7c6e" stroke-width="2"/>
+          <text x="605" y="50" text-anchor="middle" fill="#ff7c6e" font-size="12" font-weight="700">4. @PreDestroy</text>
+          <text x="605" y="68" text-anchor="middle" fill="#8892a4" font-size="10">cleanup() — teardown</text>
+        </svg>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 OrderService.java — Lifecycle Hooks</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">OrderService</span> {
+
+    <span class="cmt">// Constructor runs FIRST</span>
+    <span class="kw">public</span> <span class="fn">OrderService</span>() { }
+
+    <span class="ann">@PostConstruct</span>
+    <span class="kw">public void</span> <span class="fn">init</span>() {
+        <span class="cmt">// Runs AFTER constructor + @Autowired wiring</span>
+        System.out.<span class="fn">println</span>(<span class="str">"Initializing after creating constructor"</span>);
+    }
+
+    <span class="ann">@PreDestroy</span>
+    <span class="kw">public void</span> <span class="fn">cleanup</span>() {
+        <span class="cmt">// Runs BEFORE bean is destroyed (app shutdown)</span>
+        System.out.<span class="fn">println</span>(<span class="str">"Destroying / cleaning..."</span>);
+    }
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>YAML Configuration</h3>
+      <p>YAML (Yet Another Markup Language) is an alternative to <code>.properties</code> files. It's more structured and readable, especially for hierarchical data.</p>
+
+      <div class="compare-table" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;">
+        <div>
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">📄 application.properties</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="prop">spring.application.name</span>=store
+<span class="prop">stripe.apiUrl</span>=https://api.stripe.com
+<span class="prop">stripe.timeout</span>=<span class="num">1000</span>
+<span class="prop">stripe.enabled</span>=<span class="kw">true</span></pre>
+          </div>
+        </div>
+        <div>
+          <div class="code-block">
+            <div class="code-header"><span class="code-filename">📄 application.yaml</span><div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+            <pre><span class="cls">spring</span><span class="op">:</span>
+  <span class="cls">application</span><span class="op">:</span>
+    <span class="prop">name</span><span class="op">:</span> <span class="str">store</span>
+<span class="cls">stripe</span><span class="op">:</span>
+  <span class="prop">apiUrl</span><span class="op">:</span> <span class="str">https://api.stripe.com</span>
+  <span class="prop">timeout</span><span class="op">:</span> <span class="num">1000</span>
+  <span class="prop">enabled</span><span class="op">:</span> <span class="kw">true</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 6</span>
+        <span class="exercise-title">Bean Lifecycle & YAML Config</span>
+      </div>
+      <ol>
+        <li>Create a <code>CacheService</code> bean that prints <code>"Cache initialized"</code> in <code>@PostConstruct</code> and <code>"Cache cleared"</code> in <code>@PreDestroy</code>. Run the app and observe the output.</li>
+        <li>What is the order of execution: constructor → <code>@Autowired</code> → <code>@PostConstruct</code>? Write this sequence out.</li>
+        <li>Convert your <code>application.properties</code> to <code>application.yaml</code>. Include nested keys for a <code>mail</code> config block with <code>host</code>, <code>port</code>, and <code>auth</code>.</li>
+        <li>Use <code>@ConfigurationProperties(prefix = "mail")</code> to bind the YAML mail config to a <code>MailProperties</code> POJO.</li>
+        <li>Why would you use <code>@PostConstruct</code> instead of putting initialization code directly in the constructor?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> The constructor runs before <code>@Autowired</code> dependencies are injected. <code>@PostConstruct</code> runs after all dependencies are ready — perfect for initialization logic that needs them.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 7: JDBC, JPA, Hibernate -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2>JDBC, JPA & Hibernate</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Data Access Layers Compared</h3>
+
+      <!-- JPA Stack Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Data Access Layer Stack</div>
+        <svg viewBox="0 0 480 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <rect x="100" y="10" width="280" height="50" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="240" y="31" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="700">Spring Data JPA</text>
+          <text x="240" y="50" text-anchor="middle" fill="#8892a4" font-size="11">Repositories — no boilerplate</text>
+
+          <line x1="240" y1="60" x2="240" y2="90" stroke="#2a3350" stroke-width="2"/>
+
+          <rect x="100" y="90" width="280" height="50" rx="10" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <text x="240" y="111" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700">JPA / Hibernate</text>
+          <text x="240" y="130" text-anchor="middle" fill="#8892a4" font-size="11">Object-Oriented Persistence (ORM)</text>
+
+          <line x1="240" y1="140" x2="240" y2="170" stroke="#2a3350" stroke-width="2"/>
+
+          <rect x="100" y="170" width="280" height="50" rx="10" fill="#0d2640" stroke="#4da6ff" stroke-width="2"/>
+          <text x="240" y="191" text-anchor="middle" fill="#4da6ff" font-size="13" font-weight="700">JDBC</text>
+          <text x="240" y="210" text-anchor="middle" fill="#8892a4" font-size="11">Low-level SQL Access</text>
+
+          <line x1="240" y1="220" x2="240" y2="250" stroke="#2a3350" stroke-width="2"/>
+
+          <rect x="100" y="250" width="280" height="24" rx="8" fill="#252d40" stroke="#2a3350" stroke-width="1"/>
+          <text x="240" y="267" text-anchor="middle" fill="#8892a4" font-size="12">Database (MySQL / PostgreSQL)</text>
+        </svg>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">🔌 JDBC</div>
+          <p><strong>Java Database Connectivity.</strong> Allows Java to execute raw SQL. You manage connections, statements, and result sets manually — lots of boilerplate code.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">📋 JPA</div>
+          <p><strong>Jakarta Persistence API.</strong> A specification for mapping Java objects to database tables. You work with Java objects, not SQL. JPA is just a spec — needs an implementation.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🐻 Hibernate</div>
+          <p><strong>ORM Framework.</strong> The most popular JPA implementation. Provides caching, HQL (Hibernate Query Language), and automatic schema generation.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">🌱 Spring Data JPA</div>
+          <p>Built on top of JPA/Hibernate. Provides ready-made <strong>Repository interfaces</strong> so you write zero SQL for common operations.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Setting Up Spring Data JPA with MySQL</h3>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 pom.xml — JPA & MySQL Dependencies</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">&lt;!-- Spring Data JPA --&gt;</span>
+<span class="op">&lt;</span><span class="cls">dependency</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">artifactId</span><span class="op">&gt;</span><span class="str">spring-boot-starter-data-jpa</span><span class="op">&lt;/</span><span class="cls">artifactId</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">groupId</span><span class="op">&gt;</span><span class="str">org.springframework.boot</span><span class="op">&lt;/</span><span class="cls">groupId</span><span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">dependency</span><span class="op">&gt;</span>
+
+<span class="cmt">&lt;!-- MySQL Driver --&gt;</span>
+<span class="op">&lt;</span><span class="cls">dependency</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">artifactId</span><span class="op">&gt;</span><span class="str">mysql-connector-j</span><span class="op">&lt;/</span><span class="cls">artifactId</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">groupId</span><span class="op">&gt;</span><span class="str">com.mysql</span><span class="op">&lt;/</span><span class="cls">groupId</span><span class="op">&gt;</span>
+    <span class="op">&lt;</span><span class="cls">scope</span><span class="op">&gt;</span><span class="str">runtime</span><span class="op">&lt;/</span><span class="cls">scope</span><span class="op">&gt;</span>
+<span class="op">&lt;/</span><span class="cls">dependency</span><span class="op">&gt;</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 application.yaml — MySQL Connection</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cls">spring</span><span class="op">:</span>
+  <span class="cls">application</span><span class="op">:</span>
+    <span class="prop">name</span><span class="op">:</span> <span class="str">store</span>
+  <span class="cls">datasource</span><span class="op">:</span>
+    <span class="prop">url</span><span class="op">:</span> <span class="str">jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true</span>
+    <span class="prop">username</span><span class="op">:</span> <span class="str">root</span>
+    <span class="prop">password</span><span class="op">:</span> <span class="str">root</span>
+  <span class="cls">jpa</span><span class="op">:</span>
+    <span class="cls">hibernate</span><span class="op">:</span>
+      <span class="prop">ddl-auto</span><span class="op">:</span> <span class="str">validate</span>  <span class="cmt"># create | update | validate | none</span>
+    <span class="prop">show-sql</span><span class="op">:</span> <span class="kw">true</span>   <span class="cmt"># print generated SQL queries</span></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Database Migration with Flyway</h3>
+      <p>Flyway is a database migration plugin that runs SQL scripts automatically when your app starts. This ensures your database schema is always in the correct state.</p>
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Flyway Migration Commands</div>
+        <table class="compare-table">
+          <thead><tr><th>Command</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>flyway:migrate</code></td><td>Runs all pending SQL migration scripts to DB</td></tr>
+            <tr><td><code>flyway:clean</code></td><td>Deletes all tables from DB (disabled by default)</td></tr>
+            <tr><td><code>flyway:repair</code></td><td>Removes deleted migration files from DB tracking</td></tr>
+            <tr><td><code>flyway:info</code></td><td>Shows all migration file info and status</td></tr>
+            <tr><td><code>flyway:validate</code></td><td>Validates migration files — no DB changes</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 V1__initial_migration.sql — Create Users Table</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">-- File must follow: VN__description.sql (double underscore)</span>
+<span class="cmt">-- Located at: src/main/resources/db/migration/</span>
+
+<span class="kw">CREATE TABLE</span> users (
+    id       <span class="tp">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    name     <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    email    <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    password <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> addresses (
+    id      <span class="tp">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    street  <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    city    <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    zip     <span class="tp">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    user_id <span class="tp">BIGINT NOT NULL</span>,
+    <span class="kw">CONSTRAINT</span> addresses_users_id_fk
+        <span class="kw">FOREIGN KEY</span> (user_id) <span class="kw">REFERENCES</span> users (id)
+);</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Never Delete Migration Files</strong>
+          If you made a mistake, create a new migration (V2, V3...) to fix it. Flyway tracks which scripts have run. Deleting them breaks the tracking.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 7</span>
+        <span class="exercise-title">JDBC, JPA & Flyway Setup</span>
+      </div>
+      <ol>
+        <li>Add <code>spring-boot-starter-data-jpa</code> and <code>mysql-connector-j</code> to your <code>pom.xml</code>. Connect to a local MySQL database.</li>
+        <li>Set <code>ddl-auto: validate</code> and <code>show-sql: true</code> in your YAML. What do each of these settings do?</li>
+        <li>Add the Flyway plugin and create <code>V1__create_users_table.sql</code> that creates a <code>users</code> table. Run <code>flyway:migrate</code>.</li>
+        <li>Create <code>V2__add_phone_to_users.sql</code> that adds a nullable <code>phone</code> column to users. What would happen if you just edited V1 instead?</li>
+        <li>What is the difference between JPA (the spec) and Hibernate (the implementation)? Could you swap Hibernate for EclipseLink?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> <code>ddl-auto: validate</code> means Hibernate will check that your entity classes match the DB schema at startup and throw an error if they don't — but won't change the schema.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 8: Entities, Lombok & Relations -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2>Entities, Lombok & Relationships</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Defining Entities</h3>
+      <p>An <strong>Entity</strong> is a Java class that maps directly to a database table. Annotate it with <code>@Entity</code> and <code>@Table</code>.</p>
+
+      <!-- Application Model Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Application Model — Entity Relationships</div>
+        <svg viewBox="0 0 680 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr6" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+            </marker>
+          </defs>
+          <!-- User (center) -->
+          <rect x="270" y="105" width="130" height="50" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2.5"/>
+          <text x="335" y="130" text-anchor="middle" fill="#4dbb8a" font-size="14" font-weight="700">User</text>
+          <text x="335" y="148" text-anchor="middle" fill="#8892a4" font-size="10">id, name, email, password</text>
+
+          <!-- Profile (1-1) -->
+          <rect x="460" y="35" width="130" height="50" rx="10" fill="#1e1440" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="525" y="58" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="600">Profile</text>
+          <text x="525" y="76" text-anchor="middle" fill="#8892a4" font-size="10">id, bio, user_id</text>
+          <line x1="400" y1="125" x2="460" y2="72" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr6)"/>
+          <text x="422" y="90" fill="#a78bfa" font-size="10">1:1</text>
+
+          <!-- Address (1-N) -->
+          <rect x="80" y="35" width="130" height="50" rx="10" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="145" y="58" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="600">Address</text>
+          <text x="145" y="76" text-anchor="middle" fill="#8892a4" font-size="10">id, street, city, user_id</text>
+          <line x1="270" y1="125" x2="210" y2="72" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr6)"/>
+          <text x="215" y="90" fill="#fb923c" font-size="10">1:N *</text>
+
+          <!-- Tag (M-N) -->
+          <rect x="80" y="200" width="130" height="50" rx="10" fill="#0d2640" stroke="#4da6ff" stroke-width="1.5"/>
+          <text x="145" y="223" text-anchor="middle" fill="#4da6ff" font-size="13" font-weight="600">Tag</text>
+          <text x="145" y="241" text-anchor="middle" fill="#8892a4" font-size="10">id, name</text>
+          <line x1="270" y1="155" x2="210" y2="215" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arr6)"/>
+          <text x="215" y="178" fill="#4da6ff" font-size="10">*:* (user_tags)</text>
+
+          <!-- Product (M-N via wishlist) -->
+          <rect x="460" y="200" width="130" height="50" rx="10" fill="#0a2826" stroke="#36d9c8" stroke-width="1.5"/>
+          <text x="525" y="223" text-anchor="middle" fill="#36d9c8" font-size="13" font-weight="600">Product</text>
+          <text x="525" y="241" text-anchor="middle" fill="#8892a4" font-size="10">id, name, price</text>
+          <line x1="400" y1="155" x2="460" y2="215" stroke="#36d9c8" stroke-width="1.5" marker-end="url(#arr6)"/>
+          <text x="445" y="178" fill="#36d9c8" font-size="10">*:* (wishlist)</text>
+
+          <!-- Category -->
+          <rect x="460" y="110" width="130" height="40" rx="10" fill="#2e1410" stroke="#ff7c6e" stroke-width="1.5"/>
+          <text x="525" y="135" text-anchor="middle" fill="#ff7c6e" font-size="13" font-weight="600">Category</text>
+        </svg>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 User.java — Entity Class</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"users"</span>)
+<span class="kw">public class</span> <span class="cls">User</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="cls">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="tp">Long</span> id;
+
+    <span class="ann">@Column</span>(nullable = <span class="kw">false</span>, name = <span class="str">"name"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> name;
+
+    <span class="ann">@Column</span>(nullable = <span class="kw">false</span>, name = <span class="str">"email"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> email;
+
+    <span class="ann">@Column</span>(nullable = <span class="kw">false</span>, name = <span class="str">"password"</span>)
+    <span class="kw">private</span> <span class="tp">String</span> password;
+
+    <span class="cmt">// Getters & Setters (or use Lombok below)</span>
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Simplifying Code with Lombok</h3>
+      <p>Lombok is a library that <strong>auto-generates boilerplate</strong> code (getters, setters, constructors, toString) using annotations — at compile time.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 User.java — With Lombok</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Getter</span>
+<span class="ann">@Setter</span>
+<span class="ann">@AllArgsConstructor</span>
+<span class="ann">@NoArgsConstructor</span>
+<span class="ann">@ToString</span>
+<span class="ann">@Builder</span>
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"users"</span>)
+<span class="kw">public class</span> <span class="cls">User</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="cls">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="tp">Long</span> id;
+
+    <span class="kw">private</span> <span class="tp">String</span> name;
+    <span class="kw">private</span> <span class="tp">String</span> email;
+    <span class="kw">private</span> <span class="tp">String</span> password;
+}
+
+<span class="cmt">// Builder pattern — create objects fluently</span>
+<span class="kw">var</span> user = User.<span class="fn">builder</span>()
+    .<span class="fn">name</span>(<span class="str">"Akhil"</span>)
+    .<span class="fn">email</span>(<span class="str">"a@gmail.com"</span>)
+    .<span class="fn">password</span>(<span class="str">"@$123@"</span>)
+    .<span class="fn">build</span>();</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>JPA Needs @NoArgsConstructor</strong>
+          Always add both <code>@AllArgsConstructor</code> and <code>@NoArgsConstructor</code> when using JPA. JPA spec requires a no-arg constructor to create entity instances.
+        </div>
+      </div>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>@Builder.Default</strong>
+          When using <code>@Builder</code> with fields that have default values (like empty lists), add <code>@Builder.Default</code> to prevent NullPointerExceptions: <code>@Builder.Default private List&lt;Address&gt; addresses = new ArrayList&lt;&gt;();</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>One-to-Many Relationships</h3>
+      <p>One User can have many Addresses, but each Address belongs to only one User. The <strong>FK lives on the "many" side</strong> (Address table stores <code>user_id</code>).</p>
+
+      <!-- One to Many DB Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 One-to-Many — Database Table View</div>
+        <svg viewBox="0 0 660 190" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr1n" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#fb923c"/>
+            </marker>
+          </defs>
+          <!-- users table -->
+          <rect x="20" y="10" width="200" height="130" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <rect x="20" y="10" width="200" height="32" rx="10" fill="#1a5c3a"/>
+          <rect x="20" y="32" width="200" height="10" rx="0" fill="#1a5c3a"/>
+          <text x="120" y="32" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="700">users</text>
+          <line x1="20" y1="42" x2="220" y2="42" stroke="#4dbb8a" stroke-width="1"/>
+          <text x="40" y="62" fill="#f5c842" font-size="12">PK</text>
+          <text x="65" y="62" fill="#e8eaf0" font-size="12">id = 1</text>
+          <text x="40" y="82" fill="#8892a4" font-size="11">  </text>
+          <text x="65" y="82" fill="#e8eaf0" font-size="11">name = "Alice"</text>
+          <line x1="30" y1="92" x2="210" y2="92" stroke="#2a3350" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="40" y="112" fill="#f5c842" font-size="12">PK</text>
+          <text x="65" y="112" fill="#e8eaf0" font-size="12">id = 2</text>
+          <text x="40" y="130" fill="#8892a4" font-size="11">  </text>
+          <text x="65" y="130" fill="#e8eaf0" font-size="11">name = "Bob"</text>
+
+          <!-- Arrow 1 -->
+          <line x1="220" y1="65" x2="340" y2="75" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr1n)"/>
+          <line x1="220" y1="65" x2="340" y2="115" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr1n)"/>
+          <text x="268" y="62" fill="#fb923c" font-size="11">1</text>
+          <text x="302" y="73" fill="#fb923c" font-size="11">N</text>
+
+          <!-- addresses table -->
+          <rect x="345" y="10" width="295" height="165" rx="10" fill="#2d1a0a" stroke="#fb923c" stroke-width="2"/>
+          <rect x="345" y="10" width="295" height="32" rx="10" fill="#6b3a10"/>
+          <rect x="345" y="32" width="295" height="10" rx="0" fill="#6b3a10"/>
+          <text x="492" y="32" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="700">addresses</text>
+          <line x1="345" y1="42" x2="640" y2="42" stroke="#fb923c" stroke-width="1"/>
+          <text x="362" y="62" fill="#f5c842" font-size="12">PK</text>
+          <text x="387" y="62" fill="#e8eaf0" font-size="11">id=1 | street="123 Main"</text>
+          <text x="362" y="80" fill="#36d9c8" font-size="12">FK</text>
+          <text x="387" y="80" fill="#36d9c8" font-size="11">user_id = 1 (→ Alice)</text>
+          <line x1="355" y1="88" x2="630" y2="88" stroke="#2a3350" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="362" y="108" fill="#f5c842" font-size="12">PK</text>
+          <text x="387" y="108" fill="#e8eaf0" font-size="11">id=2 | street="456 Oak"</text>
+          <text x="362" y="126" fill="#36d9c8" font-size="12">FK</text>
+          <text x="387" y="126" fill="#36d9c8" font-size="11">user_id = 1 (→ Alice)</text>
+          <line x1="355" y1="134" x2="630" y2="134" stroke="#2a3350" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="362" y="154" fill="#f5c842" font-size="12">PK</text>
+          <text x="387" y="154" fill="#e8eaf0" font-size="11">id=3 | street="789 Pine"</text>
+          <text x="362" y="172" fill="#36d9c8" font-size="12">FK</text>
+          <text x="387" y="172" fill="#36d9c8" font-size="11">user_id = 2 (→ Bob)</text>
+        </svg>
+      </div>
+
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Unidirectional vs Bidirectional</div>
+        <svg viewBox="0 0 600 140" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr7" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#fb923c"/>
+            </marker>
+            <marker id="arr8" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4dbb8a"/>
+            </marker>
+          </defs>
+          <!-- Uni -->
+          <text x="130" y="25" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="600">Unidirectional</text>
+          <rect x="20" y="40" width="90" height="40" rx="8" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="65" y="65" text-anchor="middle" fill="#fb923c" font-size="12">User</text>
+          <line x1="110" y1="60" x2="168" y2="60" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arr7)"/>
+          <text x="140" y="52" fill="#fb923c" font-size="10">1 → *</text>
+          <rect x="170" y="40" width="100" height="40" rx="8" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="220" y="65" text-anchor="middle" fill="#fb923c" font-size="12">Address</text>
+          <text x="130" y="105" text-anchor="middle" fill="#8892a4" font-size="11">User can access Address,</text>
+          <text x="130" y="120" text-anchor="middle" fill="#8892a4" font-size="11">but NOT vice versa</text>
+
+          <!-- Bi -->
+          <text x="450" y="25" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">Bidirectional</text>
+          <rect x="340" y="40" width="90" height="40" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="385" y="65" text-anchor="middle" fill="#4dbb8a" font-size="12">User</text>
+          <line x1="430" y1="55" x2="488" y2="55" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr8)"/>
+          <line x1="490" y1="65" x2="432" y2="65" stroke="#4dbb8a" stroke-width="1.5" marker-end="url(#arr8)"/>
+          <rect x="490" y="40" width="100" height="40" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="540" y="65" text-anchor="middle" fill="#4dbb8a" font-size="12">Address</text>
+          <text x="450" y="105" text-anchor="middle" fill="#8892a4" font-size="11">Both User &amp; Address</text>
+          <text x="450" y="120" text-anchor="middle" fill="#8892a4" font-size="11">can access each other</text>
+        </svg>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 User.java — @OneToMany (Bidirectional)</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@OneToMany</span>(mappedBy = <span class="str">"user"</span>, cascade = {<span class="cls">CascadeType</span>.PERSIST, <span class="cls">CascadeType</span>.REMOVE},
+           orphanRemoval = <span class="kw">true</span>)
+<span class="ann">@Builder.Default</span>
+<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="cls">Address</span>&gt; addresses = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+
+<span class="cmt">// Helper method — always wire both sides together</span>
+<span class="kw">public void</span> <span class="fn">addAddress</span>(<span class="cls">Address</span> address) {
+    addresses.<span class="fn">add</span>(address);
+    address.<span class="fn">setUser</span>(<span class="kw">this</span>);
+}
+
+<span class="kw">public void</span> <span class="fn">removeAddress</span>(<span class="cls">Address</span> address) {
+    addresses.<span class="fn">remove</span>(address);
+    address.<span class="fn">setUser</span>(<span class="kw">null</span>);
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Address.java — @ManyToOne (Owner Side)</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@ManyToOne</span>
+<span class="ann">@JoinColumn</span>(name = <span class="str">"user_id"</span>)  <span class="cmt">// Address is OWNER (has the FK column)</span>
+<span class="ann">@ToString.Exclude</span>              <span class="cmt">// Prevent infinite loop in toString()</span>
+<span class="kw">private</span> <span class="cls">User</span> user;</pre>
+      </div>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>Who is the Owner?</strong>
+          The entity that has the <strong>foreign key column</strong> in the database is the owner. Address has <code>user_id</code> FK, so Address is the owner. The owner side uses <code>@JoinColumn</code>. The non-owner side uses <code>mappedBy</code>.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Many-to-Many Relationships</h3>
+      <p>A User can have many Tags, and a Tag can belong to many Users. This creates a <strong>join table</strong> (<code>user_tags</code>) in the database with two FK columns.</p>
+
+      <!-- Many-to-Many DB Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Many-to-Many — Join Table in Database</div>
+        <svg viewBox="0 0 680 170" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrMN" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4da6ff"/>
+            </marker>
+          </defs>
+          <!-- users -->
+          <rect x="10" y="30" width="165" height="110" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <rect x="10" y="30" width="165" height="30" rx="10" fill="#1a5c3a"/>
+          <rect x="10" y="50" width="165" height="10" rx="0" fill="#1a5c3a"/>
+          <text x="92" y="50" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="700">users</text>
+          <line x1="10" y1="60" x2="175" y2="60" stroke="#4dbb8a" stroke-width="1"/>
+          <text x="28" y="78" fill="#f5c842" font-size="11">PK id=1</text>
+          <text x="28" y="94" fill="#8892a4" font-size="11">   name=Alice</text>
+          <line x1="18" y1="100" x2="167" y2="100" stroke="#2a3350" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="28" y="118" fill="#f5c842" font-size="11">PK id=2</text>
+          <text x="28" y="134" fill="#8892a4" font-size="11">   name=Bob</text>
+
+          <!-- arrows left side -->
+          <line x1="175" y1="80" x2="248" y2="75" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+          <line x1="175" y1="80" x2="248" y2="100" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+          <line x1="175" y1="120" x2="248" y2="100" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+
+          <!-- user_tags join table -->
+          <rect x="250" y="20" width="190" height="130" rx="10" fill="#0d2640" stroke="#4da6ff" stroke-width="2"/>
+          <rect x="250" y="20" width="190" height="30" rx="10" fill="#1a4a80"/>
+          <rect x="250" y="40" width="190" height="10" rx="0" fill="#1a4a80"/>
+          <text x="345" y="40" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="700">user_tags (join table)</text>
+          <line x1="250" y1="50" x2="440" y2="50" stroke="#4da6ff" stroke-width="1"/>
+          <text x="268" y="68" fill="#36d9c8" font-size="11">FK user_id=1</text>
+          <text x="268" y="84" fill="#36d9c8" font-size="11">FK tag_id=1</text>
+          <line x1="258" y1="90" x2="432" y2="90" stroke="#2a3350" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="268" y="108" fill="#36d9c8" font-size="11">FK user_id=1</text>
+          <text x="268" y="124" fill="#36d9c8" font-size="11">FK tag_id=2</text>
+          <line x1="258" y1="130" x2="432" y2="130" stroke="#2a3350" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="268" y="148" fill="#36d9c8" font-size="11">FK user_id=2</text>
+          <text x="268" y="164" fill="#36d9c8" font-size="11">FK tag_id=1</text>
+
+          <!-- arrows right side -->
+          <line x1="440" y1="75" x2="508" y2="70" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+          <line x1="440" y1="115" x2="508" y2="95" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+          <line x1="440" y1="150" x2="508" y2="70" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arrMN)"/>
+
+          <!-- tags -->
+          <rect x="510" y="30" width="160" height="110" rx="10" fill="#2d1025" stroke="#f472b6" stroke-width="2"/>
+          <rect x="510" y="30" width="160" height="30" rx="10" fill="#6b2050"/>
+          <rect x="510" y="50" width="160" height="10" rx="0" fill="#6b2050"/>
+          <text x="590" y="50" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="700">tags</text>
+          <line x1="510" y1="60" x2="670" y2="60" stroke="#f472b6" stroke-width="1"/>
+          <text x="528" y="78" fill="#f5c842" font-size="11">PK id=1</text>
+          <text x="528" y="94" fill="#8892a4" font-size="11">   name=admin</text>
+          <line x1="518" y1="100" x2="662" y2="100" stroke="#2a3350" stroke-width="1" stroke-dasharray="2,3"/>
+          <text x="528" y="118" fill="#f5c842" font-size="11">PK id=2</text>
+          <text x="528" y="134" fill="#8892a4" font-size="11">   name=premium</text>
+        </svg>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 User.java — @ManyToMany (Owner)</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@ManyToMany</span>
+<span class="ann">@JoinTable</span>(
+    name = <span class="str">"user_tags"</span>,
+    joinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"user_id"</span>),
+    inverseJoinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"tag_id"</span>)
+)
+<span class="ann">@Builder.Default</span>
+<span class="kw">private</span> <span class="tp">Set</span>&lt;<span class="cls">Tag</span>&gt; tags = <span class="kw">new</span> <span class="cls">HashSet</span>&lt;&gt;();
+
+<span class="cmt">// Add tag helper</span>
+<span class="kw">public void</span> <span class="fn">addTag</span>(<span class="tp">String</span> tagName) {
+    <span class="kw">var</span> tag = <span class="kw">new</span> <span class="cls">Tag</span>(tagName);
+    tags.<span class="fn">add</span>(tag);
+    tag.<span class="fn">getUsers</span>().<span class="fn">add</span>(<span class="kw">this</span>);
+}
+
+<span class="kw">public void</span> <span class="fn">removeTag</span>(<span class="cls">Tag</span> tag) {
+    tags.<span class="fn">remove</span>(tag);
+    tag.<span class="fn">setUsers</span>(<span class="kw">null</span>);
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Tag.java — Non-owner side</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@ManyToMany</span>(mappedBy = <span class="str">"tags"</span>)
+<span class="ann">@ToString.Exclude</span>  <span class="cmt">// Avoid StackOverflowException from circular toString</span>
+<span class="ann">@Builder.Default</span>
+<span class="kw">private</span> <span class="tp">Set</span>&lt;<span class="cls">User</span>&gt; users = <span class="kw">new</span> <span class="cls">HashSet</span>&lt;&gt;();</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>One-to-One Relationships</h3>
+
+      <!-- One-to-One DB Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 One-to-One — Database Table View</div>
+        <svg viewBox="0 0 660 160" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr1to1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#a78bfa"/>
+            </marker>
+          </defs>
+          <!-- users table -->
+          <rect x="30" y="20" width="230" height="120" rx="10" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <rect x="30" y="20" width="230" height="32" rx="10" fill="#3d2880"/>
+          <rect x="30" y="42" width="230" height="10" rx="0" fill="#3d2880"/>
+          <text x="145" y="42" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700">users</text>
+          <line x1="30" y1="52" x2="260" y2="52" stroke="#a78bfa" stroke-width="1"/>
+          <text x="50" y="72" fill="#f5c842" font-size="12">PK</text>
+          <text x="80" y="72" fill="#e8eaf0" font-size="12">id (BIGINT)</text>
+          <text x="50" y="90" fill="#8892a4" font-size="12">  </text>
+          <text x="80" y="90" fill="#e8eaf0" font-size="12">name (VARCHAR)</text>
+          <text x="50" y="108" fill="#8892a4" font-size="12">  </text>
+          <text x="80" y="108" fill="#e8eaf0" font-size="12">email (VARCHAR)</text>
+          <text x="50" y="126" fill="#8892a4" font-size="12">  </text>
+          <text x="80" y="126" fill="#e8eaf0" font-size="12">password (VARCHAR)</text>
+
+          <!-- Arrow -->
+          <line x1="260" y1="80" x2="360" y2="80" stroke="#a78bfa" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="310" y="73" fill="#a78bfa" font-size="11" text-anchor="middle">1 : 1</text>
+          <text x="266" y="95" fill="#a78bfa" font-size="10">PK shared</text>
+
+          <!-- profiles table -->
+          <rect x="365" y="20" width="265" height="120" rx="10" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <rect x="365" y="20" width="265" height="32" rx="10" fill="#3d2880"/>
+          <rect x="365" y="42" width="265" height="10" rx="0" fill="#3d2880"/>
+          <text x="497" y="42" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700">profiles</text>
+          <line x1="365" y1="52" x2="630" y2="52" stroke="#a78bfa" stroke-width="1"/>
+          <text x="385" y="72" fill="#f5c842" font-size="12">PK</text>
+          <text x="415" y="72" fill="#e8eaf0" font-size="12">id (BIGINT) = user.id</text>
+          <text x="385" y="90" fill="#36d9c8" font-size="12">FK</text>
+          <text x="415" y="90" fill="#e8eaf0" font-size="12">user_id → users.id</text>
+          <text x="385" y="108" fill="#8892a4" font-size="12">  </text>
+          <text x="415" y="108" fill="#e8eaf0" font-size="12">bio (TEXT)</text>
+          <text x="385" y="126" fill="#8892a4" font-size="12">  </text>
+          <text x="415" y="126" fill="#e8eaf0" font-size="12">avatar_url (VARCHAR)</text>
+        </svg>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 User.java + Profile.java — @OneToOne</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// In User.java</span>
+<span class="ann">@OneToOne</span>(mappedBy = <span class="str">"user"</span>)
+<span class="ann">@MapsId</span>
+<span class="kw">private</span> <span class="cls">Profile</span> profile;
+
+<span class="cmt">// In Profile.java — Profile is the OWNER (has user_id FK)</span>
+<span class="ann">@OneToOne</span>(fetch = <span class="cls">FetchType</span>.LAZY)
+<span class="ann">@JoinColumn</span>(name = <span class="str">"id"</span>)
+<span class="ann">@MapsId</span>
+<span class="ann">@ToString.Exclude</span>
+<span class="kw">private</span> <span class="cls">User</span> user;</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Fetching Strategies</h3>
+
+      <!-- Fetch Type Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Eager vs Lazy Loading</div>
+        <svg viewBox="0 0 660 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- EAGER -->
+          <rect x="10" y="10" width="295" height="160" rx="10" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="157" y="35" text-anchor="middle" fill="#4dbb8a" font-size="13" font-weight="700">EAGER Loading</text>
+          <text x="157" y="52" text-anchor="middle" fill="#8892a4" font-size="11">User loads → Profile loads immediately</text>
+          <!-- SQL boxes -->
+          <rect x="25" y="62" width="265" height="30" rx="6" fill="#155550" stroke="#36d9c8" stroke-width="1"/>
+          <text x="157" y="82" text-anchor="middle" fill="#36d9c8" font-size="11">SELECT * FROM users WHERE id=1</text>
+          <rect x="25" y="98" width="265" height="30" rx="6" fill="#155550" stroke="#36d9c8" stroke-width="1"/>
+          <text x="157" y="118" text-anchor="middle" fill="#36d9c8" font-size="11">SELECT * FROM profiles WHERE user_id=1</text>
+          <text x="157" y="148" text-anchor="middle" fill="#8892a4" font-size="11">Both run at same time (JOIN or 2 queries)</text>
+
+          <!-- LAZY -->
+          <rect x="355" y="10" width="295" height="160" rx="10" fill="#2d1a0a" stroke="#fb923c" stroke-width="2"/>
+          <text x="502" y="35" text-anchor="middle" fill="#fb923c" font-size="13" font-weight="700">LAZY Loading</text>
+          <text x="502" y="52" text-anchor="middle" fill="#8892a4" font-size="11">User loads → Profile loaded only on access</text>
+          <rect x="370" y="62" width="265" height="30" rx="6" fill="#3d2010" stroke="#fb923c" stroke-width="1"/>
+          <text x="502" y="82" text-anchor="middle" fill="#fb923c" font-size="11">SELECT * FROM users WHERE id=1</text>
+          <rect x="370" y="98" width="265" height="30" rx="6" fill="#3d2010" stroke="#fb923c" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="502" y="118" text-anchor="middle" fill="#8892a4" font-size="11">SELECT * FROM profiles ... (deferred)</text>
+          <text x="502" y="148" text-anchor="middle" fill="#8892a4" font-size="11">Only fires when user.getProfile() is called</text>
+        </svg>
+      </div>
+
+      <table class="compare-table">
+        <thead><tr><th>Strategy</th><th>Description</th><th>Default for</th></tr></thead>
+        <tbody>
+          <tr><td><code>FetchType.EAGER</code></td><td>Related objects loaded immediately with parent</td><td>@OneToOne, @ManyToOne</td></tr>
+          <tr><td><code>FetchType.LAZY</code></td><td>Related objects loaded only when accessed</td><td>@OneToMany, @ManyToMany</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Best Practice</strong>
+          Use <strong>Eager Loading</strong> when you always need related data. Use <strong>Lazy Loading</strong> when related data is rarely accessed. Lazy loading avoids unnecessary database queries.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 8</span>
+        <span class="exercise-title">Entities, Lombok & Relationships</span>
+      </div>
+      <ol>
+        <li>Create a <code>Product</code> entity with <code>@Entity</code>, <code>@Table(name="products")</code>, and Lombok annotations. Fields: <code>id</code>, <code>name</code>, <code>price</code>, <code>description</code>.</li>
+        <li>Create a <code>Category</code> entity. Add a <code>@ManyToOne</code> from <code>Product</code> → <code>Category</code> (many products belong to one category). Which entity is the owner?</li>
+        <li>Add a bidirectional <code>@OneToMany</code> on <code>Category</code> back to <code>Product</code>. Use <code>mappedBy</code> and add helper methods <code>addProduct()</code> and <code>removeProduct()</code>.</li>
+        <li>Now add a <code>@ManyToMany</code> between <code>Product</code> and a <code>Tag</code> entity using a join table <code>product_tags</code>. Write the Flyway migration SQL for this join table.</li>
+        <li>What is <code>orphanRemoval = true</code>? How does it differ from <code>CascadeType.REMOVE</code>?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> <code>orphanRemoval = true</code> removes children automatically when they're removed from the parent collection. <code>CascadeType.REMOVE</code> only deletes when the parent itself is deleted.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 9: Repositories & Transactions -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2>Repositories & Transactions</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Repository Hierarchy</h3>
+      <p>Spring Data JPA provides ready-made repository interfaces. Extend one to get CRUD operations for free — no SQL needed.</p>
+
+      <!-- Repository Hierarchy Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Repository Interface Hierarchy</div>
+        <svg viewBox="0 0 660 280" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr9" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4dbb8a"/>
+            </marker>
+          </defs>
+          <!-- Repository (top) -->
+          <rect x="230" y="5" width="180" height="44" rx="8" fill="#252d40" stroke="#4a5568" stroke-width="1.5"/>
+          <text x="320" y="22" text-anchor="middle" fill="#8892a4" font-size="10">«interface»</text>
+          <text x="320" y="40" text-anchor="middle" fill="#8892a4" font-size="12">Repository</text>
+
+          <line x1="250" y1="49" x2="140" y2="100" stroke="#2a3350" stroke-width="1.5" marker-end="url(#arr9)"/>
+          <line x1="320" y1="49" x2="320" y2="100" stroke="#2a3350" stroke-width="1.5" marker-end="url(#arr9)"/>
+          <line x1="400" y1="49" x2="510" y2="100" stroke="#2a3350" stroke-width="1.5" marker-end="url(#arr9)"/>
+
+          <!-- CrudRepository -->
+          <rect x="40" y="100" width="190" height="100" rx="8" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="1.5"/>
+          <text x="135" y="117" text-anchor="middle" fill="#8892a4" font-size="10">«interface»</text>
+          <text x="135" y="133" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">CrudRepository</text>
+          <text x="135" y="151" text-anchor="middle" fill="#8892a4" font-size="10">save() / saveAll()</text>
+          <text x="135" y="165" text-anchor="middle" fill="#8892a4" font-size="10">findById() / findAll()</text>
+          <text x="135" y="179" text-anchor="middle" fill="#8892a4" font-size="10">deleteById() / count()</text>
+
+          <!-- PagingAndSortingRepository -->
+          <rect x="250" y="100" width="200" height="80" rx="8" fill="#0a2826" stroke="#36d9c8" stroke-width="1.5"/>
+          <text x="350" y="117" text-anchor="middle" fill="#8892a4" font-size="10">«interface»</text>
+          <text x="350" y="132" text-anchor="middle" fill="#36d9c8" font-size="11" font-weight="600">PagingAndSortingRepository</text>
+          <text x="350" y="150" text-anchor="middle" fill="#8892a4" font-size="10">findAll(Sort)</text>
+          <text x="350" y="164" text-anchor="middle" fill="#8892a4" font-size="10">findAll(Pageable)</text>
+
+          <!-- JpaRepository (bottom) -->
+          <rect x="180" y="225" width="290" height="50" rx="8" fill="#1e1440" stroke="#a78bfa" stroke-width="2"/>
+          <text x="325" y="245" text-anchor="middle" fill="#8892a4" font-size="10">«interface»</text>
+          <text x="325" y="264" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="700">JpaRepository</text>
+
+          <line x1="135" y1="200" x2="270" y2="225" stroke="#2a3350" stroke-width="1.5" marker-end="url(#arr9)"/>
+          <line x1="350" y1="180" x2="340" y2="225" stroke="#2a3350" stroke-width="1.5" marker-end="url(#arr9)"/>
+
+          <!-- JpaRepository features -->
+          <rect x="490" y="100" width="160" height="80" rx="8" fill="#1e1440" stroke="#a78bfa" stroke-width="1"/>
+          <text x="570" y="120" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="600">JpaRepository</text>
+          <text x="570" y="138" text-anchor="middle" fill="#8892a4" font-size="10">flush()</text>
+          <text x="570" y="152" text-anchor="middle" fill="#8892a4" font-size="10">deleteAllInBatch()</text>
+          <text x="570" y="166" text-anchor="middle" fill="#8892a4" font-size="10">findAll(Example)</text>
+        </svg>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Which to extend?</strong>
+          Use <code>CrudRepository</code> for basic CRUD. Use <code>JpaRepository</code> for advanced features like batch operations, example-based queries, and custom flush behavior.
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 UserRepository.java — Defining a Repository</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Step 1: Create interface in a 'repositories' package</span>
+<span class="cmt">// Step 2: Extend CrudRepository&lt;EntityClass, PrimaryKeyType&gt;</span>
+<span class="kw">public interface</span> <span class="cls">UserRepository</span> <span class="kw">extends</span> <span class="cls">CrudRepository</span>&lt;<span class="cls">User</span>, <span class="tp">Long</span>&gt; {
+    <span class="cmt">// Spring creates proxy implementation at runtime — no code needed!</span>
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Using Repository — CRUD Operations</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="kw">var</span> repository = context.<span class="fn">getBean</span>(<span class="cls">UserRepository</span>.<span class="kw">class</span>);
+
+<span class="cmt">// CREATE</span>
+<span class="kw">var</span> user = User.<span class="fn">builder</span>()
+    .<span class="fn">name</span>(<span class="str">"Akhil"</span>).<span class="fn">email</span>(<span class="str">"a@gmail.com"</span>).<span class="fn">password</span>(<span class="str">"@$1469"</span>)
+    .<span class="fn">build</span>();
+repository.<span class="fn">save</span>(user);
+
+<span class="cmt">// READ by ID</span>
+<span class="kw">var</span> user1 = repository.<span class="fn">findById</span>(<span class="num">1L</span>).<span class="fn">orElse</span>(<span class="kw">null</span>);
+
+<span class="cmt">// READ ALL</span>
+<span class="tp">List</span>&lt;<span class="cls">User</span>&gt; allUsers = repository.<span class="fn">findAll</span>();
+
+<span class="cmt">// READ by Multiple IDs</span>
+<span class="tp">List</span>&lt;<span class="tp">Long</span>&gt; ids = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+ids.<span class="fn">add</span>(<span class="num">1L</span>); ids.<span class="fn">add</span>(<span class="num">2L</span>);
+repository.<span class="fn">findAllById</span>(ids);
+
+<span class="cmt">// DELETE</span>
+repository.<span class="fn">deleteById</span>(<span class="num">1L</span>);</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Understanding Entity States</h3>
+
+      <!-- Entity State Diagram -->
+      <div class="diagram-wrap">
+        <div class="diagram-label">📐 Entity States (Persistence Context)</div>
+        <svg viewBox="0 0 620 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr10" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#36d9c8"/>
+            </marker>
+            <marker id="arr11" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#ff7c6e"/>
+            </marker>
+          </defs>
+          <!-- Persistence Context boundary -->
+          <rect x="180" y="10" width="430" height="180" rx="12" fill="none" stroke="#2a3350" stroke-width="1.5" stroke-dasharray="8,4"/>
+          <text x="395" y="30" text-anchor="middle" fill="#4a5568" font-size="11">PERSISTENCE CONTEXT</text>
+
+          <!-- Transient -->
+          <ellipse cx="80" cy="110" rx="65" ry="40" fill="#2d1a0a" stroke="#fb923c" stroke-width="1.5"/>
+          <text x="80" y="107" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="600">Transient</text>
+          <text x="80" y="124" text-anchor="middle" fill="#8892a4" font-size="10">new Entity()</text>
+
+          <!-- Persistent -->
+          <ellipse cx="310" cy="100" rx="80" ry="45" fill="#0d2e1e" stroke="#4dbb8a" stroke-width="2"/>
+          <text x="310" y="97" text-anchor="middle" fill="#4dbb8a" font-size="12" font-weight="600">Persistent</text>
+          <text x="310" y="115" text-anchor="middle" fill="#8892a4" font-size="10">In DB + tracked</text>
+
+          <!-- Detached -->
+          <ellipse cx="310" cy="185" rx="80" ry="28" fill="#1e2535" stroke="#4da6ff" stroke-width="1.5"/>
+          <text x="310" y="182" text-anchor="middle" fill="#4da6ff" font-size="12" font-weight="600">Detached</text>
+          <text x="310" y="197" text-anchor="middle" fill="#8892a4" font-size="10">Has ID, not tracked</text>
+
+          <!-- Removed -->
+          <ellipse cx="540" cy="100" rx="65" ry="40" fill="#2e1410" stroke="#ff7c6e" stroke-width="1.5"/>
+          <text x="540" y="97" text-anchor="middle" fill="#ff7c6e" font-size="12" font-weight="600">Removed</text>
+          <text x="540" y="115" text-anchor="middle" fill="#8892a4" font-size="10">Deleted from DB</text>
+
+          <!-- Arrows -->
+          <line x1="145" y1="110" x2="228" y2="105" stroke="#36d9c8" stroke-width="1.5" marker-end="url(#arr10)"/>
+          <text x="185" y="99" fill="#36d9c8" font-size="10">save()</text>
+
+          <line x1="390" y1="110" x2="475" y2="105" stroke="#ff7c6e" stroke-width="1.5" marker-end="url(#arr11)"/>
+          <text x="428" y="99" fill="#ff7c6e" font-size="10">delete()</text>
+
+          <line x1="310" y1="145" x2="310" y2="157" stroke="#4da6ff" stroke-width="1.5" marker-end="url(#arr10)"/>
+          <text x="320" y="154" fill="#4da6ff" font-size="10">close ctx</text>
+        </svg>
+      </div>
+
+      <table class="compare-table">
+        <thead><tr><th>State</th><th>In DB?</th><th>Tracked?</th><th>How to get there</th></tr></thead>
+        <tbody>
+          <tr><td>Transient</td><td>No</td><td>No</td><td><code>new User()</code></td></tr>
+          <tr><td>Persistent</td><td>Yes</td><td>Yes</td><td><code>repository.save(user)</code></td></tr>
+          <tr><td>Detached</td><td>Yes (has ID)</td><td>No</td><td>Context closed / transaction ended</td></tr>
+          <tr><td>Removed</td><td>Pending deletion</td><td>Yes</td><td><code>repository.delete(user)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <h3>Managing Transactions</h3>
+      <p>A <strong>transaction</strong> is a group of operations that either all succeed or all fail together. This keeps data consistent (e.g., create an order AND reduce stock — both or neither).</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 UserService.java — @Transactional</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="kw">public class</span> <span class="cls">UserService</span> {
+
+    <span class="kw">private final</span> <span class="cls">UserRepository</span> userRepository;
+    <span class="kw">private final</span> <span class="cls">EntityManager</span> entityManager; <span class="cmt">// access persistence context</span>
+
+    <span class="ann">@Transactional</span>  <span class="cmt">// All operations in this method = ONE transaction</span>
+    <span class="kw">public void</span> <span class="fn">showEntityStates</span>() {
+        <span class="kw">var</span> user = User.<span class="fn">builder</span>()
+            .<span class="fn">name</span>(<span class="str">"John Doe"</span>).<span class="fn">email</span>(<span class="str">"john@example.com"</span>)
+            .<span class="fn">password</span>(<span class="str">"password"</span>).<span class="fn">build</span>();
+
+        <span class="cmt">// Check entity state</span>
+        <span class="kw">if</span> (entityManager.<span class="fn">contains</span>(user))
+            System.out.<span class="fn">println</span>(<span class="str">"Persistent"</span>);
+        <span class="kw">else</span>
+            System.out.<span class="fn">println</span>(<span class="str">"Transient / Detached"</span>);
+
+        userRepository.<span class="fn">save</span>(user); <span class="cmt">// Now it's Persistent</span>
+    }
+}</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>@Transactional cannot be used on static methods!</strong>
+          Transactions are method-level. When Lazy Loading throws <code>LazyInitializationException</code>, solve it by annotating the calling method with <code>@Transactional</code> to keep the persistence context open.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Persisting & Deleting Related Entities</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Cascade — Save Related Entities Automatically</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Without CascadeType.PERSIST — must save address manually:</span>
+userRepository.<span class="fn">save</span>(user);
+addressRepository.<span class="fn">save</span>(address); <span class="cmt">// extra line</span>
+
+<span class="cmt">// With CascadeType.PERSIST on @OneToMany — save user saves addresses too:</span>
+<span class="ann">@OneToMany</span>(mappedBy = <span class="str">"user"</span>, cascade = <span class="cls">CascadeType</span>.PERSIST)
+<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="cls">Address</span>&gt; addresses;
+
+userRepository.<span class="fn">save</span>(user); <span class="cmt">// ✅ saves user AND all addresses</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Deleting Related Entities</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// For @OneToOne — add CascadeType.REMOVE to delete Profile with User</span>
+<span class="ann">@OneToOne</span>(mappedBy = <span class="str">"user"</span>, cascade = <span class="cls">CascadeType</span>.REMOVE)
+<span class="kw">private</span> <span class="cls">Profile</span> profile;
+
+<span class="cmt">// For child entity (orphanRemoval) — removes address when removed from list</span>
+<span class="ann">@OneToMany</span>(mappedBy = <span class="str">"user"</span>,
+    cascade = {<span class="cls">CascadeType</span>.PERSIST, <span class="cls">CascadeType</span>.REMOVE},
+    orphanRemoval = <span class="kw">true</span>)
+<span class="kw">private</span> <span class="tp">List</span>&lt;<span class="cls">Address</span>&gt; addresses;</pre>
+      </div>
+
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 9</span>
+        <span class="exercise-title">Repositories & Transactions</span>
+      </div>
+      <ol>
+        <li>Create a <code>ProductRepository</code> extending <code>JpaRepository&lt;Product, Long&gt;</code>. Use it to save, find by ID, find all, and delete a product.</li>
+        <li>Create an <code>OrderService</code> with a <code>@Transactional</code> method <code>placeOrder()</code> that saves an order AND decreases product stock. What happens if the stock update fails?</li>
+        <li>What are the 4 entity states? Write code that takes a <code>User</code> through: Transient → Persistent → Detached.</li>
+        <li>A <code>@OneToMany</code> field throws <code>LazyInitializationException</code> outside a transaction. How do you fix this?</li>
+        <li>What is the difference between <code>@Transactional(readOnly = true)</code> and <code>@Transactional</code>? When should you use each?</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> <code>readOnly = true</code> is a hint to the underlying data source to skip dirty checking and flush — can improve performance on read-heavy methods. Always annotate query-only service methods with it.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ -->
+  <!-- SECTION 10: Custom Queries & Dynamic Queries -->
+  <!-- ═══════════════════════════════════ -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2>Custom Queries & Dynamic Queries</h2>
+    </div>
+
+    <div class="subsection">
+      <h3>Derived Query Methods</h3>
+      <p>Spring Data JPA can <strong>auto-generate SQL</strong> from method names in your repository interface. Follow the naming convention and Spring does the rest.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 ProductRepository.java — Derived Query Examples</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="kw">public interface</span> <span class="cls">ProductRepository</span> <span class="kw">extends</span> <span class="cls">CrudRepository</span>&lt;<span class="cls">Product</span>, <span class="tp">Long</span>&gt; {
+
+    <span class="cmt">// String matches</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByName</span>(<span class="tp">String</span> name);                       <span class="cmt">// exact match</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByNameLike</span>(<span class="tp">String</span> name);                   <span class="cmt">// LIKE (case-sensitive)</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByNameContaining</span>(<span class="tp">String</span> name);             <span class="cmt">// contains</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByNameStartingWith</span>(<span class="tp">String</span> name);           <span class="cmt">// starts with</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByNameEndingWithIgnoreCase</span>(<span class="tp">String</span> name);   <span class="cmt">// case insensitive</span>
+
+    <span class="cmt">// Numbers</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByPriceGreaterThan</span>(<span class="tp">BigDecimal</span> price);
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByPriceBetween</span>(<span class="tp">BigDecimal</span> min, <span class="tp">BigDecimal</span> max);
+
+    <span class="cmt">// Null checks</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByDescriptionNull</span>();
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByDescriptionNotNull</span>();
+
+    <span class="cmt">// Multiple conditions</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByDescriptionNullAndNameNull</span>();
+
+    <span class="cmt">// Sort + Limit</span>
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findByNameOrderByPriceAsc</span>(<span class="tp">String</span> name);
+    <span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findTop5ByNameOrderByPrice</span>(<span class="tp">String</span> name);
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Custom Queries Using @Query</h3>
+      <p>For complex queries, use <code>@Query</code> with either JPQL (Java Persistence Query Language) or native SQL.</p>
+
+      <div class="callout callout-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>JPQL vs Native SQL</strong>
+          JPQL uses <strong>class/field names</strong> (not table/column names). It works across all databases. Native SQL uses actual table names and database-specific syntax but exposes advanced SQL features.
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 ProductRepository.java — @Query Examples</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Native SQL Query (nativeQuery = true)</span>
+<span class="ann">@Query</span>(value = <span class="str">"SELECT * FROM products p WHERE p.price BETWEEN :min AND :max ORDER BY p.name"</span>,
+       nativeQuery = <span class="kw">true</span>)
+<span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findProducts</span>(<span class="ann">@Param</span>(<span class="str">"min"</span>) <span class="tp">BigDecimal</span> min,
+                            <span class="ann">@Param</span>(<span class="str">"max"</span>) <span class="tp">BigDecimal</span> max);
+
+<span class="cmt">// JPQL Query (default — uses Model class name, not table)</span>
+<span class="ann">@Query</span>(<span class="str">"SELECT p FROM Product p WHERE p.price BETWEEN :min AND :max ORDER BY p.name"</span>)
+<span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findProductsJPQL</span>(<span class="ann">@Param</span>(<span class="str">"min"</span>) <span class="tp">BigDecimal</span> min,
+                               <span class="ann">@Param</span>(<span class="str">"max"</span>) <span class="tp">BigDecimal</span> max);
+
+<span class="cmt">// JPQL COUNT</span>
+<span class="ann">@Query</span>(<span class="str">"SELECT COUNT(*) FROM Product p WHERE p.price BETWEEN :min AND :max"</span>)
+<span class="tp">long</span> <span class="fn">countProducts</span>(<span class="ann">@Param</span>(<span class="str">"min"</span>) <span class="tp">BigDecimal</span> min, <span class="ann">@Param</span>(<span class="str">"max"</span>) <span class="tp">BigDecimal</span> max);
+
+<span class="cmt">// JPQL with JOIN</span>
+<span class="ann">@Query</span>(<span class="str">"SELECT p FROM Product p JOIN p.category WHERE p.price BETWEEN :min AND :max"</span>)
+<span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findProductsWithCategory</span>(<span class="ann">@Param</span>(<span class="str">"min"</span>) <span class="tp">BigDecimal</span> min,
+                                          <span class="ann">@Param</span>(<span class="str">"max"</span>) <span class="tp">BigDecimal</span> max);
+
+<span class="cmt">// Update query — needs @Modifying + @Transactional</span>
+<span class="ann">@Modifying</span>
+<span class="ann">@Query</span>(<span class="str">"UPDATE Product p SET p.price = :newPrice WHERE p.category.id = :categoryId"</span>)
+<span class="kw">void</span> <span class="fn">updatePriceByCategory</span>(<span class="tp">BigDecimal</span> newPrice, <span class="tp">Byte</span> categoryId);</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Update/Delete Queries Need @Transactional</strong>
+          Always add <code>@Transactional</code> in the <em>calling service method</em> when using <code>@Modifying</code> queries. Without it you get <code>TransactionRequiredException</code>.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Fetching Partial Data with Projections</h3>
+      <p>Instead of loading all columns, use <strong>Projections</strong> to retrieve only the fields you need — better performance.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Interface Projection — ProductSummary.java</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Step 1: Create interface in 'dtos' or 'projections' package</span>
+<span class="kw">public interface</span> <span class="cls">ProductSummary</span> {
+    <span class="tp">Long</span> <span class="fn">getId</span>();
+    <span class="tp">String</span> <span class="fn">getName</span>();
+}
+
+<span class="cmt">// Step 2: Use as return type in repository</span>
+<span class="tp">List</span>&lt;<span class="cls">ProductSummary</span>&gt; <span class="fn">findByCategory</span>(<span class="cls">Category</span> category);
+
+<span class="cmt">// With @Query:</span>
+<span class="ann">@Query</span>(<span class="str">"SELECT p.id, p.name FROM Product p WHERE p.category = :category"</span>)
+<span class="tp">List</span>&lt;<span class="cls">ProductSummary</span>&gt; <span class="fn">findByCategory</span>(<span class="ann">@Param</span>(<span class="str">"category"</span>) <span class="cls">Category</span> category);</pre>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Interface vs Class Projections</strong>
+          Prefer <strong>Interface projections</strong> — simpler, Spring generates proxy at runtime. Use <strong>Class (DTO) projections</strong> only when you need business logic in the projection.
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Avoiding the N+1 Problem with @EntityGraph</h3>
+      <p>With Lazy Loading, accessing N related objects triggers N+1 queries. Use <code>@EntityGraph</code> to load related data in a single JOIN query.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 UserRepository.java — @EntityGraph</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="kw">public interface</span> <span class="cls">UserRepository</span> <span class="kw">extends</span> <span class="cls">CrudRepository</span>&lt;<span class="cls">User</span>, <span class="tp">Long</span>&gt; {
+
+    <span class="cmt">// Load users WITH addresses in ONE query (prevents N+1)</span>
+    <span class="ann">@EntityGraph</span>(attributePaths = { <span class="str">"addresses"</span> })
+    <span class="ann">@Query</span>(<span class="str">"SELECT u FROM User u"</span>)
+    <span class="tp">List</span>&lt;<span class="cls">User</span>&gt; <span class="fn">findAllWithAddresses</span>();
+
+    <span class="cmt">// Load with nested relations (addresses.country)</span>
+    <span class="ann">@EntityGraph</span>(attributePaths = { <span class="str">"addresses.country"</span> })
+    <span class="tp">Optional</span>&lt;<span class="cls">User</span>&gt; <span class="fn">findByEmail</span>(<span class="tp">String</span> email);
+}</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Dynamic Queries</h3>
+      <p>When filter conditions change at runtime, write dynamic queries instead of dozens of static methods.</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <div class="concept-card-title">10.1 Query by Example</div>
+          <p>Filter using an example object. Simple way to filter data — Spring generates the SQL automatically based on non-null fields.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">10.2 Criteria API</div>
+          <p>Programmatic query building using Java code. More complex but handles any filtering scenario.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">10.3 Specifications API</div>
+          <p>Write <strong>reusable, composable</strong> query logic. Best for complex dynamic filters.</p>
+        </div>
+        <div class="concept-card">
+          <div class="concept-card-title">10.4 Sorting & Pagination</div>
+          <p>Retrieve results in sorted order and paginated chunks using <code>Pageable</code> and <code>Sort</code>.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Query by Example (QBE)</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Transactional</span>
+<span class="kw">public void</span> <span class="fn">fetchProducts</span>() {
+    <span class="cmt">// Must use JpaRepository for findAll(Example)</span>
+    <span class="kw">var</span> product = <span class="kw">new</span> <span class="cls">Product</span>();
+    product.<span class="fn">setName</span>(<span class="str">"product"</span>); <span class="cmt">// Search products containing "product"</span>
+
+    <span class="kw">var</span> matcher = <span class="cls">ExampleMatcher</span>.<span class="fn">matching</span>()
+        .<span class="fn">withIncludeNullValues</span>()        <span class="cmt">// include null fields in match</span>
+        .<span class="fn">withIgnorePaths</span>(<span class="str">"id"</span>, <span class="str">"description"</span>)   <span class="cmt">// ignore these fields</span>
+        .<span class="fn">withStringMatcher</span>(<span class="cls">ExampleMatcher</span>.<span class="cls">StringMatcher</span>.CONTAINING);
+
+    <span class="kw">var</span> example = <span class="cls">Example</span>.<span class="fn">of</span>(product, matcher);
+    <span class="kw">var</span> products = productRepository.<span class="fn">findAll</span>(example);
+    products.<span class="fn">forEach</span>(System.out::<span class="fn">println</span>);
+}</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Specifications API</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Step 1: Extend JpaSpecificationExecutor</span>
+<span class="kw">public interface</span> <span class="cls">ProductRepository</span> <span class="kw">extends</span>
+    <span class="cls">JpaRepository</span>&lt;<span class="cls">Product</span>, <span class="tp">Long</span>&gt;,
+    <span class="cls">JpaSpecificationExecutor</span>&lt;<span class="cls">Product</span>&gt; {}
+
+<span class="cmt">// Step 2: Create ProductSpec class</span>
+<span class="kw">public class</span> <span class="cls">ProductSpec</span> {
+    <span class="kw">public static</span> <span class="tp">Specification</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">hasName</span>(<span class="tp">String</span> name) {
+        <span class="kw">return</span> (root, query, cb) -&gt;
+            cb.<span class="fn">like</span>(root.get(<span class="str">"name"</span>), <span class="str">"%" + name + "%"</span>);
+    }
+
+    <span class="kw">public static</span> <span class="tp">Specification</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">hasPriceBetween</span>(<span class="tp">BigDecimal</span> min, <span class="tp">BigDecimal</span> max) {
+        <span class="kw">return</span> (root, query, cb) -&gt;
+            cb.<span class="fn">between</span>(root.get(<span class="str">"price"</span>), min, max);
+    }
+}
+
+<span class="cmt">// Step 3: Compose and use specs</span>
+<span class="kw">var</span> spec = <span class="cls">ProductSpec</span>.<span class="fn">hasName</span>(<span class="str">"shoes"</span>)
+    .<span class="fn">and</span>(<span class="cls">ProductSpec</span>.<span class="fn">hasPriceBetween</span>(
+        <span class="cls">BigDecimal</span>.<span class="fn">valueOf</span>(<span class="num">10</span>), <span class="cls">BigDecimal</span>.<span class="fn">valueOf</span>(<span class="num">100</span>)));
+<span class="kw">var</span> products = productRepository.<span class="fn">findAll</span>(spec);</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 Sorting and Pagination</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cmt">// Sorting</span>
+<span class="kw">var</span> sort = <span class="cls">Sort</span>.<span class="fn">by</span>(<span class="str">"name"</span>).<span class="fn">ascending</span>();
+<span class="kw">var</span> products = productRepository.<span class="fn">findAll</span>(sort);
+
+<span class="cmt">// Pagination</span>
+<span class="kw">var</span> pageable = <span class="cls">PageRequest</span>.<span class="fn">of</span>(<span class="num">0</span>, <span class="num">10</span>, sort); <span class="cmt">// page 0, size 10, sorted by name</span>
+<span class="tp">Page</span>&lt;<span class="cls">Product</span>&gt; page = productRepository.<span class="fn">findAll</span>(pageable);
+
+System.out.<span class="fn">println</span>(page.<span class="fn">getTotalElements</span>()); <span class="cmt">// total records</span>
+System.out.<span class="fn">println</span>(page.<span class="fn">getTotalPages</span>());    <span class="cmt">// total pages</span>
+page.<span class="fn">getContent</span>().<span class="fn">forEach</span>(System.out::<span class="fn">println</span>);</pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Calling Stored Procedures</h3>
+      <p>When a query is too complex for JPQL/SQL, create a <strong>stored procedure</strong> in the database and call it from your repository.</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 V10__add_find_products_proc.sql — Create Stored Procedure</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="cls">DELIMITER</span> $$
+<span class="kw">CREATE PROCEDURE</span> <span class="fn">findProductsByPrice</span>(
+    minPrice <span class="tp">DECIMAL</span>(<span class="num">10,2</span>),
+    maxPrice <span class="tp">DECIMAL</span>(<span class="num">10,2</span>)
+)
+<span class="kw">BEGIN</span>
+    <span class="kw">SELECT</span> id, description, price, category_id
+    <span class="kw">FROM</span> products
+    <span class="kw">WHERE</span> price <span class="kw">BETWEEN</span> minPrice <span class="kw">AND</span> maxPrice
+    <span class="kw">ORDER BY</span> name;
+<span class="kw">END</span> $$
+<span class="cls">DELIMITER</span> ;</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 ProductRepository.java — @Procedure</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Procedure</span>(<span class="str">"findProductsByPrice"</span>)
+<span class="tp">List</span>&lt;<span class="cls">Product</span>&gt; <span class="fn">findProducts</span>(<span class="tp">BigDecimal</span> min, <span class="tp">BigDecimal</span> max);</pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename">📄 UserService.java — Calling Stored Procedure</span>
+          <div class="dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        </div>
+        <pre><span class="ann">@Transactional</span>  <span class="cmt">// Required for @Procedure — otherwise InvalidDataAccessException</span>
+<span class="kw">public void</span> <span class="fn">fetchProducts</span>() {
+    <span class="kw">var</span> products = productRepository.<span class="fn">findProducts</span>(
+        <span class="cls">BigDecimal</span>.<span class="fn">valueOf</span>(<span class="num">1</span>),
+        <span class="cls">BigDecimal</span>.<span class="fn">valueOf</span>(<span class="num">15</span>)
+    );
+    products.<span class="fn">forEach</span>(System.out::<span class="fn">println</span>);
+}</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <div class="callout-icon"></div>
+        <div class="callout-body">
+          <strong>Always wrap in @Transactional</strong>
+          Calling stored procedures via <code>@Procedure</code> requires a surrounding transaction. Without it you get <code>InvalidDataAccessApiUsageException</code>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Quick Reference -->
+    <div class="subsection">
+      <h3>Quick Reference — When to Use What</h3>
+      <table class="compare-table">
+        <thead><tr><th>Technique</th><th>Use When</th><th>Complexity</th></tr></thead>
+        <tbody>
+          <tr><td>Derived Query Methods</td><td>Simple filters on 1-2 fields</td><td>Low</td></tr>
+          <tr><td>@Query (JPQL)</td><td>Complex SQL but DB-independent</td><td>Medium</td></tr>
+          <tr><td>@Query (nativeQuery)</td><td>DB-specific syntax, max performance</td><td>Medium</td></tr>
+          <tr><td>Query by Example</td><td>Optional multi-field filter</td><td>Low</td></tr>
+          <tr><td>Criteria API</td><td>Programmatic complex conditions</td><td>High</td></tr>
+          <tr><td>Specifications API</td><td>Reusable, composable query pieces</td><td>Medium-High</td></tr>
+          <tr><td>Stored Procedures</td><td>Very complex, DB-level computation</td><td>High</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-badge">Exercise 10</span>
+        <span class="exercise-title">Writing Custom Queries</span>
+      </div>
+      <ol>
+        <li>Create a <code>ProductRepository</code> that extends <code>JpaRepository</code></li>
+        <li>Add a derived query <code>findByNameContainingAndPriceLessThan(String name, BigDecimal price)</code></li>
+        <li>Write a <code>@Query</code> using JPQL that returns products in a price range sorted by name</li>
+        <li>Create a projection interface <code>ProductSummary</code> with <code>getId()</code> and <code>getName()</code></li>
+        <li>Write a Specification that filters products by category and minimum price, then compose them</li>
+        <li>Add pagination to <code>findAll()</code> returning page 1 with 5 items sorted by price descending</li>
+      </ol>
+      <div class="exercise-hint"><span>💡 Hint:</span> For the Specification, your repository needs to extend <code>JpaSpecificationExecutor&lt;Product&gt;</code> in addition to <code>JpaRepository</code>.</div>
+    </div>
+
+  </div>
+
+  </div><!-- .content -->
+</div><!-- #main -->
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const height = doc.scrollHeight - doc.clientHeight;
+    const pct = height > 0 ? Math.round((scrollTop / height) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = pct + '%';
+  });
+
+  // Sidebar active highlighting
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('href') === '#' + id) {
+            item.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
